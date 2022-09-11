@@ -1,5 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 
 import { getProduct } from './../helpers';
 
@@ -12,7 +14,7 @@ export function HeaderItem({ productId }) {
       <div className="ad-text">
         <h3>{product.name}</h3>
         <p className="num">N{product.price}</p>
-        <AddToCartButton isHeader={true} />
+        <AddToCartButton productId={product.id} isHeader={true} />
       </div>
     </li>
   );
@@ -34,7 +36,7 @@ export function CartItem() {
   return <div></div>;
 }
 
-export function AddToCartButton({ isHeader }) {
+export function AddToCartButton({ productId, isHeader }) {
   return (
     <button className={`add-to-cart ${isHeader ? 'header' : ''}`}>
       Add to Cart
