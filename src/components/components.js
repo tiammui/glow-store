@@ -10,7 +10,7 @@ export function HeaderItem({ productId }) {
 
   return (
     <li className="header-item">
-      <HotSaleTag />
+      {product.hotSale? <HotSaleTag />: null}
       <div className="ad-text">
         <h3>{product.name}</h3>
         <p className="num">N{product.price}</p>
@@ -45,7 +45,7 @@ export function AddToCartButton({ productId, isHeader }) {
 }
 
 export function HotSaleTag() {
-  return <div></div>;
+  return <div className="hot-sale-tag">Hot Sales</div>;
 }
 export function DiscountTag() {
   return <div></div>;

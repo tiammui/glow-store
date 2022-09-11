@@ -48,6 +48,7 @@
   margin: 0 5px;
 
   width: 100vmin;
+  max-width: 600px;
   height: 575px;
   
   background-color: var(--color-secondary-bg);
@@ -112,6 +113,24 @@
   background-color: var(--color-curtain-40);
   color: white;
 }
+
+.hot-sale-tag{
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  height: 30px;
+  line-height: 30px;
+  background-color: red;
+  color: white;
+  text-shadow: var(--text-shadow);
+  padding: 0 5px;
+
+  border: 1px dashed #FFFFFF;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.5);
+  border-radius: 8px;
+  transform: rotate(-12.5deg);
+}
+
 .icon-block{
   width: 50px;
   font-size: 1.11rem;

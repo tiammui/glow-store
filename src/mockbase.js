@@ -20,7 +20,7 @@ export const product = {
   imgsURL:[""],
   price:12000,
   discount:20,
-  hotSale:true,
+  hotSale:false,
   inStock:5,
 }
 
