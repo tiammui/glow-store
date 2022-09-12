@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import {HeaderItem} from './../components/components'
+import { HeaderItem } from './../components/components';
 
 export default function () {
   return (
@@ -10,12 +10,14 @@ export default function () {
         <ul className="carousel">
           <HeaderItem />
           <HeaderItem />
+          <HeaderItem />
         </ul>
-        <div className="navigator">
-          <button title=""></button>
-          <button title=""></button>
-          <button title=""></button>
-        </div>
+        <div className="clear-fix"></div>
+      </div>
+      <div className="navigator">
+        <button className="active" title=""></button>
+        <button title=""></button>
+        <button title=""></button>
       </div>
     </>
   );
