@@ -12,8 +12,8 @@ export default function () {
           <HeaderItem />
           <HeaderItem />
         </ul>
-        <div className="clear-fix"></div>
       </div>
+      <div className="clear-fix"></div>
       <div className="navigator">
         <button className="active" title=""></button>
         <button title=""></button>

@@ -35,7 +35,7 @@
   scroll-behavior: smooth;
   transition: 500ms;
   scroll-snap-type: x mandatory;
-  overflow-x: hidden;
+  overflow-x: scroll;
   overflow-y: hidden;
   margin-bottom: 30px;
 }
@@ -69,11 +69,10 @@
 .navigator {
   position: relative;
   display: flex;
-  z-index: 5;
   justify-content: space-between;
   align-items: center;
   width: 110px;
-  margin: -50px auto 40px auto;
+  margin: 30px auto 40px auto;
 }
 .navigator > button {
   width: 30px;
