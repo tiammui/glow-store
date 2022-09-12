@@ -13,7 +13,6 @@ export default function () {
           <HeaderItem />
         </ul>
       </div>
-      <div className="clear-fix"></div>
       <div className="navigator">
         <button className="active" title=""></button>
         <button title=""></button>
