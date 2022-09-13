@@ -44,7 +44,8 @@ export default function App() {
       <div id="main-container">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="products" element={<ProductCategory />} />
+          <Route path="products" element={<ProductCategory filter="All" />} />
+          <Route path="products/category/:category" element={<ProductCategory />} />
           <Route path="products/:productId" element={<ProductDetails />} />
           <Route path="cart" element={<Cart />} />
           <Route path="checkout" element={<CheckOut />} />

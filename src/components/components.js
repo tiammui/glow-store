@@ -3,38 +3,7 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 
-import { getProduct } from './../helpers';
-
-export function HeaderItem({ productId }) {
-  let product = getProduct(productId);
-
-  return (
-    <li className="header-item">
-      {product.hotSale? <HotSaleTag />: null}
-      <div className="ad-text">
-        <h3>{product.name}</h3>
-        <p className="num">N{product.price}</p>
-        <AddToCartButton productId={product.id} isHeader={true} />
-      </div>
-    </li>
-  );
-}
-
-export function ProductCard() {
-  return <div></div>;
-}
-
-export function SmallProductCard() {
-  return <div></div>;
-}
-
-export function CategoryCard() {
-  return <div></div>;
-}
-
-export function CartItem() {
-  return <div></div>;
-}
+import { getProduct, calcDiscount } from './../helpers';
 
 export function AddToCartButton({ productId, isHeader }) {
   return (
@@ -44,9 +13,108 @@ export function AddToCartButton({ productId, isHeader }) {
   );
 }
 
-export function HotSaleTag() {
-  return <div className="hot-sale-tag">Hot Sales</div>;
+export function CartItem() {
+  return <div></div>;
 }
-export function DiscountTag() {
+
+export function CatSectionItem({ category }) {
+  return (
+    <li className="item">
+      <Link to={`/products/category/${category}`}>
+        <div className="cat-img"></div>
+        <p>{category}</p>
+      </Link>
+    </li>
+  );
+}
+
+export function Discount({ price, discount }) {
+  return (
+    <span>
+      <del>₦{price}</del> ₦{calcDiscount(price, discount)}{' '}
+    </span>
+  );
+}
+
+export function DiscountTag({ discount, offset }) {
+  return (
+    <div className="discount-tag" style={{ bottom: offset || 20 }}>
+      {discount}% off <div className="deco"></div>
+    </div>
+  );
+}
+
+export function HeaderItem({ productId }) {
+  let product = getProduct(productId);
+
+  return (
+    <li className="item">
+      {product.hotSale ? <HotSaleTag /> : null}
+      <div className="ad-text">
+        <h3>{product.name}</h3>
+        <p className="priceCon">
+          <ProductPrice price={product.price} discount={product.discount} />
+        </p>
+        <AddToCartButton productId={product.id} isHeader={true} />
+      </div>
+    </li>
+  );
+}
+
+export function HotSaleTag({ offset }) {
+  return (
+    <div
+      className="hot-sale-tag"
+      style={{ top: offset || 20, right: offset || 20 }}
+    >
+      Hot Sales
+    </div>
+  );
+}
+
+export function ProductCard({ productId }) {
+  let product = getProduct(productId);
+
+  return (
+    <div className="product-card">
+      <Link to={`/products/${product.id}`} className="img">
+        {product.discount ? <DiscountTag discount={product.discount} /> : null}
+      </Link>
+      <div className="details">
+        <p className="name">
+          <Link to={`/products/${product.id}`}>
+            {product.name}
+          </Link>
+        </p>
+        <p className="priceCon">
+          {' '}
+          <ProductPrice
+            price={product.price}
+            discount={product.discount}
+          />{' '}
+        </p>
+        <div className="btn-con">
+          <AddToCartButton productId={product.id} />
+        </div>
+        {product.hotSale ? <HotSaleTag /> : null}
+      </div>
+    </div>
+  );
+}
+
+export function ProductPrice({ price, discount }) {
+  return (
+    <span className="price">
+      {' '}
+      {discount ? (
+        <Discount price={price} discount={discount} />
+      ) : (
+        `₦${price}`
+      )}{' '}
+    </span>
+  );
+}
+
+export function SmallProductCard() {
   return <div></div>;
 }

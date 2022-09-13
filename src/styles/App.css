@@ -18,6 +18,7 @@
   --text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.7);
   --color-curtain-40: rgba(0, 0, 0, 0.4);
 
+  --border-item:1px solid #FFFFFF;
   --length-mobile-max: 600px;
 }
 
