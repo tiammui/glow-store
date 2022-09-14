@@ -1,12 +1,13 @@
 export const categories = [
+  'all',
   'moisturisers',
+  'cleanser',
   'perfume',
   'body cream',
   'whitening cream',
   'makeup',
   'trending',
   'fresh',
-  'all',
 ];
 export const STATUS = {
   DELIVERED: 'DELIVERED',
@@ -15,74 +16,84 @@ export const STATUS = {
 };
 
 // CONSTRUCTORS
-function CartItem(productId, quantity) {
+export function CartItemMaker(productId, quantity) {
   this.productId = productId || 333;
   this.quantity = quantity || 5;
 }
-
-export const cartItem = new CartItem();
-
-export const product = {
-  id: 333,
-  category: '',
-  name: 'Arvil Cleanser',
-  desc: 'Good fo cleaning all the bacteria that cause itching in the body',
-  mainImgURL: '',
-  imgsURL: [''],
-  price: 10000,
-  discount: 20,
-  hotSale: true,
-  inStock: 5,
-};
-
-export const orderProducts = {
-  productId: 333,
-  purchasedPrice: 12000,
-  purchasedDiscount: 10,
-  quantity: 3,
-};
-
-export const order = {
-  id: 3030,
-  products: [orderProducts],
-  deliveryAddress: {
+export function ProductMaker(
+  id,
+  category,
+  name,
+  desc,
+  mainImgURL,
+  imgsURL,
+  price,
+  discount,
+  hotSale,
+  inStock
+) {
+  this.id = id || 333;
+  this.category = category || 'cleanser';
+  this.name = name || 'Arvil Cleanser';
+  this.desc =
+    desc || 'Good fo cleaning all the bacteria that cause itching in the body';
+  this.mainImgURL = mainImgURL || '';
+  this.imgsURL = imgsURL || [''];
+  this.price = price || 10000;
+  this.discount = discount || 20;
+  this.hotSale = hotSale || true;
+  this.inStock = inStock || 5;
+}
+export function OrderProductMaker(productId,purchasedPrice,purchasedDiscount,quantity){
+  this.productId = productId|| 333;
+  this.purchasedPrice =   purchasedPrice|| 12000;
+  this.purchasedDiscount =   purchasedDiscount|| 10;
+  this.quantity =   quantity|| 3;
+}
+export function HeadInfoMaker(productId){
+  this.productId = productId || 333;
+}
+export function OrderMaker(id,products,deliveryAddress,contact,note,status){
+  deliveryAddress = deliveryAddress || {
     country: 'Nigeria',
     state: 'Lagos',
     city: 'Oshodi',
     street: '10 Isholaimam street',
-  },
-  contact: {
+  }
+  contact = contact || {
     userId: 'yre78292',
     email: 'tiammui@gmail.com',
     phoneNumber: '08083524016',
-  },
-  note: 'i have an agreesive dog',
-  status: STATUS.DELIVERED,
-};
+  }
 
-export const user = {
-  id: 'yre78292',
-  firstname: 'Muizz',
-  lastname: 'Tiamiyu',
-  address: {
+  this.id = id || 3030;
+  this.products = products || [new OrderProduct()];
+  this.deliveryAddress = deliveryAddress;
+  this.contact = contact;
+  this.note = note || 'i have an agreesive dog';
+  this.status = status || STATUS.DELIVERED;
+}
+export function UserMaker(id,firstname,lastname,address,contact,orders,isAdmin,cart){
+  address = address || {
     country: 'Nigeria',
     state: 'Lagos',
     city: 'Oshodi',
     street: '10 Isholaimam street',
-  },
-  contact: {
-    userId: 'yre78292',
+  }
+  contact = contact || {
     email: 'tiammui@gmail.com',
     phoneNumber: '08083524016',
-  },
-  orders: [3030],
-  isAdmin: false,
-  cart: [cartItem],
-};
+  }
 
-export const headInfo = {
-  productId: '', // provide if `isProduct` is true
-};
+  this.id = id || 'yre78292';
+  this.firstname = firstname || 'Muizz';
+  this.lastname = lastname || 'Tiamiyu';
+  this.address = address;
+  this.contact = contact;
+  this.orders = orders || [3030];
+  this.isAdmin = isAdmin || false;
+  this.cart = cart || [cartItem];
+}
 
 // export const headInfo = {
 //   isProduct:false,
@@ -98,7 +109,7 @@ export const initObj = {
   productCategories: categories,
   trendingProducts: [333],
   freshProduct: [333],
-  headerInfo: [headInfo],
+  headerInfo: [new HeadInfoMaker()],
 };
 
 export const stat = {

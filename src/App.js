@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
 import WebFont from 'webfontloader';
 
@@ -15,6 +15,7 @@ import OrderDetails from './pages/OrderDetails';
 import Contacts from './pages/Contacts';
 import UserDetails from './pages/UserDetails';
 import UserOrders from './pages/UserOrders';
+import NotFound from './pages/NotFound';
 import TopBar from './components/TopBar';
 import Footer from './components/Footer';
 import SignInModal from './components/SignInModal';
@@ -28,14 +29,13 @@ import {
 } from './components/components';
 
 export default function App() {
-
   useEffect(() => {
     WebFont.load({
       google: {
-        families: ['Lato']
-      }
+        families: ['Lato'],
+      },
     });
-   }, []);
+  }, []);
 
   return (
     <>
@@ -45,7 +45,10 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="products" element={<ProductCategory filter="All" />} />
-          <Route path="products/category/:category" element={<ProductCategory />} />
+          <Route
+            path="products/category/:category"
+            element={<ProductCategory />}
+          />
           <Route path="products/:productId" element={<ProductDetails />} />
           <Route path="cart" element={<Cart />} />
           <Route path="checkout" element={<CheckOut />} />
@@ -54,6 +57,7 @@ export default function App() {
           <Route path="user/orders" element={<UserOrders />} />
           <Route path="user/orders/:orderId" element={<OrderDetails />} />
           <Route path="contacts" element={<Contacts />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
 

@@ -11,10 +11,12 @@ export default function () {
           <FontAwesomeIcon icon={faBars} />
         </button>
         <div className="logo"></div>
-        <button className="icon-block cart" >
-          <FontAwesomeIcon icon={faShoppingCart} />
-          <div className="cart-dot">3</div>
-        </button>
+        <Link to="/cart" >
+          <button className="icon-block cart" >
+            <FontAwesomeIcon icon={faShoppingCart} />
+            <div className="cart-dot">3</div>
+          </button>
+        </Link>
     </div>
   );
 }

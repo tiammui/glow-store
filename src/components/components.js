@@ -1,9 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import {
+  faCaretLeft,
+  faCaretRight,
+  faEllipsisH,
+} from '@fortawesome/free-solid-svg-icons';
+import { nanoid } from 'nanoid';
 
-import { getProduct, calcDiscount } from './../helpers';
+import { getProduct, calcDiscount, range } from './../helpers';
 
 export function AddToCartButton({ productId, isHeader }) {
   return (
@@ -72,6 +77,37 @@ export function HotSaleTag({ offset }) {
   );
 }
 
+export function Pagination({ amtPage }) {
+  function Paginators() {
+    let paginators;
+    if (amtPage <= 6) {
+      paginators = range(amtPage).map((val) => <li className="item">{val}</li>);
+    } else {
+      // truncate paginators
+      paginators = range(4).map((val) => <li className="item" key={nanoid()}>{val}</li>);
+
+      paginators.push(
+        <li className="item trunc" key={nanoid()}>
+          <FontAwesomeIcon icon={faEllipsisH} />{' '}
+        </li>
+      );
+      paginators.push(<li className="item">{amtPage}</li>);
+    }
+    return paginators;
+  }
+  return (
+    <ul className="pagination">
+      <li className="item" key={nanoid()}>
+        <FontAwesomeIcon icon={faCaretLeft} />{' '}
+      </li>
+      <Paginators />
+      <li className="item" key={nanoid()}>
+        <FontAwesomeIcon icon={faCaretRight} />{' '}
+      </li>
+    </ul>
+  );
+}
+
 export function ProductCard({ productId }) {
   let product = getProduct(productId);
 
@@ -82,9 +118,7 @@ export function ProductCard({ productId }) {
       </Link>
       <div className="details">
         <p className="name">
-          <Link to={`/products/${product.id}`}>
-            {product.name}
-          </Link>
+          <Link to={`/products/${product.id}`}>{product.name}</Link>
         </p>
         <p className="priceCon">
           {' '}
@@ -115,6 +149,26 @@ export function ProductPrice({ price, discount }) {
   );
 }
 
-export function SmallProductCard() {
-  return <div></div>;
+export function SmallProductCard({ productId }) {
+  let product = getProduct(productId);
+
+  return (
+    <div className="product-card-small">
+      <Link to={`/products/${product.id}`} className="img">
+        {product.discount ? <DiscountTag discount={product.discount} /> : null}
+      </Link>
+      <div className="details">
+        <p className="name">
+          <Link to={`/products/${product.id}`}>{product.name}</Link>
+        </p>
+        <p className="priceCon">
+          {' '}
+          <ProductPrice
+            price={product.price}
+            discount={product.discount}
+          />{' '}
+        </p>
+      </div>
+    </div>
+  );
 }
