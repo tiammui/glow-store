@@ -1,6 +1,37 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCaretRight } from '@fortawesome/free-solid-svg-icons';
+
+import { categories } from './../mockbase';
+import { capitalise } from './../helpers';
+import { Spacer } from './../components/components';
 
 export default function () {
-  return <div>404 not found</div>;
+  return (
+    <div id="not-found">
+      <h2>The requested page does not exist</h2>
+      {/* 250 X 250 Page not found img */}
+      <div className="img"></div>
+      <ul>
+        <li>
+          <FontAwesomeIcon icon={faCaretRight} />
+          <Spacer space={10} />
+          <Link to="">Home</Link>
+        </li>
+        <li>
+          Products by category
+          <ul>
+            {categories.map((cat) => (
+              <li>
+                <FontAwesomeIcon icon={faCaretRight} />
+                <Spacer space={10} />
+                <Link to={`/products/category/${cat}`}>{capitalise(cat)}</Link>
+              </li>
+            ))}
+          </ul>
+        </li>
+      </ul>
+    </div>
+  );
 }

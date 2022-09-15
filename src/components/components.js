@@ -5,10 +5,12 @@ import {
   faCaretLeft,
   faCaretRight,
   faEllipsisH,
+  faChevronLeft,
+  faChevronRight,
 } from '@fortawesome/free-solid-svg-icons';
 import { nanoid } from 'nanoid';
 
-import { getProduct, calcDiscount, range } from './../helpers';
+import { getProduct, calcDiscount, range, paginateCat } from './../helpers';
 
 export function AddToCartButton({ productId, isHeader }) {
   return (
@@ -77,34 +79,40 @@ export function HotSaleTag({ offset }) {
   );
 }
 
-export function Pagination({ amtPage }) {
+export function Pagination({ amtPage, setPage, currentPage }) {
   function Paginators() {
     let paginators;
     if (amtPage <= 6) {
       paginators = range(amtPage).map((val) => <li className="item">{val}</li>);
     } else {
       // truncate paginators
-      paginators = range(4).map((val) => <li className="item" key={nanoid()}>{val}</li>);
+      paginators = range(4).map((pgNum) => (
+        <li className="item" onClick={()=>setPage(pgNum)} key={nanoid()}>
+          {pgNum}
+        </li>
+      ));
 
       paginators.push(
         <li className="item trunc" key={nanoid()}>
           <FontAwesomeIcon icon={faEllipsisH} />{' '}
         </li>
       );
-      paginators.push(<li className="item">{amtPage}</li>);
+      paginators.push(<li className="item" onClick={()=>setPage(amtPage)} key={nanoid()}>{amtPage}</li>);
     }
     return paginators;
   }
   return (
+    <>
     <ul className="pagination">
-      <li className="item" key={nanoid()}>
+      <li className="item" onClick={()=>setPage((currentPage)=>currentPage>1?(currentPage-1):currentPage)} key={nanoid()}>
         <FontAwesomeIcon icon={faCaretLeft} />{' '}
       </li>
       <Paginators />
-      <li className="item" key={nanoid()}>
+      <li className="item" onClick={()=>setPage((currentPage)=>currentPage<amtPage?(currentPage+1):currentPage)} key={nanoid()}>
         <FontAwesomeIcon icon={faCaretRight} />{' '}
       </li>
     </ul>
+    </>
   );
 }
 
@@ -149,6 +157,23 @@ export function ProductPrice({ price, discount }) {
   );
 }
 
+export function Quantifier({isForCart,cartItem,cartHandler}){
+
+  return (
+    <div className={`quanifier ${isForCart?"cart":""}`}>
+      <button onClick={()=>cartHandler("decrement",cartItem.productId)}>
+        <FontAwesomeIcon icon={faChevronLeft} />
+      </button>
+      <div className="quantity">
+        {cartItem.quantity}
+      </div>
+      <button onClick={()=>cartHandler("increment",cartItem.productId)}>
+        <FontAwesomeIcon icon={faChevronRight} />
+      </button>
+    </div>
+  )
+}
+
 export function SmallProductCard({ productId }) {
   let product = getProduct(productId);
 
@@ -171,4 +196,10 @@ export function SmallProductCard({ productId }) {
       </div>
     </div>
   );
+}
+
+export function Spacer ({axis,space}){
+  return(
+    <div style={{display:(!axis)||axis=="x"?"inline-block":"block",height:(!axis)||axis=="x"?"0px":space+"px",width:(!axis)||axis=="x"?space+"px":"0px"}}></div>
+  )
 }

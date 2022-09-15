@@ -14,11 +14,22 @@ export default function ({ filter }) {
   let navigate = useNavigate();
   let catFilter = filter || useParams().category;
 
+  const [currentPaginate, setCurrentPaginate] = useState(1);
+
   useEffect(
     function () {
       window.scrollTo(0, 0);
+      setCurrentPaginate(1);
     },
     [catFilter]
+  );
+
+  useEffect(
+    function () {
+      window.scrollTo(0, 0);
+      // capture change and fetch data as needed
+    },
+    [currentPaginate]
   );
 
   function filterChange(e) {
@@ -35,25 +46,26 @@ export default function ({ filter }) {
           onChange={filterChange}
         >
           {categories.map((cat) => (
-            <option value={cat}>{capitalise(cat)}</option>
+            <option key={nanoid()} value={cat}>{capitalise(cat)}</option>
           ))}
         </select>
       </div>
 
       <h2>{capitalise(catFilter)}</h2>
       <div className="product-card-con">
-        <Pagination amtPage={10} />
-
+        <Pagination amtPage={10} currentPage={currentPaginate} setPage={setCurrentPaginate} />
+        <p className="pager">{currentPaginate}/10</p>
         {range(1).map(() => (
           <ProductCard key={nanoid()} />
         ))}
 
         <div className="clear-fix"></div>
-        <Pagination amtPage={10} />
+        <p className="pager">{currentPaginate}/10</p>
+        <Pagination amtPage={10} currentPage={currentPaginate} setPage={setCurrentPaginate} />
       </div>
 
       <h3>Recommended Products</h3>
-      <div id="cat-section" className="carousel">
+      <div className="carousel product-card-small-con">
         <ul>
           {range(10).map(() => (
             <SmallProductCard key={nanoid()} />

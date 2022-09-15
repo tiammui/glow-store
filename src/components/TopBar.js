@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 
 
-export default function () {
+export default function ({cartQuantity}) {
   return (
     <div id="top-bar">
         <button className="icon-block" >
@@ -14,7 +14,7 @@ export default function () {
         <Link to="/cart" >
           <button className="icon-block cart" >
             <FontAwesomeIcon icon={faShoppingCart} />
-            <div className="cart-dot">3</div>
+            <div className="cart-dot">{cartQuantity}</div>
           </button>
         </Link>
     </div>

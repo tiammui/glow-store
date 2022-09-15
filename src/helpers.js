@@ -1,10 +1,4 @@
-import { ProductMaker } from './mockbase';
-
-export function getProduct(productId) {
-  // check for product locally, if not found fetch from firebase
-
-  return new ProductMaker();
-}
+import { ProductMaker, CartItemMaker } from './mockbase';
 
 export function calcDiscount(price, discount) {
   return price - price * (discount / 100);
@@ -22,6 +16,39 @@ export function capitalise(text) {
   }
 
   return output;
+}
+
+export function getCart(userId) {
+  // if the user is logged in fetch their saved cart from firebase, if not check localStorage
+  var cart = [new CartItemMaker(), new CartItemMaker()]
+
+  return cart
+}
+
+export function getProduct(productId) {
+  // check for product locally, if not found fetch from firebase
+
+  return new ProductMaker();
+}
+
+/**
+ * Use to determine the index of an object in the `array` that the value of the provided `property`
+ * is equal to the `searchTerm`
+ * @param {[]} array The object array to be searched
+ * @param {string} property The object property to be searched
+ * @param {any} searchTerm The value to be looked for
+ * @returns {number} The index of the object in the `array`.
+ */
+export function indexOfObject(array, property, searchTerm){
+  for(var i=0,len=array.length;i<len;i++){
+    if(array[i][property]==searchTerm)return i;
+  }
+  return -1;
+}
+
+export function paginateCat(pageNum){
+  // Use for pagination
+  console.log(pageNum)
 }
 
 export function range(size) {

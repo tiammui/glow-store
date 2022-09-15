@@ -36,9 +36,9 @@ export function ProductMaker(
   this.category = category || 'cleanser';
   this.name = name || 'Arvil Cleanser';
   this.desc =
-    desc || 'Good fo cleaning all the bacteria that cause itching in the body';
+    desc || 'Good for cleaning all the bacteria that cause itching in the body';
   this.mainImgURL = mainImgURL || '';
-  this.imgsURL = imgsURL || [''];
+  this.imgsURL = imgsURL || ['fgf','fddf','fddf'];
   this.price = price || 10000;
   this.discount = discount || 20;
   this.hotSale = hotSale || true;
@@ -120,3 +120,9 @@ export const stat = {
   amtProductSold: 400,
   totalEarning: 1500000,
 };
+
+
+const cartSchema = {
+  cartItems:[],
+  amtProduct:0
+}
