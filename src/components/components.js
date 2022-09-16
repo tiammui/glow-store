@@ -2,26 +2,49 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faCaretLeft,
-  faCaretRight,
-  faEllipsisH,
   faChevronLeft,
   faChevronRight,
+  faTimes
 } from '@fortawesome/free-solid-svg-icons';
 import { nanoid } from 'nanoid';
 
-import { getProduct, calcDiscount, range, paginateCat } from './../helpers';
+import { getProduct, calcDiscount, range, paginateCat, cartItemCost } from './../helpers';
 
-export function AddToCartButton({ productId, isHeader }) {
+export function AddToCartButton({ productId, isHeader, cartHandler }) {
   return (
-    <button className={`add-to-cart ${isHeader ? 'header' : ''}`}>
+    <button
+      onClick={() => {
+        cartHandler('add', productId);
+      }}
+      className={`add-to-cart ${isHeader ? 'header' : ''}`}
+    >
       Add to Cart
     </button>
   );
 }
 
-export function CartItem() {
-  return <div></div>;
+export function CartItem({ cartHandler, cartItem }) {
+  let product = getProduct(cartItem.productId);
+
+  return (
+    <div className="cart-item">
+      <div className="details">
+        <div className="img"></div>
+        <div className="info">
+          <div className="name">{product.name}</div>
+          <div className="priceCon"><ProductPrice price={product.price} discount={product.discount} /></div>
+        </div>
+      </div>
+      <div className="quantity">
+        Quantity: <Quantifier isForCart={true} cartHandler={cartHandler} cartItem={cartItem} />
+      </div>
+      <div className="total">Subtotal: <b>₦{cartItemCost(cartItem)}</b></div>
+      <button className="remove">
+        <FontAwesomeIcon icon={faTimes} />
+      </button>
+
+    </div>
+  );
 }
 
 export function CatSectionItem({ category }) {
@@ -51,7 +74,7 @@ export function DiscountTag({ discount, offset }) {
   );
 }
 
-export function HeaderItem({ productId }) {
+export function HeaderItem({ productId, cartHandler }) {
   let product = getProduct(productId);
 
   return (
@@ -62,7 +85,11 @@ export function HeaderItem({ productId }) {
         <p className="priceCon">
           <ProductPrice price={product.price} discount={product.discount} />
         </p>
-        <AddToCartButton productId={product.id} isHeader={true} />
+        <AddToCartButton
+          cartHandler={cartHandler}
+          productId={product.id}
+          isHeader={true}
+        />
       </div>
     </li>
   );
@@ -87,7 +114,7 @@ export function Pagination({ amtPage, setPage, currentPage }) {
     } else {
       // truncate paginators
       paginators = range(4).map((pgNum) => (
-        <li className="item" onClick={()=>setPage(pgNum)} key={nanoid()}>
+        <li className="item" onClick={() => setPage(pgNum)} key={nanoid()}>
           {pgNum}
         </li>
       ));
@@ -97,26 +124,46 @@ export function Pagination({ amtPage, setPage, currentPage }) {
           <FontAwesomeIcon icon={faEllipsisH} />{' '}
         </li>
       );
-      paginators.push(<li className="item" onClick={()=>setPage(amtPage)} key={nanoid()}>{amtPage}</li>);
+      paginators.push(
+        <li className="item" onClick={() => setPage(amtPage)} key={nanoid()}>
+          {amtPage}
+        </li>
+      );
     }
     return paginators;
   }
   return (
     <>
-    <ul className="pagination">
-      <li className="item" onClick={()=>setPage((currentPage)=>currentPage>1?(currentPage-1):currentPage)} key={nanoid()}>
-        <FontAwesomeIcon icon={faCaretLeft} />{' '}
-      </li>
-      <Paginators />
-      <li className="item" onClick={()=>setPage((currentPage)=>currentPage<amtPage?(currentPage+1):currentPage)} key={nanoid()}>
-        <FontAwesomeIcon icon={faCaretRight} />{' '}
-      </li>
-    </ul>
+      <ul className="pagination">
+        <li
+          className="item"
+          onClick={() =>
+            setPage((currentPage) =>
+              currentPage > 1 ? currentPage - 1 : currentPage
+            )
+          }
+          key={nanoid()}
+        >
+          <FontAwesomeIcon icon={faCaretLeft} />{' '}
+        </li>
+        <Paginators />
+        <li
+          className="item"
+          onClick={() =>
+            setPage((currentPage) =>
+              currentPage < amtPage ? currentPage + 1 : currentPage
+            )
+          }
+          key={nanoid()}
+        >
+          <FontAwesomeIcon icon={faCaretRight} />{' '}
+        </li>
+      </ul>
     </>
   );
 }
 
-export function ProductCard({ productId }) {
+export function ProductCard({ productId, cartHandler }) {
   let product = getProduct(productId);
 
   return (
@@ -136,7 +183,7 @@ export function ProductCard({ productId }) {
           />{' '}
         </p>
         <div className="btn-con">
-          <AddToCartButton productId={product.id} />
+          <AddToCartButton cartHandler={cartHandler} productId={product.id} />
         </div>
         {product.hotSale ? <HotSaleTag /> : null}
       </div>
@@ -157,21 +204,18 @@ export function ProductPrice({ price, discount }) {
   );
 }
 
-export function Quantifier({isForCart,cartItem,cartHandler}){
-
+export function Quantifier({ isForCart, cartItem, cartHandler }) {
   return (
-    <div className={`quanifier ${isForCart?"cart":""}`}>
-      <button onClick={()=>cartHandler("decrement",cartItem.productId)}>
+    <div className={`quanifier ${isForCart ? 'cart' : ''}`}>
+      <button onClick={() => cartHandler('decrement', cartItem.productId)}>
         <FontAwesomeIcon icon={faChevronLeft} />
       </button>
-      <div className="quantity">
-        {cartItem.quantity}
-      </div>
-      <button onClick={()=>cartHandler("increment",cartItem.productId)}>
+      <div className="quantity">{cartItem.quantity}</div>
+      <button onClick={() => cartHandler('increment', cartItem.productId)}>
         <FontAwesomeIcon icon={faChevronRight} />
       </button>
     </div>
-  )
+  );
 }
 
 export function SmallProductCard({ productId }) {
@@ -198,8 +242,14 @@ export function SmallProductCard({ productId }) {
   );
 }
 
-export function Spacer ({axis,space}){
-  return(
-    <div style={{display:(!axis)||axis=="x"?"inline-block":"block",height:(!axis)||axis=="x"?"0px":space+"px",width:(!axis)||axis=="x"?space+"px":"0px"}}></div>
-  )
+export function Spacer({ axis, space }) {
+  return (
+    <div
+      style={{
+        display: !axis || axis == 'x' ? 'inline-block' : 'block',
+        height: !axis || axis == 'x' ? '0px' : space + 'px',
+        width: !axis || axis == 'x' ? space + 'px' : '0px',
+      }}
+    ></div>
+  );
 }

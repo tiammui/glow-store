@@ -17,7 +17,7 @@ export default function () {
         <li>
           <FontAwesomeIcon icon={faCaretRight} />
           <Spacer space={10} />
-          <Link to="">Home</Link>
+          <Link to="/">Home</Link>
         </li>
         <li>
           Products by category

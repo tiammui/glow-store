@@ -10,7 +10,7 @@ import {
   SmallProductCard,
 } from './../components/components';
 
-export default function ({ filter }) {
+export default function ({ filter, cartHandler }) {
   let navigate = useNavigate();
   let catFilter = filter || useParams().category;
 
@@ -56,7 +56,7 @@ export default function ({ filter }) {
         <Pagination amtPage={10} currentPage={currentPaginate} setPage={setCurrentPaginate} />
         <p className="pager">{currentPaginate}/10</p>
         {range(1).map(() => (
-          <ProductCard key={nanoid()} />
+          <ProductCard cartHandler={cartHandler} key={nanoid()} />
         ))}
 
         <div className="clear-fix"></div>

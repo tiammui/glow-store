@@ -56,8 +56,17 @@ export default function App() {
   function cartHandler(operation, productId) {
     switch (operation) {
       case 'add':
-        if (getProduct(productId))
+        if (
+          indexOfObject(cart, 'productId', productId) == -1 &&
+          getProduct(productId)
+        ) {
+          // if product is not already in cart and it exist
           setCart((prev) => [...prev, CartItemMaker(productId, 1)]);
+        } else if(indexOfObject(cart, 'productId', productId) != -1) {
+          cartHandler("increment",productId)
+        } else {
+          // product can't be fetched or doesn't exist
+        }
         break;
       case 'remove':
         setCart((prev) => prev.filter((item) => item.productId != productId));
@@ -95,18 +104,19 @@ export default function App() {
 
       <div id="main-container">
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home cartHandler={cartHandler} />} />
           <Route path="products" element={<ProductCategory filter="All" />} />
           <Route
             path="products/category/:category"
-            element={<ProductCategory />}
+            element={<ProductCategory cartHandler={cartHandler} />}
           />
           <Route
             path="products/:productId"
             element={<ProductDetails cart={cart} cartHandler={cartHandler} />}
           />
-          <Route path="cart" element={<Cart />} />
-          <Route path="checkout" element={<CheckOut />} />
+          <Route path="cart" element={<Cart cart={cart} cartHandler={cartHandler}/>} />
+          <Route path="checkout" element={<CheckOut cart={cart} />} />
+          
           <Route path="checkout/success" element={<OrderSuccess />} />
           <Route path="user" element={<UserDetails />} />
           <Route path="user/orders" element={<UserOrders />} />

@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { nanoid } from 'nanoid';
 
@@ -7,12 +7,15 @@ import {
   AddToCartButton,
   Quantifier,
   Spacer,
-  SmallProductCard
+  SmallProductCard,
+  DiscountTag,
 } from './../components/components';
 import { getProduct, indexOfObject, capitalise, range } from './../helpers';
 
 export default function ({ cart, cartHandler }) {
   let productId = useParams().productId;
+  let [activeThumbIndex, setActiveThumbIndex] = useState(0);
+
   let product = getProduct(productId);
   /** index of product cart */
   let cartIndex = indexOfObject(cart, 'productId', productId);
@@ -20,21 +23,33 @@ export default function ({ cart, cartHandler }) {
   useEffect(
     function () {
       window.scrollTo(0, 0);
+      setActiveThumbIndex(0);
     },
     [productId]
   );
   return (
     <>
       <div className="product-con">
-        <div className="img-con">
-          <div className="img"></div>
+        <div className="img-con half">
+          <div className="img">
+            {product.discount ? (
+              <DiscountTag discount={product.discount} offset={45} />
+            ) : null}
+          </div>
           <div className="thumbnails">
-            <div className="thumb active"></div>
-            <div className="thumb"></div>
-            <div className="thumb"></div>
+            {product.imgsURL.map((URL, i) => (
+              <div
+                key={nanoid()}
+                className={`thumb ${activeThumbIndex == i ? 'active' : ''}`}
+                onClick={() => {
+                  setActiveThumbIndex(i);
+                }}
+              ></div>
+            ))}
+            {/* <div className="thumb active"></div> */}
           </div>
         </div>
-        <div className="details-con">
+        <div className="details-con half">
           <h3>{product.name}</h3>
           <p className="priceCon">
             {' '}
@@ -45,12 +60,17 @@ export default function ({ cart, cartHandler }) {
           </p>
           <Quantifier cartItem={cart[cartIndex]} cartHandler={cartHandler} />
           <Spacer space={15} />
-          <AddToCartButton />
-          <p className="category"><b>Category:</b> {capitalise(product.category)}</p>
-          <p><b>Description</b></p>
+          <AddToCartButton cartHandler={cartHandler} productId={productId} />
+          <p className="category">
+            <b>Category:</b> {capitalise(product.category)}
+          </p>
+          <p>
+            <b>Description</b>
+          </p>
           <p className="desc">{product.desc}</p>
         </div>
       </div>
+      <div className="clear-fix"></div>
 
       <h3>Similar Products</h3>
       <div className="carousel product-card-small-con">
@@ -61,7 +81,7 @@ export default function ({ cart, cartHandler }) {
         </ul>
       </div>
 
-      <h3>Similar Products</h3>
+      <h3>Trending Products</h3>
       <div className="carousel product-card-small-con">
         <ul>
           {range(10).map(() => (
@@ -69,7 +89,6 @@ export default function ({ cart, cartHandler }) {
           ))}
         </ul>
       </div>
-
     </>
   );
 }

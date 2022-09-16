@@ -1,5 +1,8 @@
 import { ProductMaker, CartItemMaker } from './mockbase';
 
+/**
+ * @return {number} discounted price
+ */
 export function calcDiscount(price, discount) {
   return price - price * (discount / 100);
 }
@@ -18,11 +21,51 @@ export function capitalise(text) {
   return output;
 }
 
+/**
+ * @param {CartItemMaker[]} cart
+ * @return {number} discounted total cost
+ */
+export function cartCost(cart) {
+  // discount is considered
+  const totalCost = cart.reduce((a, b, i) => {
+    /**
+     * @type {ProductMaker}
+     */
+    var bProduct = getProduct(b.productId);
+    let bCost = b.quantity * calcDiscount(bProduct.price, bProduct.discount);
+
+    if (i == 1) {
+      /**
+       * @type {ProductMaker}
+       */
+      let aProduct = getProduct(a.productId);
+      let aCost = a.quantity * calcDiscount(aProduct.price, aProduct.discount);
+
+      return aCost + bCost;
+    } else {
+      a + bCost;
+    }
+  });
+
+  return totalCost;
+}
+/**
+ * @param {CartItemMaker} cartItem
+ * @return {number} discounted cost
+ */
+export function cartItemCost(cartItem) {
+  // discount is considered
+  const {price,discount} = getProduct(cartItem.productId);
+  const totalCost = cartItem.quantity * calcDiscount(price, discount)
+
+  return totalCost;
+}
+
 export function getCart(userId) {
   // if the user is logged in fetch their saved cart from firebase, if not check localStorage
-  var cart = [new CartItemMaker(), new CartItemMaker()]
+  var cart = [new CartItemMaker(), new CartItemMaker()];
 
-  return cart
+  return cart;
 }
 
 export function getProduct(productId) {
@@ -39,16 +82,16 @@ export function getProduct(productId) {
  * @param {any} searchTerm The value to be looked for
  * @returns {number} The index of the object in the `array`.
  */
-export function indexOfObject(array, property, searchTerm){
-  for(var i=0,len=array.length;i<len;i++){
-    if(array[i][property]==searchTerm)return i;
+export function indexOfObject(array, property, searchTerm) {
+  for (var i = 0, len = array.length; i < len; i++) {
+    if (array[i][property] == searchTerm) return i;
   }
   return -1;
 }
 
-export function paginateCat(pageNum){
+export function paginateCat(pageNum) {
   // Use for pagination
-  console.log(pageNum)
+  console.log(pageNum);
 }
 
 export function range(size) {
@@ -59,4 +102,11 @@ export function range(size) {
   }
 
   return sequence;
+}
+
+export function addNumSeparator(num) {
+  const numStr = num + '';
+  const len = numStr.length;
+  if (len < 4) return num;
+
 }

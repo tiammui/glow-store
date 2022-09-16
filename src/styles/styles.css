@@ -14,6 +14,7 @@
   --color-dark-light-primary: #ce90b9;
   --color-dark-primary: #5c2048;
   --color-secondary: #00acac;
+  --color-serious: #0082AB;
   --color-attention: #ab0707;
   --color-attention-highlight: #fff0a0;
 
@@ -68,32 +69,6 @@ h3 {
 }
 
 /* IDS */
-#top-bar {
-  width: 100%;
-  height: 60px;
-  background-color: var(--color-secondary-bg);
-  border-radius: 0 0 8px 8px;
-  /* box-shadow: 0 5px 5px black; */
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 1;
-  padding: 5px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-#top-bar > * {
-  height: 50px;
-}
-
-#main-container {
-  height: auto;
-  min-height: 100vh;
-
-  padding-top: 65px;
-}
-
 #cat-section {
   text-align: center;
   font-weight: bold;
@@ -118,6 +93,27 @@ h3 {
   margin-top: 10px;
 }
 
+#cart h2{
+  text-align: left;
+  margin: 0 20px;
+}
+#cart .sub-total{
+  background-color: var( --color-section-bg);
+  padding: 15px 20px;
+  font-weight: bold;
+}
+#cart .cart-item-con{
+  padding: 0 30px;
+}
+#cart .checkout-btn-con{
+  position: sticky;
+  bottom: 0;
+  background-color: var( --color-section-bg);
+  border-top: 1px solid #a4a4a4;
+  padding: 10px;
+  text-align: center;
+}
+
 #filterCon {
   margin: 10px 0 0 20px;
 }
@@ -135,6 +131,30 @@ h3 {
   font-size: 0.89rem;
   color: var(--color-dark-text);
   padding: 10px;
+}
+
+#footer {
+  background-color: var(--color-dark-primary);
+  padding: 10px;
+  text-align: center;
+  color: white;
+  margin-top: 30px;
+}
+#footer a {
+  color: white;
+}
+#footer .nav {
+  display: flex;
+  justify-content: space-between;
+}
+#footer .address {
+  margin-top: 35px;
+  font-style: italic;
+}
+#footer .copy {
+  margin: 25px auto;
+  color: var(--color-light-primary);
+  font-weight: bold;
 }
 
 #home-header {
@@ -165,30 +185,6 @@ h3 {
   background: rgba(0, 0, 0, 0.4);
 }
 
-#footer {
-  background-color: var(--color-dark-primary);
-  padding: 10px;
-  text-align: center;
-  color: white;
-  margin-top: 30px;
-}
-#footer a {
-  color: white;
-}
-#footer .nav {
-  display: flex;
-  justify-content: space-between;
-}
-#footer .address {
-  margin-top: 35px;
-  font-style: italic;
-}
-#footer .copy {
-  margin: 25px auto;
-  color: var(--color-light-primary);
-  font-weight: bold;
-}
-
 #not-found{
   
 }
@@ -207,6 +203,32 @@ h3 {
 }
 #not-found li li{
   margin-left: 30px;
+}
+
+#main-container {
+  height: auto;
+  min-height: 100vh;
+
+  padding-top: 65px;
+}
+
+#top-bar {
+  width: 100%;
+  height: 60px;
+  background-color: var(--color-secondary-bg);
+  border-radius: 0 0 8px 8px;
+  /* box-shadow: 0 5px 5px black; */
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  padding: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#top-bar > * {
+  height: 50px;
 }
 
 
@@ -258,6 +280,52 @@ h3 {
   float: left;
   scroll-snap-align: center;
 }
+
+.cart-item{
+  position: relative;
+  background-color: var( --color-secondary-bg);
+  max-width: 350px;
+  border-radius: 8px;
+  margin: 15px auto;
+  padding: 10px;
+}
+.cart-item .details{
+  display: flex;
+}
+.cart-item .img{
+  width: 50px;
+  height: 50px;
+  background-color: gray;
+  border: var( --border-item);
+  border-radius: 8px;
+  margin-right: 10px;
+}
+.cart-item .name{
+  font-weight: bold;
+  margin-bottom: 8px;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+}
+.cart-item .quantity{
+  margin: 10px 0 20px 0;
+}
+.cart-item .remove{
+  display: block;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 30px;
+  height: 30px;
+  background-color: var( --color-attention-highlight);
+  color: var( --color-attention);
+  font-size: 0.89rem;
+  border-radius: 0 0 8px;
+}
+
+
 
 .discount-tag {
   position: absolute;
@@ -476,6 +544,7 @@ h3 {
   margin-bottom: 10px;
 }
 .product-con .img {
+  position: relative;
   width: 300px;
   height: 300px;
   margin: 0 auto 10px auto;
@@ -495,12 +564,23 @@ h3 {
   background-color: var(--color-secondary-bg);
   border: var(--border-item);
   border-radius: 8px;
+  cursor: pointer;
 }
 .product-con .thumb.active {
   outline: 5px solid var(--color-light-primary);
 }
 .product-con .thumbnails {
   text-align: center;
+}
+
+.serious-btn{
+  height: 50px;
+  width: 250px;
+  border-radius: 8px;
+  background-color: var( --color-serious);
+  border: 1px solid var( --color-secondary);
+  color: white;
+  font-size: 20px;
 }
 
 .quanifier {
@@ -549,4 +629,10 @@ h3 {
   width: 30px;
   height: 30px;
   background-color: grey;
+}
+
+.warning{
+  color: var( --color-attention);
+  font-size: 0.89rem;
+  font-weight: normal;
 }

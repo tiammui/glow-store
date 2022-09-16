@@ -4,16 +4,16 @@ import {nanoid} from 'nanoid';
 
 import { HeaderItem, CatSectionItem, ProductCard } from './../components/components';
 import {categories} from './../mockbase';
-import {capitalise} from './../helpers';
+import {capitalise, range} from './../helpers';
 
-export default function () {
+export default function ({cartHandler}) {
   return (
     <div id="homePage">
       <div id="home-header" className="carousel" >
         <ul>
-          <HeaderItem />
-          <HeaderItem />
-          <HeaderItem />
+          <HeaderItem cartHandler={cartHandler} />
+          <HeaderItem cartHandler={cartHandler} />
+          <HeaderItem cartHandler={cartHandler} />
         </ul>
       </div>
       <div className="navigator">
@@ -35,8 +35,10 @@ export default function () {
         Fresh Products
       </h2>
       <div className="product-card-con">
-        <ProductCard />
-        <ProductCard />
+        {range(2).map(() => (
+          <ProductCard cartHandler={cartHandler} key={nanoid()} />
+        ))}
+
         <div className="clear-fix"></div>
         <Link to="/products/category/fresh" >See all fresh products</Link>
       </div>
@@ -45,8 +47,9 @@ export default function () {
         Trending
       </h2>
       <div className="product-card-con">
-        <ProductCard />
-        <ProductCard />
+        {range(3).map(() => (
+          <ProductCard cartHandler={cartHandler} key={nanoid()} />
+        ))}
         <div className="clear-fix"></div>
         <Link to="/products/category/trending" >See all trending products</Link>
       </div>

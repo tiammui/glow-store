@@ -1,8 +1,18 @@
 /* for tablet and desktop */
 @media (min-width: 600px) {
-  .product-con > * {
-    background-color: yellow;
+  #cart .cart-item-con{
+    padding: 0 20px;
   }
+  
+  .half {
+    float: left;
+    width: 49.99%;
+  }
+  .product-con .details-con {
+    position: relative;
+    min-height: 370px;
+  }
+
   /* .product-con .img{
     width: ;
   } */
