@@ -1,4 +1,10 @@
-import { ProductMaker, CartItemMaker } from './mockbase';
+import { ProductMaker, CartItemMaker, UserMaker } from './mockbase';
+
+export function addNumSeparator(num) {
+  const numStr = num + '';
+  const len = numStr.length;
+  if (len < 4) return num;
+}
 
 /**
  * @return {number} discounted price
@@ -27,6 +33,8 @@ export function capitalise(text) {
  */
 export function cartCost(cart) {
   // discount is considered
+
+  if (!cart.length) return 0;
   const totalCost = cart.reduce((a, b, i) => {
     /**
      * @type {ProductMaker}
@@ -49,29 +57,36 @@ export function cartCost(cart) {
 
   return totalCost;
 }
+
 /**
  * @param {CartItemMaker} cartItem
  * @return {number} discounted cost
  */
 export function cartItemCost(cartItem) {
   // discount is considered
-  const {price,discount} = getProduct(cartItem.productId);
-  const totalCost = cartItem.quantity * calcDiscount(price, discount)
+  const { price, discount } = getProduct(cartItem.productId);
+  const totalCost = cartItem.quantity * calcDiscount(price, discount);
 
   return totalCost;
 }
 
 export function getCart(userId) {
   // if the user is logged in fetch their saved cart from firebase, if not check localStorage
-  var cart = [new CartItemMaker(), new CartItemMaker()];
+  var cart = [];
 
   return cart;
 }
 
 export function getProduct(productId) {
   // check for product locally, if not found fetch from firebase
+  // should be intelligent enough to only fetch a document once, e.g while fetching a document it should not allow another fetching of that same document until fetched 
 
   return new ProductMaker();
+}
+
+export function getCurrentUser(){
+  // get auth info of current user
+  return new UserMaker()
 }
 
 /**
@@ -104,9 +119,29 @@ export function range(size) {
   return sequence;
 }
 
-export function addNumSeparator(num) {
-  const numStr = num + '';
-  const len = numStr.length;
-  if (len < 4) return num;
-
+export function formatAddress(street,city,state,country){
+  return `${street}, ${city}, ${state}, ${country}`
 }
+
+/**
+ *
+ * @param {string} snackMsg message to show in snack
+ * @param {"success"|"warning"|"info"} type extra message to add to snack
+ */
+export function snack(snackMsg, type) {
+  // Get the snackbar DIV
+  let snackElem = document.getElementById('snackbar');
+  let className = ` show ${type}`;
+  let delay = type == 'warning' ? 10500 : 4500;
+
+  // Add the snack message
+  snackElem.innerHTML = snackMsg;
+
+  // Add the "show" class to DIV
+  snackElem.className += className;
+  // After 3 seconds, remove the show class from DIV
+  setTimeout(function () {
+    snackElem.className = snackElem.className.replace(className, '');
+  }, delay);
+}
+

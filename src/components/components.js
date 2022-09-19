@@ -4,11 +4,20 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faChevronLeft,
   faChevronRight,
-  faTimes
+  faCaretLeft,
+  faCaretRight,
+  faEllipsisH,
+  faTimes,
 } from '@fortawesome/free-solid-svg-icons';
 import { nanoid } from 'nanoid';
 
-import { getProduct, calcDiscount, range, paginateCat, cartItemCost } from './../helpers';
+import {
+  getProduct,
+  calcDiscount,
+  range,
+  paginateCat,
+  cartItemCost,
+} from './../helpers';
 
 export function AddToCartButton({ productId, isHeader, cartHandler }) {
   return (
@@ -32,17 +41,25 @@ export function CartItem({ cartHandler, cartItem }) {
         <div className="img"></div>
         <div className="info">
           <div className="name">{product.name}</div>
-          <div className="priceCon"><ProductPrice price={product.price} discount={product.discount} /></div>
+          <div className="priceCon">
+            <ProductPrice price={product.price} discount={product.discount} />
+          </div>
         </div>
       </div>
       <div className="quantity">
-        Quantity: <Quantifier isForCart={true} cartHandler={cartHandler} cartItem={cartItem} />
+        Quantity:{' '}
+        <Quantifier
+          isForCart={true}
+          cartHandler={cartHandler}
+          cartItem={cartItem}
+        />
       </div>
-      <div className="total">Subtotal: <b>₦{cartItemCost(cartItem)}</b></div>
+      <div className="total">
+        Subtotal: <b>₦{cartItemCost(cartItem)}</b>
+      </div>
       <button className="remove">
         <FontAwesomeIcon icon={faTimes} />
       </button>
-
     </div>
   );
 }

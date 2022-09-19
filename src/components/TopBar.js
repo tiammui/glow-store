@@ -1,20 +1,23 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 
+import { snack } from './../helpers';
+
 
 export default function ({cartQuantity}) {
+  let navigate = useNavigate();
   return (
     <div id="top-bar">
-        <button className="icon-block" >
+        <button className="icon-block" onClick={()=>{navigate('/contacts')}}>
           <FontAwesomeIcon icon={faBars} />
         </button>
-        <div className="logo"></div>
+        <Link to="/" className="logo"></Link>
         <Link to="/cart" >
-          <button className="icon-block cart" >
+          <button className="icon-block cart" onClick={()=>snack("djdshjhds","success")} >
             <FontAwesomeIcon icon={faShoppingCart} />
-            <div className="cart-dot">{cartQuantity}</div>
+            <div className="cart-dot" style={{visibility:cartQuantity?"visible":"hidden"}}>{cartQuantity}</div>
           </button>
         </Link>
     </div>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { nanoid } from 'nanoid';
 
-import { categories } from './../mockbase';
+import { initObj } from './../mockbase';
 import { capitalise, range } from './../helpers';
 import {
   ProductCard,
@@ -45,7 +45,7 @@ export default function ({ filter, cartHandler }) {
           value={catFilter}
           onChange={filterChange}
         >
-          {categories.map((cat) => (
+          {initObj.productCategories.map((cat) => (
             <option key={nanoid()} value={cat}>{capitalise(cat)}</option>
           ))}
         </select>

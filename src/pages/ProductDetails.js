@@ -58,7 +58,11 @@ export default function ({ cart, cartHandler }) {
               discount={product.discount}
             />{' '}
           </p>
-          <Quantifier cartItem={cart[cartIndex]} cartHandler={cartHandler} />
+          {cartIndex == -1 ? (
+            ''
+          ) : (
+            <Quantifier cartItem={cart[cartIndex]} cartHandler={cartHandler} />
+          )}
           <Spacer space={15} />
           <AddToCartButton cartHandler={cartHandler} productId={productId} />
           <p className="category">

@@ -3,11 +3,17 @@
   #cart .cart-item-con{
     padding: 0 20px;
   }
+
+  #checkout .section{
+    margin: 0 10px;
+  }
   
+
   .half {
     float: left;
     width: 49.99%;
   }
+
   .product-con .details-con {
     position: relative;
     min-height: 370px;

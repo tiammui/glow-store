@@ -19,7 +19,7 @@ import UserOrders from './pages/UserOrders';
 import NotFound from './pages/NotFound';
 import TopBar from './components/TopBar';
 import Footer from './components/Footer';
-import SignInModal from './components/SignInModal';
+import { SignInModal, SnackBar } from './components/bigComponents';
 import {
   HeaderItem,
   ProductCard,
@@ -43,9 +43,10 @@ export default function App() {
   }, []);
   useEffect(() => {
     setCartQuantity(
-      cart.reduce((a, b, i) =>
-        i == 1 ? a.quantity + b.quantity : a + b.quantity
-      )
+      cart.length &&
+        cart.reduce((a, b, i) =>
+          i == 1 ? a.quantity + b.quantity : a + b.quantity
+        )
     );
   }, [cart]);
 
@@ -61,9 +62,15 @@ export default function App() {
           getProduct(productId)
         ) {
           // if product is not already in cart and it exist
-          setCart((prev) => [...prev, CartItemMaker(productId, 1)]);
-        } else if(indexOfObject(cart, 'productId', productId) != -1) {
-          cartHandler("increment",productId)
+          // TODO- Objects are not valid as a React child (found: object with keys {productId, quantity}). If you meant to render a collection of children, use an array instead.
+          setCart((prev) => {
+            if (prev.length) {
+              return [...prev, new CartItemMaker(productId, 1)];
+            }
+            return [new CartItemMaker(productId, 1)];
+          });
+        } else if (indexOfObject(cart, 'productId', productId) != -1) {
+          cartHandler('increment', productId);
         } else {
           // product can't be fetched or doesn't exist
         }
@@ -114,19 +121,25 @@ export default function App() {
             path="products/:productId"
             element={<ProductDetails cart={cart} cartHandler={cartHandler} />}
           />
-          <Route path="cart" element={<Cart cart={cart} cartHandler={cartHandler}/>} />
+          <Route
+            path="cart"
+            element={<Cart cart={cart} cartHandler={cartHandler} />}
+          />
           <Route path="checkout" element={<CheckOut cart={cart} />} />
-          
+
           <Route path="checkout/success" element={<OrderSuccess />} />
           <Route path="user" element={<UserDetails />} />
           <Route path="user/orders" element={<UserOrders />} />
           <Route path="user/orders/:orderId" element={<OrderDetails />} />
+
           <Route path="contacts" element={<Contacts />} />
+          <Route path="contact" element={<Contacts />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
 
       <Footer />
+      <SnackBar />
       <SignInModal />
     </>
   );

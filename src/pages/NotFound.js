@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretRight } from '@fortawesome/free-solid-svg-icons';
 
-import { categories } from './../mockbase';
+import { initObj } from './../mockbase';
 import { capitalise } from './../helpers';
 import { Spacer } from './../components/components';
 
@@ -22,7 +22,7 @@ export default function () {
         <li>
           Products by category
           <ul>
-            {categories.map((cat) => (
+            {initObj.productCategories.map((cat) => (
               <li>
                 <FontAwesomeIcon icon={faCaretRight} />
                 <Spacer space={10} />
