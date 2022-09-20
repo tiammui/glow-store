@@ -14,7 +14,7 @@
   --color-dark-light-primary: #ce90b9;
   --color-dark-primary: #5c2048;
   --color-secondary: #00acac;
-  --color-serious: #0082AB;
+  --color-serious: #0082ab;
   --color-serious-hover: #005b77;
   --color-attention: #ab0707;
   --color-attention-highlight: #fff0a0;
@@ -70,95 +70,96 @@ h3 {
 }
 
 /* IDS */
-#cart-empty{
+#cart-empty {
   padding: 20px 0;
 }
-#cart-empty .message{
+#cart-empty .message {
   font-style: italic;
   font-weight: bold;
   text-align: center;
   padding: 0 20px;
 }
-#cart-empty .img{
+#cart-empty .img {
   width: 250px;
   height: 250px;
   background-color: white;
   margin: 10px auto;
 }
 
-#cart h2, #checkout h2{
+#cart h2,
+#checkout h2 {
   text-align: left;
   margin: 0 20px;
 }
-#cart .sub-total{
-  background-color: var( --color-section-bg);
+#cart .sub-total {
+  background-color: var(--color-section-bg);
   padding: 15px 20px;
   font-weight: bold;
 }
-#cart .cart-item-con{
+#cart .cart-item-con {
   padding: 0 30px;
 }
-#cart .checkout-btn-con{
+#cart .checkout-btn-con {
   position: sticky;
   bottom: 0;
-  background-color: var( --color-section-bg);
+  background-color: var(--color-section-bg);
   border-top: 1px solid #a4a4a4;
   padding: 10px;
   text-align: center;
 }
 
-#checkout{
+#checkout {
   font-size: 0.89rem;
 }
-#checkout .section{
-  background-color: var( --color-section-bg);
+#checkout .section {
+  background-color: var(--color-section-bg);
   padding: 10px;
 }
-#checkout .section h3{
+#checkout .section h3 {
   font-size: 1rem;
   margin: 5px 0 20px;
 }
-#checkout table{
+#checkout table {
   text-align: center;
   font-size: 1rem;
   font-weight: bold;
   margin-bottom: 15px;
 }
-#checkout table tr{
+#checkout table tr {
   height: 40px;
 }
-#checkout table tr td{
+#checkout table tr td {
   min-width: 100px;
   background-color: #d9d9d9;
 }
-#checkout table tr td:nth-child(1){
+#checkout table tr td:nth-child(1) {
   max-width: 300px;
 }
-#checkout table .body td:nth-child(1){
+#checkout table .body td:nth-child(1) {
   padding: 10px;
   text-align: left;
   font-weight: normal;
 }
-#checkout table .body td{
-  background-color: #ECEBEB;
+#checkout table .body td {
+  background-color: #ecebeb;
 }
-#checkout table .head{
+#checkout table .head {
   font-weight: normal;
 }
-#checkout .paystack{
+#checkout .paystack {
   margin: 40px auto;
   width: 200px;
   height: 50px;
   background-color: gray;
 }
-#checkout .order-btn-con{
+#checkout .order-btn-con {
   text-align: center;
   margin-bottom: 100px;
 }
 
-#contacts{
+#contacts {
   position: absolute;
-  background-color: var( --color-dark-primary);
+  background-color: var(--color-dark-primary);
   width: 100%;
   height: 100%;
   z-index: 1;
@@ -167,20 +168,20 @@ h3 {
   flex-direction: column;
   justify-content: space-between;
 }
-#contacts .logo-con{
+#contacts .logo-con {
   padding: 15px;
 }
-#contacts .contact-btn-con{
+#contacts .contact-btn-con {
   align-self: center;
-  padding:0 30px;
+  padding: 0 30px;
 }
-#contacts .contact-btn-con button{
+#contacts .contact-btn-con button {
   display: block;
   max-width: 300px;
   min-width: 300px;
   width: 100%;
   height: 50px;
-  color: var( --color-dark-text);
+  color: var(--color-dark-text);
   font-size: 1rem;
   font-weight: bold;
   margin: 20px auto;
@@ -239,11 +240,14 @@ h3 {
 #home-header::-webkit-scrollbar {
   height: 0;
 }
+#home-header h2 {
+  margin: 0;
+}
 #home-header .item {
   position: relative;
   margin: 0 5px;
   width: 100vmin;
-  max-width: 600px;/* changing this will affect scrolling behaviour, update `headerScrolling` function in Home.js if this property is changed */
+  max-width: 600px; /* changing this will affect scrolling behaviour, update `headerScrolling` function in Home.js if this property is changed */
   height: 575px;
   background-color: var(--color-secondary-bg);
   /* background: url(/images/Create\,\ Read\,\ Enjoy.jpg);
@@ -260,18 +264,20 @@ h3 {
   background: rgba(0, 0, 0, 0.4);
 }
 
-.input{
+.input {
   margin-bottom: 20px;
 }
 .input label {
   display: block;
   margin-bottom: 5px;
 }
-.input input, .input select, .input textarea {
+.input input,
+.input select,
+.input textarea {
   height: 30px;
   max-width: 250px;
   width: 100%;
-  border: 1px solid var( --color-dark-primary);
+  border: 1px solid var(--color-dark-primary);
   border-radius: 4px;
   padding: 0 10px;
 }
@@ -280,23 +286,22 @@ h3 {
   padding: 5px 10px;
 }
 
-#not-found{
-  
+#not-found {
 }
-#not-found ul{
+#not-found ul {
   max-width: 300px;
   margin: 0 auto;
 }
-#not-found li{
+#not-found li {
   margin: 10px 0;
 }
-#not-found .img{
+#not-found .img {
   width: 250px;
   height: 250px;
   background-color: white;
   margin: 0 auto;
 }
-#not-found li li{
+#not-found li li {
   margin-left: 30px;
 }
 
@@ -326,7 +331,6 @@ h3 {
   height: 50px;
 }
 
-
 /* CLASSNAMES */
 .ad-text {
   position: absolute;
@@ -338,6 +342,7 @@ h3 {
 }
 .ad-text h3 {
   font-size: 2rem;
+  margin: 0;
 }
 .ad-text .priceCon {
   font-size: 1.11rem;
@@ -376,46 +381,45 @@ h3 {
   scroll-snap-align: center;
 }
 
-.cart-item{
+.cart-item {
   position: relative;
-  background-color: var( --color-secondary-bg);
+  background-color: var(--color-secondary-bg);
   max-width: 350px;
   border-radius: 8px;
   margin: 15px auto;
   padding: 10px;
 }
-.cart-item .details{
+.cart-item .details {
   display: flex;
 }
-.cart-item .img{
+.cart-item .img {
   width: 50px;
   height: 50px;
   background-color: gray;
-  border: var( --border-item);
+  border: var(--border-item);
   border-radius: 8px;
   margin-right: 10px;
 }
-.cart-item .name{
+.cart-item .name {
   font-weight: bold;
   margin-bottom: 8px;
 
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-
 }
-.cart-item .quantity{
+.cart-item .quantity {
   margin: 10px 0 20px 0;
 }
-.cart-item .remove{
+.cart-item .remove {
   display: block;
   position: absolute;
   bottom: 0;
   right: 0;
   width: 30px;
   height: 30px;
-  background-color: var( --color-attention-highlight);
-  color: var( --color-attention);
+  background-color: var(--color-attention-highlight);
+  color: var(--color-attention);
   font-size: 0.89rem;
   border-radius: 0 0 8px;
 }
@@ -443,7 +447,6 @@ h3 {
   color: var(--color-dark-text);
   margin-top: 10px;
 }
-
 
 .discount-tag {
   position: absolute;
@@ -691,21 +694,22 @@ h3 {
   text-align: center;
 }
 
-.serious-btn{
+.serious-btn {
   height: 50px;
   width: 250px;
   border-radius: 8px;
-  background-color: var( --color-serious);
-  border: 1px solid var( --color-secondary);
+  background-color: var(--color-serious);
+  border: 1px solid var(--color-secondary);
   color: white;
   font-size: 20px;
 }
-.serious-btn:hover, .serious-btn:focus{
-  background-color: var( --color-serious-hover)!important;
-  color: white!important;
+.serious-btn:hover,
+.serious-btn:focus {
+  background-color: var(--color-serious-hover) !important;
+  color: white !important;
 }
-.serious-warning{
-  color: var( --color-serious);
+.serious-warning {
+  color: var(--color-serious);
 }
 
 .quanifier {
@@ -756,8 +760,8 @@ h3 {
   background-color: grey;
 }
 
-.warning{
-  color: var( --color-attention);
+.warning {
+  color: var(--color-attention);
   font-size: 0.89rem;
   font-weight: normal;
 }
