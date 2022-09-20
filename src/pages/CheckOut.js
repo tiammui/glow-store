@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMoneyCheck } from '@fortawesome/free-solid-svg-icons';
 
@@ -17,6 +17,7 @@ import { getCurrentUser, formatAddress,cartCost } from './../helpers';
 import { OrderMaker } from './../mockbase';
 
 export default function ({cart}) {
+  let navigate = useNavigate();
   let userInfo = getCurrentUser();
   let [orderForm, setOrderForm] = useState({
     ...userInfo.address,
@@ -26,6 +27,10 @@ export default function ({cart}) {
 
   useEffect(function () {
     window.scrollTo(0, 0);
+    if(!cart.length){
+      // if no item in cart to checkout go to Cart page
+      navigate('/cart')
+    }  
   }, []);
 
   function handleInput(e) {
@@ -33,7 +38,7 @@ export default function ({cart}) {
 
     setOrderForm((prev) => ({ ...prev, [name]: value }));
   }
-  function placeHolder() {
+  function placeOrder() {
     let order = new OrderMaker();
   }
   return (

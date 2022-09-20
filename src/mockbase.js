@@ -2,6 +2,7 @@ export const STATUS = {
   DELIVERED: 'DELIVERED',
   PENDING: 'PENDING',
   TRANSIT: 'TRANSIT',
+  CANCELLED: 'CANCELLED',
 };
 
 /**
