@@ -35,25 +35,33 @@ export function cartCost(cart) {
   // discount is considered
 
   if (!cart.length) return 0;
+  if (cart.length == 1) {
+    var product = getProduct(cart[0].productId)
+    return cost(cart[0].quantity,product.price, product.discount)
+  }
   const totalCost = cart.reduce((a, b, i) => {
     /**
      * @type {ProductMaker}
      */
     var bProduct = getProduct(b.productId);
-    let bCost = b.quantity * calcDiscount(bProduct.price, bProduct.discount);
+    let bCost = cost(b.quantity,bProduct.price, bProduct.discount);
 
     if (i == 1) {
       /**
        * @type {ProductMaker}
        */
       let aProduct = getProduct(a.productId);
-      let aCost = a.quantity * calcDiscount(aProduct.price, aProduct.discount);
+      let aCost = cost(a.quantity,aProduct.price, aProduct.discount);
 
       return aCost + bCost;
     } else {
       a + bCost;
     }
   });
+
+  function cost(quantity,price,discount){
+    return quantity * calcDiscount(price, discount)
+  }
 
   return totalCost;
 }

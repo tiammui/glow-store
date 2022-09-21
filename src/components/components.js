@@ -57,7 +57,7 @@ export function CartItem({ cartHandler, cartItem }) {
       <div className="total">
         Subtotal: <b>₦{cartItemCost(cartItem)}</b>
       </div>
-      <button className="remove">
+      <button className="remove" onClick={()=>cartHandler('remove',cartItem.productId)}>
         <FontAwesomeIcon icon={faTimes} />
       </button>
     </div>

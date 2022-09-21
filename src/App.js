@@ -34,6 +34,7 @@ import { CartItemMaker } from './mockbase';
 export default function App() {
   const [cart, setCart] = useState(getCart());
   const [cartQuantity, setCartQuantity] = useState(0);
+
   useEffect(() => {
     WebFont.load({
       google: {
@@ -41,13 +42,18 @@ export default function App() {
       },
     });
   }, []);
+
   useEffect(() => {
-    setCartQuantity(
+    let quantity =
       cart.length &&
-        cart.reduce((a, b, i) =>
-          i == 1 ? a.quantity + b.quantity : a + b.quantity
-        )
-    );
+      (cart.length == 1
+        ? cart[0].quantity
+        : cart.reduce((a, b, i) =>
+            i == 1 ? a.quantity + b.quantity : a + b.quantity
+          ));// reduce return the complete element of an array if it length == 1
+
+    setCartQuantity(quantity);
+    // update firestore
   }, [cart]);
 
   /**
@@ -55,6 +61,8 @@ export default function App() {
    * @param {number} productId
    */
   function cartHandler(operation, productId) {
+    // use snackbar to announce status of operations
+
     switch (operation) {
       case 'add':
         if (
@@ -62,7 +70,7 @@ export default function App() {
           getProduct(productId)
         ) {
           // if product is not already in cart and it exist
-          // TODO- Objects are not valid as a React child (found: object with keys {productId, quantity}). If you meant to render a collection of children, use an array instead.
+          
           setCart((prev) => {
             if (prev.length) {
               return [...prev, new CartItemMaker(productId, 1)];
