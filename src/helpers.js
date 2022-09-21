@@ -1,4 +1,4 @@
-import { ProductMaker, CartItemMaker, UserMaker } from './mockbase';
+import { ProductMaker, CartItemMaker, UserMaker, deliveryBilling } from './mockbase';
 
 export function addNumSeparator(num) {
   const numStr = num + '';
@@ -83,6 +83,11 @@ export function getCart(userId) {
   var cart = [];
 
   return cart;
+}
+
+export function getDeliveryFee(city,state,country){
+  // can fetch from firebase as well
+  return deliveryBilling[country][state][city];
 }
 
 export function getProduct(productId) {

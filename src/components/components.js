@@ -40,7 +40,7 @@ export function CartItem({ cartHandler, cartItem }) {
       <div className="details">
         <div className="img"></div>
         <div className="info">
-          <div className="name">{product.name}</div>
+          <Link to={`/products/${cartItem.productId}`} className="name">{product.name}</Link>
           <div className="priceCon">
             <ProductPrice price={product.price} discount={product.discount} />
           </div>

@@ -5,18 +5,18 @@ import { faMoneyCheck } from '@fortawesome/free-solid-svg-icons';
 
 import { nanoid } from 'nanoid';
 
+import { Spacer } from './../components/components';
 import {
-  ProductPrice,
-  AddToCartButton,
-  Quantifier,
-  Spacer,
-  SmallProductCard,
-  DiscountTag,
-} from './../components/components';
-import { getCurrentUser, formatAddress,cartCost } from './../helpers';
-import { OrderMaker } from './../mockbase';
+  getCurrentUser,
+  formatAddress,
+  cartCost,
+  cartItemCost,
+  getProduct,
+  getDeliveryFee,
+} from './../helpers';
+import { OrderMaker, getDeliveryFee } from './../mockbase';
 
-export default function ({cart}) {
+export default function ({ cart }) {
   let navigate = useNavigate();
   let userInfo = getCurrentUser();
   let [orderForm, setOrderForm] = useState({
@@ -27,10 +27,10 @@ export default function ({cart}) {
 
   useEffect(function () {
     window.scrollTo(0, 0);
-    if(!cart.length){
+    if (!cart.length) {
       // if no item in cart to checkout go to Cart page
-      navigate('/cart')
-    }  
+      navigate('/cart');
+    }
   }, []);
 
   function handleInput(e) {
@@ -40,6 +40,8 @@ export default function ({cart}) {
   }
   function placeOrder() {
     let order = new OrderMaker();
+
+    // initiate payment, verify payment, send order and clear cart
   }
   return (
     <div id="checkout">
@@ -162,7 +164,7 @@ export default function ({cart}) {
 
           <Spacer axis="y" space={40} />
         </div>
-        
+
         <div className="half">
           <div className="section">
             <h3>Your order summary</h3>
@@ -171,25 +173,39 @@ export default function ({cart}) {
                 <td>Products</td>
                 <td>Cost</td>
               </tr>
-              <tr className="body">
-                <td>
-                  Vilcan aloe vera moisturiser X 1 Vilcan aloe vera moisturiser
-                  X 1 Vilcan aloe vera moisturiser X 1 Vilcan aloe vera
-                  moisturiser X 1
-                </td>
-                <td>Cost</td>
-              </tr>
+              {cart.map((item) => (
+                <tr className="body">
+                  <td>
+                    <span>
+                      {getProduct(item.productId).name} X <b>{item.quantity}</b>{' '}
+                    </span>
+                  </td>
+                  <td>₦{cartItemCost(item)}</td>
+                </tr>
+              ))}
               <tr className="foot">
                 <td>Cart Subtotal</td>
-                <td>Cost</td>
+                <td>₦{cartCost(cart)}</td>
               </tr>
               <tr className="foot">
                 <td>Deliver fee**</td>
-                <td>Cost</td>
+                <td>
+                  ₦
+                  {getDeliveryFee(
+                    orderForm.city,
+                    orderForm.state,
+                    orderForm.country
+                  )}
+                </td>
               </tr>
               <tr className="foot">
                 <td>TOTAL</td>
-                <td>Cost</td>
+                <td>₦
+                  {cartCost(cart) + getDeliveryFee(
+                    orderForm.city,
+                    orderForm.state,
+                    orderForm.country
+                  )}</td>
               </tr>
             </table>
             <p>
@@ -207,7 +223,8 @@ export default function ({cart}) {
             <a href="#order-address">change address</a>
           </div>
           <div className="serious-warning">
-            ** The delivery fee is determined by the address provided in the <em>Delivery details</em> section
+            ** The delivery fee is determined by the address provided in the{' '}
+            <em>Delivery details</em> section
           </div>
 
           <div className="paystack"></div>
@@ -217,7 +234,6 @@ export default function ({cart}) {
               Place Order
             </button>
           </div>
-
         </div>
 
         <div className="clear-fix"></div>
