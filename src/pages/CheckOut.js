@@ -42,7 +42,7 @@ export default function ({ cart }) {
     let order = new OrderMaker();
 
     // initiate payment, verify payment, send order and clear cart
-  }
+  } 
   return (
     <div id="checkout">
       <h2>
