@@ -11,24 +11,14 @@ import ProductCategory from './pages/ProductCategory';
 import ProductDetails from './pages/ProductDetails';
 import Cart from './pages/Cart';
 import CheckOut from './pages/CheckOut';
-import OrderSuccess from './pages/OrderSuccess';
 import OrderDetails from './pages/OrderDetails';
 import Contacts from './pages/Contacts';
 import UserDetails from './pages/UserDetails';
-import UserOrders from './pages/UserOrders';
 import NotFound from './pages/NotFound';
 import TopBar from './components/TopBar';
 import Footer from './components/Footer';
 import Menu from './components/Menu';
 import { SignInModal, SnackBar } from './components/bigComponents';
-import {
-  HeaderItem,
-  ProductCard,
-  SmallProductCard,
-  CategoryCard,
-  CartItem,
-  Button,
-} from './components/components';
 import { getCart, getProduct, indexOfObject } from './helpers';
 import { CartItemMaker } from './mockbase';
 

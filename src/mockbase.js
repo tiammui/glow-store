@@ -61,12 +61,12 @@ export function HeadInfoMaker(productId) {
 export function OrderMaker(
   id,
   products,
-  deliveryAddress,
+  address,
   contact,
   note,
   status
 ) {
-  deliveryAddress = deliveryAddress || {
+  address = address || {
     country: 'nigeria',
     state: 'lagos',
     city: 'oshodi',
@@ -80,7 +80,7 @@ export function OrderMaker(
 
   this.id = id || 3030;
   this.products = products || [new OrderProductMaker()];
-  this.deliveryAddress = deliveryAddress;
+  this.address = address;
   this.contact = contact;
   this.note = note || 'i have an agreesive dog';
   this.status = status || STATUS.DELIVERED; // assigned on server

@@ -1,99 +1,46 @@
-import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, getDocs,addDoc, Timestamp,query, orderBy, onSnapshot,doc, updateDoc, deleteDoc } from 'firebase/firestore/lite';
-// Follow this pattern to import other Firebase services
-// import { } from 'firebase/<service>';
+import firebase from 'firebase/app';
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  where,
+  query,
+  getDocs,
+} from 'firebase/firestore';
+import 'firebase/compat/auth';
 
-// TODO: Replace the following with your app's Firebase project configuration
 const firebaseConfig = {
-  //...
+  apiKey: 'AIzaSyD_kVL0F6Lv7Dz-JY6M_kOCE5-yttHX5rQ',
+  authDomain: 'glow-dab38.firebaseapp.com',
+  projectId: 'glow-dab38',
+  storageBucket: 'glow-dab38.appspot.com',
+  messagingSenderId: '442082739011',
+  appId: '1:442082739011:web:b4e16cbd384bdc269425f6',
+  measurementId: 'G-KS93JSRMCT',
 };
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+// Configure FirebaseUI.
+// https://github.com/firebase/firebaseui-web-react
+// https://firebase.google.com/docs/auth/web/firebaseui
+const authUIConfig = {
+  // Popup signin flow rather than redirect flow.
+  signInFlow: 'popup',
+  // We will display Google and Facebook as auth providers.
+  signInOptions: [
+    firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+    firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+  ],
+  callbacks: {
+    // Avoid redirects after sign-in.
+    signInSuccessWithAuthResult: () => false,
+  },
+};
 
-// Get a list of cities from your database
-async function getCities(db) {
-  const citiesCol = collection(db, 'cities');
-  const citySnapshot = await getDocs(citiesCol);
-  const cityList = citySnapshot.docs.map(doc => doc.data());
-  return cityList;
-}
+firebase.initializeApp(firebaseConfig);
+const db = getFirestore();
+export const auth = firebase.auth();
 
-function a(){
-  await addDoc(collection(db, 'tasks'), {
-    title: title,
-    description: description,
-    completed: false,
-    created: Timestamp.now()
-  })
-}
+// Initialize the FirebaseUI Widget using Firebase.
+var ui = new firebaseui.auth.AuthUI(auth);
 
-/* function to update document in firestore */
-const handleUpdate = async (e) => {
-  e.preventDefault()
-  const taskDocRef = doc(db, 'tasks', id)
-  try{
-    await updateDoc(taskDocRef, {
-      title: title,
-      description: description
-    })
-    onClose()
-  } catch (err) {
-    alert(err)
-  }    
-}
-
-/* function to delete a document from firstore */ 
-const handleDelete = async () => {
-  const taskDocRef = doc(db, 'tasks', id)
-  try{
-    await deleteDoc(taskDocRef)
-  } catch (err) {
-    alert(err)
-  }
-}
-
-// useEffect(() => {
-//   const q = query(collection(db, 'tasks'), orderBy('created', 'desc'))
-//   onSnapshot(q, (querySnapshot) => {
-//     setTasks(querySnapshot.docs.map(doc => ({
-//       id: doc.id,
-//       data: doc.data()
-//     })))
-//   })
-// },[])
-
-
-
-
-
-
-
-// import firebase from "firebase/app";  // include the Firebase module
-// import "firebase/firestore"; // access firestore database service
-
-// const firebaseConfig = {
-//   apiKey: import.meta.env.VITE_API_FIREBASE_API_KEY,
-//   authDomain: import.meta.env.VITE_API_FIREBASE_AUTH_DOMAIN,
-//   projectId: import.meta.env.VITE_API_FIREBASE_PROJECT_ID,
-//   storageBucket: import.meta.env.VITE_API_FIREBASE_STORAGE_BUCKET,
-//   messagingSenderId: import.meta.env.VITE_API_FIREBASE_MESSAGING_SENDER_ID,
-//   appId: import.meta.env.VITE_API_FIREBASE_APP_ID,
-// };
-// // Initialize Firebase
-// const app = firebase.initializeApp(firebaseConfig);
-
-// export const db = app.firestore();
-// export default app;
-
-
-
-// import { storage } from "../firebase";
-
-// const storageRef = storage.ref(); // access the default bucket
-
-// // accepts file path in the format `folder/filename.ext`
-// const getImageURL = async (filePath) => {
-//   const url = await storageRef.child(filePath).getDownloadURL();
-//   return url;
-// };
+export default firebase;

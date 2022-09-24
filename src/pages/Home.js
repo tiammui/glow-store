@@ -7,8 +7,7 @@ import {
   CatSectionItem,
   ProductCard,
 } from './../components/components';
-import { initObj } from './../mockbase';
-import { capitalise, range, getProduct } from './../helpers';
+import { capitalise, range, getProduct,getInitObject } from './../helpers';
 
 export default function ({ cartHandler }) {
   let [activeNavigator, setActiveNavigator] = useState(0); // activeNavigator is 0 indexed
@@ -48,7 +47,7 @@ export default function ({ cartHandler }) {
         }}
       >
         <ul>
-          {initObj.headerInfos.map((productId) => (
+          {getInitObject().headerInfos.map((productId) => (
             <HeaderItem
               productId={productId}
               key={nanoid()}
@@ -59,7 +58,7 @@ export default function ({ cartHandler }) {
       </div>
       {/* TODO manage scrolling with navigator */}
       <div className="navigator">
-        {initObj.headerInfos.map((productId, i) => (
+        {getInitObject().headerInfos.map((productId, i) => (
           <button
             className={activeNavigator == i ? 'active' : ''}
             title={getProduct(productId).name}
@@ -74,7 +73,7 @@ export default function ({ cartHandler }) {
       <h2>Product Categories</h2>
       <div className="carousel cat-section">
         <ul>
-          {initObj.productCategories.map((cat) => (
+          {getInitObject().productCategories.map((cat) => (
             <CatSectionItem category={capitalise(cat)} key={nanoid()} />
           ))}
         </ul>
