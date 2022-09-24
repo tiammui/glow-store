@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { nanoid } from 'nanoid';
 
-import { initObj } from './../mockbase';
-import { capitalise, range } from './../helpers';
+import { capitalise, range, getInitObject } from './../helpers';
 import {
   ProductCard,
   Pagination,
@@ -45,7 +44,7 @@ export default function ({ filter, cartHandler }) {
           value={catFilter}
           onChange={filterChange}
         >
-          {initObj.productCategories.map((cat) => (
+          {getInitObject().productCategories.map((cat) => (
             <option key={nanoid()} value={cat}>{capitalise(cat)}</option>
           ))}
         </select>

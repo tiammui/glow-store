@@ -14,7 +14,7 @@ import {
   getProduct,
   getDeliveryFee,
 } from './../helpers';
-import { OrderMaker, getDeliveryFee } from './../mockbase';
+import { OrderMaker } from './../mockbase';
 
 export default function ({ cart }) {
   let navigate = useNavigate();
@@ -53,6 +53,7 @@ export default function ({ cart }) {
         <Spacer space="5" />
         Checkout and Payment
       </h2>
+
       <div>
         <div className="half">
           <div className="section">
@@ -174,7 +175,7 @@ export default function ({ cart }) {
                 <td>Cost</td>
               </tr>
               {cart.map((item) => (
-                <tr className="body">
+                <tr key={nanoid()} className="body">
                   <td>
                     <span>
                       {getProduct(item.productId).name} X <b>{item.quantity}</b>{' '}

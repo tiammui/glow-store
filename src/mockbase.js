@@ -51,13 +51,13 @@ export function ProductMaker(
 }
 export function OrderProductMaker(
   productId,
-  purchasedPrice,
-  purchasedDiscount,
+  price,
+  discount,
   quantity
 ) {
   this.productId = productId || 333;
-  this.purchasedPrice = purchasedPrice || 12000;
-  this.purchasedDiscount = purchasedDiscount || 10;
+  this.price = price || 12000;
+  this.discount = discount || 10;
   this.quantity = quantity || 3;
 }
 export function HeadInfoMaker(productId) {
@@ -84,11 +84,13 @@ export function OrderMaker(
   };
 
   this.id = id || 3030;
-  this.products = products || [new OrderProduct()];
+  this.products = products || [new OrderProductMaker()];
   this.deliveryAddress = deliveryAddress;
   this.contact = contact;
   this.note = note || 'i have an agreesive dog';
   this.status = status || STATUS.DELIVERED; // assigned on server
+  this.paymentRef = "hjgyfy876557676"; // assigned on server
+  this.timeStamp = new Date(); // assigned on server
 }
 export function UserMaker(
   id,
@@ -113,7 +115,6 @@ export function UserMaker(
   };
 
   this.id = id || 'yre78292';
-  this.email = email || 'tiammui@gmail.com';
   this.firstname = firstname || 'Muizz';
   this.lastname = lastname || 'Tiamiyu';
   this.address = address;

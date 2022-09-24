@@ -17,6 +17,10 @@ import {
   range,
   paginateCat,
   cartItemCost,
+  capitalise,
+  getOrder,
+  orderCost,
+  orderItemAmt,
 } from './../helpers';
 
 export function AddToCartButton({ productId, isHeader, cartHandler }) {
@@ -57,7 +61,7 @@ export function CartItem({ cartHandler, cartItem }) {
       <div className="total">
         Subtotal: <b>₦{cartItemCost(cartItem)}</b>
       </div>
-      <button className="remove" onClick={()=>cartHandler('remove',cartItem.productId)}>
+      <button className="remove" onClick={()=>cartHandler('remove',cartItem.productId)} title="Remove from cart">
         <FontAwesomeIcon icon={faTimes} />
       </button>
     </div>
@@ -121,6 +125,22 @@ export function HotSaleTag({ offset }) {
       Hot Sales
     </div>
   );
+}
+
+export function OrderCard({orderId}){
+  let order = getOrder(orderId);
+  return(
+    <div className="order-card">
+      <div className="img"></div>
+      <div className="details">
+        <div className="title">Order {order.id}</div>
+        <div>Placed on {order.timeStamp.toDateString()}</div>
+        <div>Total: ₦{orderCost(order.products)}</div>
+        <div><b>{orderItemAmt(order.products)} Items</b></div>
+        <div>Status: <span className={`status ${order.status.toLowerCase()}`}>{capitalise(order.status.toLowerCase())}</span></div>
+      </div>
+    </div>
+  )
 }
 
 export function Pagination({ amtPage, setPage, currentPage }) {

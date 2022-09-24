@@ -5,14 +5,14 @@ import { faBars, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 
 import { snack } from './../helpers';
 
-export default function ({ cartQuantity }) {
+export default function ({ cartQuantity, showMenuHnd }) {
   let navigate = useNavigate();
   return (
     <div id="top-bar">
       <button
         className="icon-block"
         onClick={() => {
-          navigate('/contacts');
+          showMenuHnd(true);
         }}
       >
         <FontAwesomeIcon icon={faBars} />

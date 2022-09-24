@@ -24,6 +24,7 @@
   --color-curtain-40: rgba(0, 0, 0, 0.4);
 
   --border-item: 1px solid #ffffff;
+  --border-menu-item: 1px solid #d9d9d9;
   --border-btn: 1px solid var(--color-light-primary);
   --length-mobile-max: 600px;
 }
@@ -87,7 +88,8 @@ h3 {
 }
 
 #cart h2,
-#checkout h2 {
+#checkout h2,
+#user-details h2 {
   text-align: left;
   margin: 0 20px;
 }
@@ -111,7 +113,8 @@ h3 {
 #checkout {
   font-size: 0.89rem;
 }
-#checkout .section {
+#checkout .section,
+#user-details .section {
   background-color: var(--color-section-bg);
   padding: 10px;
 }
@@ -286,6 +289,92 @@ h3 {
   padding: 5px 10px;
 }
 
+#menu {
+  position: fixed;
+  display: none;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-curtain-40);
+  font-size: 0.89rem;
+}
+#menu.show {
+  display: block;
+}
+#menu a {
+  text-decoration: none;
+  color: var(--color-dark-text);
+}
+#menu a:hover {
+  background-color: var(--color-section-bg);
+}
+#menu .content {
+  position: absolute;
+  top: 0;
+  left: -20px;
+  width: 100%;
+  max-width: 280px;
+  height: 100%;
+  background-color: var(--color-secondary-bg);
+}
+#menu .top {
+  display: flex;
+  height: 60px;
+  align-items: center;
+  border-bottom: var(--border-menu-item);
+  padding-left: 20px;
+}
+#menu .top button {
+  height: 50px;
+  width: 50px;
+  background-color: transparent;
+}
+#menu .top .icon {
+  font-size: 1.11rem;
+}
+#menu .icon {
+  margin: 0 15px;
+  font-size: 1rem;
+}
+#menu .logo {
+  height: 40px;
+  width: 110px;
+}
+#menu .section {
+  border-bottom: var(--border-menu-item);
+  padding-left: 20px;
+}
+#menu .body {
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: calc(100% - 110px);
+}
+#menu .section .item {
+  display: flex;
+  height: 50px;
+  align-items: center;
+}
+#menu .section-head {
+  display: flex;
+  height: 30px;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 15px;
+  color: var(--color-serious);
+}
+#menu .foot {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  height: 50px;
+  border-top: var(--border-menu-item);
+  background-color: var(--color-secondary-bg);
+}
+
 #not-found {
 }
 #not-found ul {
@@ -381,7 +470,8 @@ h3 {
   scroll-snap-align: center;
 }
 
-.cart-item {
+.cart-item,
+.order-card {
   position: relative;
   background-color: var(--color-secondary-bg);
   max-width: 350px;
@@ -392,7 +482,8 @@ h3 {
 .cart-item .details {
   display: flex;
 }
-.cart-item .img {
+.cart-item .img,
+.order-card .img {
   width: 50px;
   height: 50px;
   background-color: gray;
@@ -532,6 +623,38 @@ h3 {
 }
 .navigator > button.active {
   background-color: var(--color-light-primary);
+}
+
+.order-card {
+  display: flex;
+  font-size: 0.89rem;
+}
+.order-card .details > * {
+  margin: 0 0 5px;
+}
+.order-card .title {
+  font-weight: bold;
+  font-size: 1rem;
+}
+.order-card .status {
+  display: inline-block;
+  width: 100px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  color: white;
+}
+.order-card .status.transit {
+  background-color: var(--color-serious);
+}
+.order-card .status.delivered {
+  background-color: var(--color-secondary);
+}
+.order-card .status.pending {
+  background-color: var(--color-serious-hover);
+}
+.order-card .status.cancelled {
+  background-color: var(--color-attention);
 }
 
 .pagination {
@@ -702,6 +825,10 @@ h3 {
   border: 1px solid var(--color-secondary);
   color: white;
   font-size: 20px;
+}
+.serious-btn.small {
+  width: 150px;
+  height: 40px;
 }
 .serious-btn:hover,
 .serious-btn:focus {

@@ -19,6 +19,7 @@ import UserOrders from './pages/UserOrders';
 import NotFound from './pages/NotFound';
 import TopBar from './components/TopBar';
 import Footer from './components/Footer';
+import Menu from './components/Menu';
 import { SignInModal, SnackBar } from './components/bigComponents';
 import {
   HeaderItem,
@@ -34,6 +35,7 @@ import { CartItemMaker } from './mockbase';
 export default function App() {
   const [cart, setCart] = useState(getCart());
   const [cartQuantity, setCartQuantity] = useState(0);
+  const [showMenu, setShowMenu] = useState(false);
 
   useEffect(() => {
     WebFont.load({
@@ -50,7 +52,7 @@ export default function App() {
         ? cart[0].quantity
         : cart.reduce((a, b, i) =>
             i == 1 ? a.quantity + b.quantity : a + b.quantity
-          ));// reduce return the complete element of an array if it length == 1
+          )); // reduce return the complete element of an array if it length == 1
 
     setCartQuantity(quantity);
     // update firestore
@@ -70,7 +72,7 @@ export default function App() {
           getProduct(productId)
         ) {
           // if product is not already in cart and it exist
-          
+
           setCart((prev) => {
             if (prev.length) {
               return [...prev, new CartItemMaker(productId, 1)];
@@ -115,7 +117,8 @@ export default function App() {
 
   return (
     <>
-      <TopBar cartQuantity={cartQuantity} />
+      <TopBar showMenuHnd={setShowMenu} cartQuantity={cartQuantity} />
+      <Menu showMenu={showMenu} showMenuHnd={setShowMenu} />
 
       <div id="main-container">
         <Routes>
@@ -135,9 +138,7 @@ export default function App() {
           />
           <Route path="checkout" element={<CheckOut cart={cart} />} />
 
-          <Route path="checkout/success" element={<OrderSuccess />} />
           <Route path="user" element={<UserDetails />} />
-          <Route path="user/orders" element={<UserOrders />} />
           <Route path="user/orders/:orderId" element={<OrderDetails />} />
 
           <Route path="contacts" element={<Contacts />} />

@@ -1,4 +1,4 @@
-import { ProductMaker, CartItemMaker, UserMaker, deliveryBilling } from './mockbase';
+import { ProductMaker, CartItemMaker, UserMaker, deliveryBilling, initObj,OrderMaker } from './mockbase';
 
 export function addNumSeparator(num) {
   const numStr = num + '';
@@ -37,21 +37,21 @@ export function cartCost(cart) {
   if (!cart.length) return 0;
   if (cart.length == 1) {
     var product = getProduct(cart[0].productId)
-    return cost(cart[0].quantity,product.price, product.discount)
+    return totalCost(cart[0].quantity,product.price, product.discount)
   }
-  const totalCost = cart.reduce((a, b, i) => {
+  const cost = cart.reduce((a, b, i) => {
     /**
      * @type {ProductMaker}
      */
     var bProduct = getProduct(b.productId);
-    let bCost = cost(b.quantity,bProduct.price, bProduct.discount);
+    let bCost = totalCost(b.quantity,bProduct.price, bProduct.discount);
 
     if (i == 1) {
       /**
        * @type {ProductMaker}
        */
       let aProduct = getProduct(a.productId);
-      let aCost = cost(a.quantity,aProduct.price, aProduct.discount);
+      let aCost = totalCost(a.quantity,aProduct.price, aProduct.discount);
 
       return aCost + bCost;
     } else {
@@ -59,11 +59,7 @@ export function cartCost(cart) {
     }
   });
 
-  function cost(quantity,price,discount){
-    return quantity * calcDiscount(price, discount)
-  }
-
-  return totalCost;
+  return cost;
 }
 
 /**
@@ -73,10 +69,14 @@ export function cartCost(cart) {
 export function cartItemCost(cartItem) {
   // discount is considered
   const { price, discount } = getProduct(cartItem.productId);
-  const totalCost = cartItem.quantity * calcDiscount(price, discount);
 
-  return totalCost;
+  return totalCost(cartItem.quantity,price, discount);
 }
+
+export function formatAddress(street,city,state,country){
+  return `${street}, ${city}, ${state}, ${country}`
+}
+
 
 export function getCart(userId) {
   // if the user is logged in fetch their saved cart from firebase, if not check localStorage
@@ -90,6 +90,11 @@ export function getDeliveryFee(city,state,country){
   return deliveryBilling[country][state][city];
 }
 
+export function getInitObject(){
+  // can fetch from firebase as well
+  return initObj;
+}
+
 export function getProduct(productId) {
   // check for product locally, if not found fetch from firebase
   // should be intelligent enough to only fetch a document once, e.g while fetching a document it should not allow another fetching of that same document until fetched 
@@ -98,8 +103,22 @@ export function getProduct(productId) {
 }
 
 export function getCurrentUser(){
-  // get auth info of current user
+  // get auth info of current user, then use it to fetch user's doc
   return new UserMaker()
+}
+
+export function getOrder(orderId){
+  // check for order locally, if not found fetch from firebase
+  // should be intelligent enough to only fetch a document once, e.g while fetching a document it should not allow another fetching of that same document until fetched 
+
+
+  return new OrderMaker()
+}
+
+export function getUserOrders(){
+  let userInfo = getCurrentUser();
+
+  return userInfo.orders
 }
 
 /**
@@ -117,6 +136,54 @@ export function indexOfObject(array, property, searchTerm) {
   return -1;
 }
 
+/**
+ * @param { OrderProductMaker[] } orderProducts
+ */
+export function orderCost(orderProducts){
+  if (!orderProducts.length) return 0;
+  if (orderProducts.length == 1) {
+    return totalCost(orderProducts[0].quantity,orderProducts[0].price, orderProducts[0].discount)
+  }
+
+  const cost = orderProducts.reduce((a,b,i)=>{
+    let bCost = totalCost(b.quantity,b.price, b.discount);
+    if (i == 1) {
+      let aCost = totalCost(a.quantity,a.price, a.discount);
+
+      return aCost + bCost;
+    } else {
+      a + bCost;
+    }
+  });
+
+  return cost;
+
+}
+
+/**
+ * @param { OrderProductMaker[] } orderProducts
+ */
+export function orderItemAmt(orderProducts){
+  if (!orderProducts.length) return 0;
+  if (orderProducts.length == 1) {
+    return orderProducts[0].quantity
+  }
+
+  const amount = orderProducts.reduce((a,b,i)=>{
+    let bAmt = b.quantity;
+    if (i == 1) {
+      let aAmt = a.quantity;
+
+      return aAmt + bAmt;
+    } else {
+      a + bAmt;
+    }
+
+  })
+
+  return amount
+}
+
 export function paginateCat(pageNum) {
   // Use for pagination
   console.log(pageNum);
@@ -132,8 +199,8 @@ export function range(size) {
   return sequence;
 }
 
-export function formatAddress(street,city,state,country){
-  return `${street}, ${city}, ${state}, ${country}`
+export function totalCost(quantity,price,discount){
+  return quantity * calcDiscount(price, discount)
 }
 
 /**
