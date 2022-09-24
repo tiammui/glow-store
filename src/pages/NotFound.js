@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretRight } from '@fortawesome/free-solid-svg-icons';
+import { nanoid } from 'nanoid';
 
 import { initObj } from './../mockbase';
 import { capitalise } from './../helpers';
@@ -23,7 +24,7 @@ export default function () {
           Products by category
           <ul>
             {initObj.productCategories.map((cat) => (
-              <li>
+              <li key={nanoid()}>
                 <FontAwesomeIcon icon={faCaretRight} />
                 <Spacer space={10} />
                 <Link to={`/products/category/${cat}`}>{capitalise(cat)}</Link>

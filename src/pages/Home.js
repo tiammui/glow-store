@@ -48,7 +48,7 @@ export default function ({ cartHandler }) {
         }}
       >
         <ul>
-          {initObj.headerInfo.map((productId) => (
+          {initObj.headerInfos.map((productId) => (
             <HeaderItem
               productId={productId}
               key={nanoid()}
@@ -59,7 +59,7 @@ export default function ({ cartHandler }) {
       </div>
       {/* TODO manage scrolling with navigator */}
       <div className="navigator">
-        {initObj.headerInfo.map((productId, i) => (
+        {initObj.headerInfos.map((productId, i) => (
           <button
             className={activeNavigator == i ? 'active' : ''}
             title={getProduct(productId).name}

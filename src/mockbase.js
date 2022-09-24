@@ -49,12 +49,7 @@ export function ProductMaker(
   this.hotSale = hotSale || true;
   this.inStock = inStock || 5;
 }
-export function OrderProductMaker(
-  productId,
-  price,
-  discount,
-  quantity
-) {
+export function OrderProductMaker(productId, price, discount, quantity) {
   this.productId = productId || 333;
   this.price = price || 12000;
   this.discount = discount || 10;
@@ -89,12 +84,11 @@ export function OrderMaker(
   this.contact = contact;
   this.note = note || 'i have an agreesive dog';
   this.status = status || STATUS.DELIVERED; // assigned on server
-  this.paymentRef = "hjgyfy876557676"; // assigned on server
+  this.paymentRef = 'hjgyfy876557676'; // assigned on server
   this.timeStamp = new Date(); // assigned on server
 }
 export function UserMaker(
   id,
-  email,
   firstname,
   lastname,
   address,
@@ -117,11 +111,11 @@ export function UserMaker(
   this.id = id || 'yre78292';
   this.firstname = firstname || 'Muizz';
   this.lastname = lastname || 'Tiamiyu';
+  this.isAdmin = isAdmin || false;
+  this.orders = orders || [3030];
+  this.cart = cart || [new CartItemMaker()];
   this.address = address;
   this.contact = contact;
-  this.orders = orders || [3030];
-  this.isAdmin = isAdmin || false;
-  this.cart = cart || [new CartItemMaker()];
 }
 
 // export const headInfo = {
@@ -148,7 +142,7 @@ export const initObj = {
   ],
   trendingProducts: [333],
   freshProducts: [333],
-  headerInfo: [new HeadInfoMaker(), new HeadInfoMaker(), new HeadInfoMaker()],
+  headerInfos: [new HeadInfoMaker(), new HeadInfoMaker(), new HeadInfoMaker()],
 };
 
 export const stat = {
@@ -156,7 +150,7 @@ export const stat = {
   pendingOrder: 20,
   amtUsers: 50,
   amtUniqueProducts: 7, // amount of diff kind of products
-  amtProductSold: 400,
+  amtItemSold: 400,
   totalEarning: 1500000,
 };
 
