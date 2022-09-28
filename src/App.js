@@ -30,7 +30,17 @@ export default function App() {
   const [cartQuantity, setCartQuantity] = useState(0);
   const [showMenu, setShowMenu] = useState(false);
   const [showSignIn, setShowSignIn] = useState(false);
+  const [currentUser, setCurrentUser] = useState({});
 
+  useEffect(()=>{
+    auth.onAuthStateChanged((user)=>{
+      if(user){
+        setCurrentUser(user);
+      } else {
+        setCurrentUser({});
+      }
+    })
+  })
   useEffect(() => {
     WebFont.load({
       google: {
@@ -111,7 +121,7 @@ export default function App() {
 
   return (
     <>
-      <TopBar showSignInHnd={setShowSignIn} showMenuHnd={setShowMenu} cartQuantity={cartQuantity} />
+      <TopBar showSignInHnd={setShowSignIn} showMenuHnd={setShowMenu} cartQuantity={cartQuantity} isSignedIn={!!currentUser.uid} />
       <Menu showMenu={showMenu} showMenuHnd={setShowMenu} />
 
       <div id="main-container">

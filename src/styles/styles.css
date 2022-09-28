@@ -56,6 +56,10 @@
 } */
 
 /* ELEMENTS */
+button.signed-in{
+  border: 'var(--color-serious) solid 2px';
+  border-radius: '50%'
+}
 del {
   color: #a4a4a4;
 }
@@ -288,10 +292,16 @@ h3 {
   padding: 5px 10px;
 }
 
+#main-container {
+  height: auto;
+  min-height: 100vh;
+
+  padding-top: 65px;
+}
+
 #menu {
   font-size: 0.89rem;
 }
-
 #menu a {
   text-decoration: none;
   color: var(--color-dark-text);
@@ -380,21 +390,23 @@ h3 {
   margin-left: 30px;
 }
 
-#main-container {
-  height: auto;
-  min-height: 100vh;
-
-  padding-top: 65px;
-}
-
 #sign-in-modal{
-  display: block
 }
 #sign-in-modal .content{
-  top: 30px;
+  top: 60px;
   left: 0;
   right: 0;
+  max-width: 450px;
   margin: auto;
+  padding: 20px;
+}
+#sign-in-modal .remove {
+  height: 30px;
+  width: 30px;
+  background-color: transparent;
+}
+#sign-in-modal .icon {
+  font-size: 1rem;
 }
 
 #top-bar {

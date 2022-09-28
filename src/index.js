@@ -14,3 +14,5 @@ root.render(
     </BrowserRouter>
   </StrictMode>
 );
+
+// https://l.staticblitz.com/b/v1/mrsiffyskincare/2605ae06f25

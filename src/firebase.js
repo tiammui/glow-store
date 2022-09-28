@@ -1,6 +1,9 @@
 import firebase from 'firebase/compat/app';
 import * as firebaseui from 'firebaseui';
 
+import 'firebase/compat/auth';
+import 'firebase/compat/firestore';
+
 const firebaseConfig = {
   apiKey: 'AIzaSyD_kVL0F6Lv7Dz-JY6M_kOCE5-yttHX5rQ',
   authDomain: 'glow-dab38.firebaseapp.com',
@@ -19,12 +22,33 @@ export const uiConfig = {
   signInFlow: 'popup',
   // We will display Google and Facebook as auth providers.
   signInOptions: [
-    firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-    firebase.auth.EmailAuthProvider.PROVIDER_ID,
+    {
+      provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
+      requireDisplayName: false,
+      buttonColor: '#2F2F2F',
+      fullLabel: 'Sign in / Sign up with email'
+    },
+    {
+      provider: firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+      fullLabel: 'Sign in / Sign up with Google'
+    },
   ],
   callbacks: {
     // Avoid redirects after sign-in.
-    signInSuccessWithAuthResult: () => false,
+    signInSuccessWithAuthResult: function(authResult, redirectUrl) {
+      var user = authResult.user;
+      var credential = authResult.credential;
+      var isNewUser = authResult.additionalUserInfo.isNewUser;
+      var providerId = authResult.additionalUserInfo.providerId;
+      var operationType = authResult.operationType;
+      
+      console.log(authResult);
+      // Do something with the returned AuthResult.
+      // Return type determines whether we continue the redirect
+      // automatically or whether we leave that to developer to handle.
+      return false;
+    },
+    uiShown: () => false,
   },
 };
 
