@@ -5,7 +5,7 @@ import WebFont from 'webfontloader';
 import firebase, {auth,uiConfig} from './firebase'
 import './styles/App.css';
 import './styles/styles.css';
-import './styles/desktop.css';
+import './styles/desktop.css'; 
 
 import Home from './pages/Home';
 import ProductCategory from './pages/ProductCategory';
