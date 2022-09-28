@@ -6,7 +6,7 @@ import firebase, {auth,uiConfig,authUI} from './firebase'
 import './styles/App.css';
 import './styles/styles.css';
 import './styles/desktop.css';
-import 'firebaseui/dist/firebaseui.css';
+import './styles/firebaseui.css';
 
 import Home from './pages/Home';
 import ProductCategory from './pages/ProductCategory';
