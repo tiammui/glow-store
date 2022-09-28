@@ -1,13 +1,5 @@
 import firebase from 'firebase/compat/app';
-import {
-  getFirestore,
-  collection,
-  addDoc,
-  where,
-  query,
-  getDocs,
-} from 'firebase/firestore';
-import 'firebase/compat/auth';
+import * as firebaseui from 'firebaseui';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyD_kVL0F6Lv7Dz-JY6M_kOCE5-yttHX5rQ',
@@ -41,6 +33,7 @@ const db = firebase.firestore();
 export const auth = firebase.auth();
 
 // Initialize the FirebaseUI Widget using Firebase.
-// var ui = new firebaseui.auth.AuthUI(auth);
+export const authUI = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(auth);
+
 
 export default firebase;

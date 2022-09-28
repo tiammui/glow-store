@@ -4,8 +4,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faShoppingCart, faUserAlt } from '@fortawesome/free-solid-svg-icons';
 
 import { snack } from './../helpers';
+// import {SignInModal} from './bigComponents'
 
-export default function ({ cartQuantity, showMenuHnd }) {
+export default function ({ cartQuantity, showMenuHnd, showSignInHnd }) {
   let navigate = useNavigate();
   return (
     <div id="top-bar">
@@ -23,7 +24,7 @@ export default function ({ cartQuantity, showMenuHnd }) {
       <div to="/cart">
         <button
           className="icon-block cart"
-          onClick={()=>navigate("/user")}
+          onClick={()=>{navigate("/user");showSignInHnd(true)}}
         >
           <FontAwesomeIcon icon={faUserAlt} />
           <div

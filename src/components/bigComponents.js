@@ -1,7 +1,5 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { Link } from 'react-router-dom';
-import firebase from 'firebase/compat/app';
-import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import { nanoid } from 'nanoid';
 
 import { CatSectionItem } from './../components/components';
@@ -23,21 +21,6 @@ export function CartEmpty() {
             <CatSectionItem category={capitalise(cat)} key={nanoid()} />
           ))}
         </ul>
-      </div>
-    </div>
-  );
-}
-
-export function SignInModal({ uiConfig, showSignIn, showSignInHnd, auth }) {
-  return (
-    <div id="sign-in-modal" className={`modal ${showSignIn ? ' show' : ''}`}>
-      <div className="content">
-        <p>
-          <button
-          onClick={()=>showSignInHnd(false)}
-          >Close</button>
-        </p>
-        <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={auth} />
       </div>
     </div>
   );

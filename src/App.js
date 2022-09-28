@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
 import WebFont from 'webfontloader';
 
-import firebase, {auth,uiConfig} from './firebase'
+import firebase, {auth,uiConfig,authUI} from './firebase'
 import './styles/App.css';
 import './styles/styles.css';
-import './styles/desktop.css'; 
+import './styles/desktop.css';
+import 'firebaseui/dist/firebaseui.css';
 
 import Home from './pages/Home';
 import ProductCategory from './pages/ProductCategory';
@@ -19,7 +20,8 @@ import NotFound from './pages/NotFound';
 import TopBar from './components/TopBar';
 import Footer from './components/Footer';
 import Menu from './components/Menu';
-import { SignInModal, SnackBar } from './components/bigComponents';
+import SignInModal from './components/SignInModal';
+import { SnackBar } from './components/bigComponents';
 import { getCart, getProduct, indexOfObject } from './helpers';
 import { CartItemMaker } from './mockbase';
 
@@ -109,7 +111,7 @@ export default function App() {
 
   return (
     <>
-      <TopBar showMenuHnd={setShowMenu} cartQuantity={cartQuantity} />
+      <TopBar showSignInHnd={setShowSignIn} showMenuHnd={setShowMenu} cartQuantity={cartQuantity} />
       <Menu showMenu={showMenu} showMenuHnd={setShowMenu} />
 
       <div id="main-container">
@@ -141,7 +143,7 @@ export default function App() {
 
       <Footer />
       <SnackBar />
-      <SignInModal uiConfig={uiConfig} showSignIn={showSignIn} showSignInHnd={setShowSignIn} auth={auth} />
+      <SignInModal uiConfig={uiConfig} showSignIn={showSignIn} showSignInHnd={setShowSignIn} authUI={authUI} />
     </>
   );
 }

@@ -50,7 +50,7 @@ export default function ({ showMenu, showMenuHnd }) {
   }
 
   return (
-    <div id="menu" onClick={hndBlankClick} className={showMenu ? 'show' : ''}>
+    <div id="menu" onClick={hndBlankClick} className={`modal ${showMenu ? 'show' : ''}`}>
       <div className="content">
         <div className="top">
           <button onClick={() => showMenuHnd(false)} title="Close menu">
