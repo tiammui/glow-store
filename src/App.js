@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
 import WebFont from 'webfontloader';
 
+import firebase, {auth,uiConfig} from './firebase'
 import './styles/App.css';
 import './styles/styles.css';
 import './styles/desktop.css';
@@ -26,6 +27,7 @@ export default function App() {
   const [cart, setCart] = useState(getCart());
   const [cartQuantity, setCartQuantity] = useState(0);
   const [showMenu, setShowMenu] = useState(false);
+  const [showSignIn, setShowSignIn] = useState(false);
 
   useEffect(() => {
     WebFont.load({
@@ -139,7 +141,7 @@ export default function App() {
 
       <Footer />
       <SnackBar />
-      <SignInModal />
+      <SignInModal uiConfig={uiConfig} showSignIn={showSignIn} showSignInHnd={setShowSignIn} auth={auth} />
     </>
   );
 }

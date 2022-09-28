@@ -1,4 +1,4 @@
-import firebase from 'firebase/app';
+import firebase from 'firebase/compat/app';
 import {
   getFirestore,
   collection,
@@ -22,13 +22,13 @@ const firebaseConfig = {
 // Configure FirebaseUI.
 // https://github.com/firebase/firebaseui-web-react
 // https://firebase.google.com/docs/auth/web/firebaseui
-const authUIConfig = {
+export const uiConfig = {
   // Popup signin flow rather than redirect flow.
   signInFlow: 'popup',
   // We will display Google and Facebook as auth providers.
   signInOptions: [
     firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-    firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+    firebase.auth.EmailAuthProvider.PROVIDER_ID,
   ],
   callbacks: {
     // Avoid redirects after sign-in.
@@ -37,10 +37,10 @@ const authUIConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
-const db = getFirestore();
+const db = firebase.firestore();
 export const auth = firebase.auth();
 
 // Initialize the FirebaseUI Widget using Firebase.
-var ui = new firebaseui.auth.AuthUI(auth);
+// var ui = new firebaseui.auth.AuthUI(auth);
 
 export default firebase;

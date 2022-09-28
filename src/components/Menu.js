@@ -56,7 +56,7 @@ export default function ({ showMenu, showMenuHnd }) {
           <button onClick={() => showMenuHnd(false)} title="Close menu">
             <FontAwesomeIcon icon={faTimes} className="icon" />
           </button>
-          <div className="logo"></div>
+          <img src="https://storage.cloud.google.com/glow-dab38.appspot.com/general/logo_topbar.png?alt=media" alt="logo" />
         </div>
         <div className="body">
           <div className="section">

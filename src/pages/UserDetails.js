@@ -147,7 +147,7 @@ export default function () {
           <h3>Previous Orders</h3>
           <div className="order-card-con">
             {getUserOrders().map((orderId) => (
-              <OrderCard orderId={orderId} />
+              <OrderCard key={nanoid()} orderId={orderId} />
             ))}
           </div>
         </div>

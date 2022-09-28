@@ -12,6 +12,7 @@
     "react-dom": "18.2.0",
     "react-firebaseui": "^0.0.1",
     "react-number-format": "^4.9.4",
+    "react-paystack": "^4.0.1",
     "react-router-dom": "6.3.0",
     "webfontloader": "1.6.28"
   },

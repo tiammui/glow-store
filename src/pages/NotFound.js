@@ -13,7 +13,7 @@ export default function () {
     <div id="not-found">
       <h2>The requested page does not exist</h2>
       {/* 250 X 250 Page not found img */}
-      <div className="img"></div>
+      <img src="https://storage.cloud.google.com/glow-dab38.appspot.com/general/404.jpg?alt=media" />
       <ul>
         <li>
           <FontAwesomeIcon icon={faCaretRight} />
