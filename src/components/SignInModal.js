@@ -12,7 +12,7 @@ export default function ({ showSignIn, showSignInHnd, uiConfig, authUI }) {
 
   useEffect(() => {
     authUI.start('#sign-in-ui', uiConfig);
-  });
+  },[]);
 
   return (
     <div id="sign-in-modal" className={`modal ${showSignIn ? ' show' : ''}`}>
