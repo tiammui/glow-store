@@ -32,21 +32,20 @@ export default function App() {
   const [showSignIn, setShowSignIn] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
 
-  useEffect(()=>{
-    auth.onAuthStateChanged((user)=>{
-      if(user){
-        setCurrentUser(user);
-      } else {
-        setCurrentUser({});
-      }
-    })
-  })
   useEffect(() => {
     WebFont.load({
       google: {
         families: ['Lato'],
       },
     });
+    let unsubscribe = auth.onAuthStateChanged((user)=>{
+      if(user){
+        setCurrentUser(user);
+      } else {
+        setCurrentUser({});
+      }
+    })
+    return unsubscribe
   }, []);
 
   useEffect(() => {
