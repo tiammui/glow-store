@@ -9,10 +9,10 @@ const componentProps = {
   },
   publicKey,
   text: "Pay Now",
-  onSuccess: () =>
+  onSuccess: (ref) =>
     alert("Thanks for doing business with us! Come back soon!!"),
   onClose: () => alert("Wait! You need this oil, don't go!!!!"),
-}
+} 
 
 // https://paystack.com/docs/payments/verify-payments
 

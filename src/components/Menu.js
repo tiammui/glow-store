@@ -13,13 +13,25 @@ import { nanoid } from 'nanoid';
 
 import { getInitObject, capitalise } from './../helpers';
 
-export default function ({ showMenu, showMenuHnd }) {
+export default function ({ showMenu, showMenuHnd, isSignedIn,showSignInHnd }) {
   let navigate = useNavigate();
+  const isUserLinkRegex = /\/user/;
 
+  /**
+   * @param {string} to
+   */
   function hndItemClick(e,to) {
-    e.preventDefault()
+    e.preventDefault();
     showMenuHnd(false);
-    navigate(to);
+    if(isUserLinkRegex.test(to)){
+      if(isSignedIn){
+        navigate(to);
+      } else {
+        showSignInHnd(true)
+      }
+    } else {
+      navigate(to);
+    }
   }
   function hndBlankClick(e) {
     let target = e.target;

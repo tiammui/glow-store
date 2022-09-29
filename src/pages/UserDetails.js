@@ -5,10 +5,9 @@ import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { nanoid } from 'nanoid';
 
 import { getCurrentUser, getUserOrders } from './../helpers';
-
 import { Spacer, OrderCard } from './../components/components';
 
-export default function () {
+export default function ({currentUser,showSignInHnd}) {
   let navigate = useNavigate();
   let userInfo = getCurrentUser();
   let [userForm, setUserForm] = useState({
@@ -20,7 +19,19 @@ export default function () {
 
   useEffect(function () {
     window.scrollTo(0, 0);
+    if(!currentUser.uid){
+      showSignInHnd(true)
+      navigate('/');
+    }  
+
   }, []);
+
+  useEffect(()=>{
+    if(!currentUser.uid){
+      showSignInHnd(true)
+      navigate('/');
+    }  
+  })
 
   function handleInput(e) {
     let { name, value } = e.target;

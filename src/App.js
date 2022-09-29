@@ -43,8 +43,11 @@ export default function App() {
         setShowSignIn(false)
         setCurrentUser(user);
         snack("Signed in as " + user.email,"success" )
+
+        // update cart
       } else {
         setCurrentUser({});
+        // clear cart
       }
     })
     return unsubscribe
@@ -123,7 +126,7 @@ export default function App() {
   return (
     <>
       <TopBar showSignInHnd={setShowSignIn} showMenuHnd={setShowMenu} cartQuantity={cartQuantity} isSignedIn={!!currentUser.uid} />
-      <Menu showMenu={showMenu} showMenuHnd={setShowMenu} />
+      <Menu showSignInHnd={setShowSignIn} isSignedIn={!!currentUser.uid} showMenu={showMenu} showMenuHnd={setShowMenu} />
 
       <div id="main-container">
         <Routes>
@@ -143,7 +146,7 @@ export default function App() {
           />
           <Route path="checkout" element={<CheckOut cart={cart} />} />
 
-          <Route path="user" element={<UserDetails />} />
+          <Route path="user" element={<UserDetails showSignInHnd={setShowSignIn} currentUser={currentUser} />} />
           <Route path="user/orders/:orderId" element={<OrderDetails />} />
 
           <Route path="contacts" element={<Contacts />} />

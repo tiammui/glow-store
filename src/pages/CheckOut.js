@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMoneyCheck } from '@fortawesome/free-solid-svg-icons';
-
 import { nanoid } from 'nanoid';
+import { PaystackButton } from 'react-paystack'
 
 import { Spacer } from './../components/components';
 import {
@@ -24,6 +24,23 @@ export default function ({ cart }) {
     ...userInfo.contact,
     name: `${userInfo.lastname} ${userInfo.firstname}`,
   });
+  const componentProps = {
+    email:"tiammui@gmail.com",
+    amount:1000,
+    metadata: {
+      name:"Muisc",
+      phone:"08083524016",
+    },// can contain stringified OrderMaker object
+    publicKey:"pk_test_8ae9b5e5e2ab00f462acab267d072b69217fa3f1",
+    text: "Pay Now",
+    onSuccess: (ref) =>{
+
+      alert("Thanks for doing business with us! Come back soon!! ");
+
+      console.log(ref);
+    },
+    onClose: () => alert("Wait! You need this oil, don't go!!!!"),
+  } 
 
   useEffect(function () {
     window.scrollTo(0, 0);
@@ -229,6 +246,8 @@ export default function ({ cart }) {
           </div>
 
           <div className="paystack"></div>
+
+          <PaystackButton className="" {...componentProps} />
 
           <div className="order-btn-con">
             <button className="serious-btn" title="place order">
