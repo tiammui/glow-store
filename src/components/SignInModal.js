@@ -12,10 +12,17 @@ export default function ({ showSignIn, showSignInHnd, uiConfig, authUI }) {
 
   useEffect(() => {
     authUI.start('#sign-in-ui', uiConfig);
-  },[]);
+  },[showSignIn]);
 
+  function hndBlankClick(e) {
+    let target = e.target;
+
+    if (e.currentTarget == target) {
+      showSignInHnd(false);
+    }
+  }
   return (
-    <div id="sign-in-modal" className={`modal ${showSignIn ? ' show' : ''}`}>
+    <div id="sign-in-modal" className={`modal ${showSignIn ? ' show' : ''}`} onClick={hndBlankClick}>
       <div className="content">
         <button className="remove" onClick={() => showSignInHnd(false)} title="Close modal">
           <FontAwesomeIcon icon={faTimes} className="icon" />

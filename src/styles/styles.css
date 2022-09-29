@@ -462,6 +462,53 @@ h3 {
   color: white;
 }
 
+.auth-menu{
+  position: relative;
+  display: inline-block;
+  width: fit-content;
+}
+.auth-menu .body{
+  display: none;
+  position: absolute;
+  content: '';
+  right: 0;
+  top: 100%;
+  width: fit-content;   
+  background-color: var( --color-secondary-bg);
+  border-radius: 8px;
+  box-shadow: var(--text-shadow);
+  padding: 0 10px;
+}
+.auth-menu .body::after{
+  content: " ";
+  position: absolute;
+  bottom: 100%;  /* At the top of the tooltip */
+  right: 10px;
+  border-width: 10px;
+  border-style: solid;
+  border-color: transparent transparent white transparent;
+}
+.auth-menu.signed-in:hover .body,.auth-menu.signed-in:focus .body{
+  display: inline-block;
+}
+.auth-menu .item {
+  display: flex;
+  height: 50px;
+  align-items: center;
+  border-bottom: var(--border-menu-item);
+  width: 200px;
+  background-color: transparent;
+}
+.auth-menu .icon {
+  margin: 0 15px;
+  font-size: 1rem;
+}
+.auth-menu.signed-in .icon-block{
+  color: var(--color-serious);
+  border: solid 2px;
+  border-radius: 50%;
+}
+
 .carousel {
   scroll-behavior: smooth;
   transition: 500ms;
@@ -622,6 +669,7 @@ h3 {
   width: 100%;
   height: 100%;
   background-color: var(--color-curtain-40);
+  overflow-y: auto;
 }
 .modal.show {
   display: block;

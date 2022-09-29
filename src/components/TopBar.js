@@ -5,7 +5,11 @@ import {
   faBars,
   faShoppingCart,
   faUserAlt,
+  faUserCircle,
+  faSignOut
 } from '@fortawesome/free-solid-svg-icons';
+
+import { auth } from './../firebase';
 
 import { snack } from './../helpers';
 // import {SignInModal} from './bigComponents'
@@ -17,6 +21,12 @@ export default function ({
   isSignedIn,
 }) {
   let navigate = useNavigate();
+
+  function hndSignOut() {
+    auth.signOut().then(() => {
+      snack("Signed out", 'info')
+    });
+  }
   return (
     <div id="top-bar">
       <button
@@ -34,23 +44,27 @@ export default function ({
         />
       </Link>
       <div>
-        <button
-          className="icon-block cart"
-          style={
-            isSignedIn
-              ? {
-                  color: 'var(--color-serious)',
-                  border: 'solid 2px',
-                  borderRadius: '50%',
-                }
-              : {}
-          }
-          onClick={() => {
-            isSignedIn ? navigate('/user') : showSignInHnd(true);
-          }}
-        >
-          <FontAwesomeIcon icon={faUserAlt} />
-        </button>
+        <div className={`auth-menu ${isSignedIn? 'signed-in':''}`}>
+          <button
+            className="icon-block cart"
+            title={isSignedIn ? '' : 'Sign in / Sign up'}
+            onClick={() => {
+              isSignedIn ? null : showSignInHnd(true);
+            }}
+          >
+            <FontAwesomeIcon icon={faUserAlt} />
+          </button>
+          <div className="body">
+            <button className="item" onClick={() => navigate('/user')}>
+              <FontAwesomeIcon icon={faUserCircle} className="icon" />
+              Your Account
+            </button>
+            <button className="item" onClick={hndSignOut}>
+              <FontAwesomeIcon icon={faSignOut} className="icon" />
+              Sign out
+            </button>
+          </div>
+        </div>
 
         <button
           className="icon-block cart"

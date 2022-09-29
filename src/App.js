@@ -22,7 +22,7 @@ import Footer from './components/Footer';
 import Menu from './components/Menu';
 import SignInModal from './components/SignInModal';
 import { SnackBar } from './components/bigComponents';
-import { getCart, getProduct, indexOfObject } from './helpers';
+import { getCart, getProduct, indexOfObject,snack } from './helpers';
 import { CartItemMaker } from './mockbase';
 
 export default function App() {
@@ -40,7 +40,9 @@ export default function App() {
     });
     let unsubscribe = auth.onAuthStateChanged((user)=>{
       if(user){
+        setShowSignIn(false)
         setCurrentUser(user);
+        snack("Signed in as " + user.email,"success" )
       } else {
         setCurrentUser({});
       }
