@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
 import WebFont from 'webfontloader';
 
-import firebase, {auth,uiConfig,authUI} from './firebase'
+import firebase, { auth, uiConfig, authUI } from './firebase';
 import './styles/App.css';
 import './styles/styles.css';
 import './styles/desktop.css';
@@ -22,11 +22,11 @@ import Footer from './components/Footer';
 import Menu from './components/Menu';
 import SignInModal from './components/SignInModal';
 import { SnackBar } from './components/bigComponents';
-import { getCart, getProduct, indexOfObject,snack } from './helpers';
+import { localCart, getProduct, indexOfObject, snack } from './helpers';
 import { CartItemMaker } from './mockbase';
 
 export default function App() {
-  const [cart, setCart] = useState(getCart());
+  const [cart, setCart] = useState(localCart());
   const [cartQuantity, setCartQuantity] = useState(0);
   const [showMenu, setShowMenu] = useState(false);
   const [showSignIn, setShowSignIn] = useState(false);
@@ -38,19 +38,21 @@ export default function App() {
         families: ['Lato'],
       },
     });
-    let unsubscribe = auth.onAuthStateChanged((user)=>{
-      if(user){
-        setShowSignIn(false)
+    let unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        setShowSignIn(false);
         setCurrentUser(user);
-        snack("Signed in as " + user.email,"success" )
+        snack('Signed in as ' + user.email, 'success');
 
-        // update cart
+        // TODO - update cart
+        setCart();
       } else {
         setCurrentUser({});
-        // clear cart
+        // reset cart
+        setCart(localCart());
       }
-    })
-    return unsubscribe
+    });
+    return unsubscribe;
   }, []);
 
   useEffect(() => {
@@ -63,7 +65,11 @@ export default function App() {
           )); // reduce return the complete element of an array if it length == 1
 
     setCartQuantity(quantity);
-    // update firestore
+    if (currentUser.uid) {
+      // TODO - update firestore
+    } else {
+      localCart(cart);
+    }
   }, [cart]);
 
   /**
@@ -125,8 +131,18 @@ export default function App() {
 
   return (
     <>
-      <TopBar showSignInHnd={setShowSignIn} showMenuHnd={setShowMenu} cartQuantity={cartQuantity} isSignedIn={!!currentUser.uid} />
-      <Menu showSignInHnd={setShowSignIn} isSignedIn={!!currentUser.uid} showMenu={showMenu} showMenuHnd={setShowMenu} />
+      <TopBar
+        showSignInHnd={setShowSignIn}
+        showMenuHnd={setShowMenu}
+        cartQuantity={cartQuantity}
+        isSignedIn={!!currentUser.uid}
+      />
+      <Menu
+        showSignInHnd={setShowSignIn}
+        isSignedIn={!!currentUser.uid}
+        showMenu={showMenu}
+        showMenuHnd={setShowMenu}
+      />
 
       <div id="main-container">
         <Routes>
@@ -146,7 +162,15 @@ export default function App() {
           />
           <Route path="checkout" element={<CheckOut cart={cart} />} />
 
-          <Route path="user" element={<UserDetails showSignInHnd={setShowSignIn} currentUser={currentUser} />} />
+          <Route
+            path="user"
+            element={
+              <UserDetails
+                showSignInHnd={setShowSignIn}
+                currentUser={currentUser}
+              />
+            }
+          />
           <Route path="user/orders/:orderId" element={<OrderDetails />} />
 
           <Route path="contacts" element={<Contacts />} />
@@ -157,7 +181,12 @@ export default function App() {
 
       <Footer />
       <SnackBar />
-      <SignInModal uiConfig={uiConfig} showSignIn={showSignIn} showSignInHnd={setShowSignIn} authUI={authUI} />
+      <SignInModal
+        uiConfig={uiConfig}
+        showSignIn={showSignIn}
+        showSignInHnd={setShowSignIn}
+        authUI={authUI}
+      />
     </>
   );
 }

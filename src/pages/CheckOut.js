@@ -3,16 +3,18 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMoneyCheck } from '@fortawesome/free-solid-svg-icons';
 import { nanoid } from 'nanoid';
-import { PaystackButton } from 'react-paystack'
+import { PaystackButton } from 'react-paystack';
 
 import { Spacer } from './../components/components';
 import {
+  capitalise,
   getCurrentUser,
   formatAddress,
   cartCost,
   cartItemCost,
   getProduct,
   getDeliveryFee,
+  getDeliveryCity,
 } from './../helpers';
 import { OrderMaker } from './../mockbase';
 
@@ -25,22 +27,21 @@ export default function ({ cart }) {
     name: `${userInfo.lastname} ${userInfo.firstname}`,
   });
   const componentProps = {
-    email:"tiammui@gmail.com",
-    amount:1000,
+    email: 'tiammui@gmail.com',
+    amount: 1000,
     metadata: {
-      name:"Muisc",
-      phone:"08083524016",
-    },// can contain stringified OrderMaker object
-    publicKey:"pk_test_8ae9b5e5e2ab00f462acab267d072b69217fa3f1",
-    text: "Pay Now",
-    onSuccess: (ref) =>{
-
-      alert("Thanks for doing business with us! Come back soon!! ");
+      name: 'Muisc',
+      phone: '08083524016',
+    }, // can contain stringified OrderMaker object
+    publicKey: 'pk_test_8ae9b5e5e2ab00f462acab267d072b69217fa3f1',
+    text: 'Pay Now',
+    onSuccess: (ref) => {
+      alert('Thanks for doing business with us! Come back soon!! ');
 
       console.log(ref);
     },
     onClose: () => alert("Wait! You need this oil, don't go!!!!"),
-  } 
+  };
 
   useEffect(function () {
     window.scrollTo(0, 0);
@@ -59,7 +60,7 @@ export default function ({ cart }) {
     let order = new OrderMaker();
 
     // initiate payment, verify payment, send order and clear cart
-  } 
+  }
   return (
     <div id="checkout">
       <h2>
@@ -151,10 +152,17 @@ export default function ({ cart }) {
                 onInput={handleInput}
               >
                 <option value="">-- Choose city</option>
-                <option value="ikeja">Ikeja</option>
+                {getDeliveryCity(orderForm.state, orderForm.country).map(
+                  (city) => (
+                    <option key={nanoid()} value={city}>
+                      {capitalise(city)}
+                    </option>
+                  )
+                )}
+                {/* <option value="ikeja">Ikeja</option>
                 <option value="yaba">Yaba</option>
                 <option value="ikorodu">Ikorodu</option>
-                <option value="oshodi">Oshodi</option>
+                <option value="oshodi">Oshodi</option> */}
               </select>
             </div>
             <div className="input">
@@ -218,12 +226,15 @@ export default function ({ cart }) {
               </tr>
               <tr className="foot">
                 <td>TOTAL</td>
-                <td>₦
-                  {cartCost(cart) + getDeliveryFee(
-                    orderForm.city,
-                    orderForm.state,
-                    orderForm.country
-                  )}</td>
+                <td>
+                  ₦
+                  {cartCost(cart) +
+                    getDeliveryFee(
+                      orderForm.city,
+                      orderForm.state,
+                      orderForm.country
+                    )}
+                </td>
               </tr>
             </table>
             <p>

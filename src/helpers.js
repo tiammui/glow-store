@@ -1,4 +1,8 @@
+import firebase from 'firebase';
+
 import { ProductMaker, CartItemMaker, UserMaker, deliveryBilling, initObj,OrderMaker } from './mockbase';
+
+
 
 export function addNumSeparator(num) {
   const numStr = num + '';
@@ -77,12 +81,34 @@ export function formatAddress(street,city,state,country){
   return `${street}, ${city}, ${state}, ${country}`
 }
 
+export function localCart(cart) {
+  /**
+   * @param {{cart:[],lastUpdate:number}}
+   */
+  let localisedCart;
+  let LOCAL_CART_STORAGE_KEY = "cart"
+  if(cart){
+    // update localStorage
+    localisedCart = {cart,lastUpdate:Date.now())};
+    return localStorage.setItem(LOCAL_CART_STORAGE_KEY,JSON.stringify(localisedCart))
+  }
+  // return cart from localStorage
+  localisedCart = JSON.parse(localStorage.getItem(LOCAL_CART_STORAGE_KEY))
 
-export function getCart(userId) {
-  // if the user is logged in fetch their saved cart from firebase, if not check localStorage
-  var cart = [];
+  // 7 days == 604,800 seconds == 604,800,000 milliseconds
 
-  return cart;
+  if((Date.now() - localisedCart.lastUpdate) > 604800000){
+    // last day updated is more than 7 days, clear localStorage
+    localStorage.removeItem(LOCAL_CART_STORAGE_KEY);
+    return [];
+  }else{
+    localisedCart.cart
+  }
+}
+
+export function getDeliveryCity(state,country){
+  // can fetch from firebase as well
+  return Object.keys(deliveryBilling[country][state]);
 }
 
 export function getDeliveryFee(city,state,country){
@@ -91,10 +117,17 @@ export function getDeliveryFee(city,state,country){
 }
 
 export function getInitObject(){
-  // can fetch from firebase as well
+  // may fetch from firebase in future update, can be gotten locally for now
   return initObj;
 }
 
+// getFireInitDoc
+// getFireOrder
+// getFireProduct
+// getFireUserDoc
+// queryFireProducts
+// updateFireUserDoc
+// fireUserDocExists
 export function getProduct(productId) {
   // check for product locally, if not found fetch from firebase
   // should be intelligent enough to only fetch a document once, e.g while fetching a document it should not allow another fetching of that same document until fetched 
@@ -102,8 +135,8 @@ export function getProduct(productId) {
   return new ProductMaker();
 }
 
-export function getCurrentUser(){
-  // get auth info of current user, then use it to fetch user's doc
+export function getUserDoc(){
+  // get user's doc
   return new UserMaker()
 }
 
@@ -116,7 +149,7 @@ export function getOrder(orderId){
 }
 
 export function getUserOrders(){
-  let userInfo = getCurrentUser();
+  let userInfo = getUserDOc();
 
   return userInfo.orders
 }
@@ -225,3 +258,7 @@ export function snack(snackMsg, type) {
   }, delay);
 }
 
+
+function cacheEngine(){
+
+}
