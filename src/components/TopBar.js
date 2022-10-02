@@ -31,13 +31,14 @@ export default function ({
     <div id="top-bar">
       <button
         className="icon-block"
+        title='Open menu'
         onClick={() => {
           showMenuHnd(true);
         }}
       >
         <FontAwesomeIcon icon={faBars} />
       </button>
-      <Link to="/" className="logo">
+      <Link to="/" className="logo" title='Go to homepage'>
         <img
           src="https://storage.cloud.google.com/glow-dab38.appspot.com/general/logo_topbar.png?alt=media"
           alt="logo"
@@ -47,7 +48,7 @@ export default function ({
         <div className={`auth-menu ${isSignedIn? 'signed-in':''}`}>
           <button
             className="icon-block cart"
-            title={isSignedIn ? '' : 'Sign in / Sign up'}
+            title={isSignedIn ? 'Your Account' : 'Sign in / Sign up'}
             onClick={() => {
               isSignedIn ? null : showSignInHnd(true);
             }}
@@ -68,6 +69,7 @@ export default function ({
 
         <button
           className="icon-block cart"
+          title='See your cart'
           onClick={() => navigate('/cart')}
           // onClick={() => {snack('djdshjhds', 'success')}}
         >

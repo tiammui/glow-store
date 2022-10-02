@@ -12,13 +12,12 @@ import {
   formatAddress,
   cartCost,
   cartItemCost,
-  getProduct,
   getDeliveryFee,
   getDeliveryCity,
 } from './../helpers';
 import { OrderMaker } from './../mockbase';
 
-export default function ({ cart }) {
+export default function ({ cart, getProduct }) {
   let navigate = useNavigate();
   let userInfo = getCurrentUser();
   let [orderForm, setOrderForm] = useState({

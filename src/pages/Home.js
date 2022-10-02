@@ -7,9 +7,9 @@ import {
   CatSectionItem,
   ProductCard,
 } from './../components/components';
-import { capitalise, range, getProduct,getInitObject } from './../helpers';
+import { capitalise, range, getInitObject } from './../helpers';
 
-export default function ({ cartHandler }) {
+export default function ({ cartHandler,getProduct }) {
   let [activeNavigator, setActiveNavigator] = useState(0); // activeNavigator is 0 indexed
 
   /**
@@ -52,6 +52,7 @@ export default function ({ cartHandler }) {
               productId={productId}
               key={nanoid()}
               cartHandler={cartHandler}
+              getProduct={getProduct}
             />
           ))}
         </ul>
@@ -82,7 +83,7 @@ export default function ({ cartHandler }) {
       <h2>Fresh Products</h2>
       <div className="product-card-con">
         {range(2).map(() => (
-          <ProductCard cartHandler={cartHandler} key={nanoid()} />
+          <ProductCard cartHandler={cartHandler} key={nanoid()} getProduct={getProduct} />
         ))}
 
         <div className="clear-fix"></div>
@@ -92,7 +93,7 @@ export default function ({ cartHandler }) {
       <h2>Trending</h2>
       <div className="product-card-con">
         {range(3).map(() => (
-          <ProductCard cartHandler={cartHandler} key={nanoid()} />
+          <ProductCard cartHandler={cartHandler} key={nanoid()} getProduct={getProduct} />
         ))}
         <div className="clear-fix"></div>
         <Link to="/products/category/trending">See all trending products</Link>

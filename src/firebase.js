@@ -62,15 +62,19 @@ export const auth = firebase.auth();
 export const authUI =
   firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(auth);
 
-export async function getFireInitDoc() {
-  let initDoc = await db
-    .doc('General/init')
-    .get()
-    .then((docSnap) => docSnap.data())
-    .catch(console.log);
+/**
+ * Can be used in future, but not needed now
+ */
+  // async function getFireInitDoc() {
+  //   let initDoc = await db
+  //     .doc('General/init')
+  //     .get()
+  //     .then((docSnap) => docSnap.data())
+  //     .catch(console.log);
 
-  return initDoc;
-}
+  //   return initDoc;
+  // }
+
 export async function getFireOrder(orderId) {
   let orderDoc = await db
     .doc('orders/' + orderId)
@@ -101,17 +105,20 @@ export async function getFireUserDoc(userId) {
 /**
  * @param {""|'category'|'discount'|'price'} by
  * @param {{category:string,minValue:number,maxValue:number}} valueOption
- * @param {{docsPerPage:number,lastDocObj:{},pagesToFetch:number}} paginateOption
+ * @param {{lastDocObj:{},docsToFetch:number}} paginateOption
  */
 export async function queryFireProducts(by, valueOption, paginateOption) {
   if (by == 'category') {
+
+    // check for if valueOption.category === "all", to handle query differently
+
     if (paginateOption.lastDocObj) {
       return await db
         .collection('products')
         .where(by, '==', valueOption.category)
         .orderBy('price')
         .startAfter(paginateOption.lastDocObj)
-        .limit(paginateOption.docsPerPage * paginateOption.pagesToFetch)
+        .limit(paginateOption.docsToFetch)
         .get()
         .then((querySnap) => querySnap.docs);
     }
@@ -120,7 +127,7 @@ export async function queryFireProducts(by, valueOption, paginateOption) {
       .collection('products')
       .where(by, '==', valueOption.category)
       .orderBy('price')
-      .limit(paginateOption.docsPerPage)
+      .limit(paginateOption.docsToFetch)
       .get()
       .then((querySnap) => querySnap.docs);
   }

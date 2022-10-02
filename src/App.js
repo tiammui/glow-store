@@ -2,7 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
 import WebFont from 'webfontloader';
 
-import firebase, { auth, uiConfig, authUI } from './firebase';
+import firebase, {
+  auth,
+  uiConfig,
+  authUI,
+  getFireProduct,
+  queryFireProducts,
+} from './firebase';
 import './styles/App.css';
 import './styles/styles.css';
 import './styles/desktop.css';
@@ -22,15 +28,17 @@ import Footer from './components/Footer';
 import Menu from './components/Menu';
 import SignInModal from './components/SignInModal';
 import { SnackBar } from './components/bigComponents';
-import { localCart, getProduct, indexOfObject, snack } from './helpers';
-import { CartItemMaker } from './mockbase';
+import { localCart, indexOfObject, snack } from './helpers';
+import { CartItemMaker, ProductMaker } from './mockbase';
 
 export default function App() {
   const [cart, setCart] = useState(localCart());
   const [cartQuantity, setCartQuantity] = useState(0);
+  const [currentUser, setCurrentUser] = useState({});
+  const [productsCache, setProductsCache] = useState({}); // productCache: {[productId:string]:ProductMaker}
+  const [categoriesCache, setCategoriesCache] = useState({}); // categoryCache: {[category:string]:productId[]}
   const [showMenu, setShowMenu] = useState(false);
   const [showSignIn, setShowSignIn] = useState(false);
-  const [currentUser, setCurrentUser] = useState({});
 
   useEffect(() => {
     WebFont.load({
@@ -129,6 +137,98 @@ export default function App() {
     // if user is logged-in,after any operation update user cart on firebase, if not save to localStorage
   }
 
+  /**
+   * Intelligently manage the getting of product info (from database and locally)
+   * @params {string} productId
+   * @return {ProductMaker || false} return false if product with the `productId` doesn't exist, or product can't be currently fetched
+   */
+  async function getProduct(productId) {
+    productId = '100001';
+    // check for product in `productCache`, if not found fetch from firebase
+
+    // if an error occur while fetching a document, how should i handle it?
+
+    let product = {};
+    if (!productsCache[productId]) {
+      // fetch from firebase
+      product = await getFireProduct(productId);
+
+      if (product)
+        setProductsCache((prev) => ({ ...prev, [product.id]: product }));
+    } else {
+      // fetch from productCache
+      product = productsCache[productId];
+    }
+
+    return product;
+  }
+
+  // async function getBulkProduct(){}
+
+  /**
+   * @param {""} category
+   * @param {number} currentPage
+   * @return {ProductMaker[] || false} return false if products can't be fetched
+   */
+  async function getCategoryProducts(category, currentPage) {
+    // manage caching of result to `productCache` and `queryCache`
+    let DOCS_PER_PAGE = 10;
+    let products = [];
+    let productIDs = [];
+    let expectedCacheLen = DOCS_PER_PAGE * currentPage;
+
+    if (categoriesCache[category]) {
+      // category has been cached before
+
+      if (categoriesCache[category].length >= expectedCacheLen) {
+        // docs needed for current page is cached
+
+        products = getDocs(expectedCacheLen - DOCS_PER_PAGE, expectedCacheLen);
+      } else {
+        // docs needed for current page is not cached, fetch needed docs from after last fetched doc
+        products = fetchDocs(
+          expectedCacheLen - categoriesCache[category].length,
+          productsCache[
+            categoriesCache[category][categoriesCache[category].length - 1]
+          ]
+        );
+      }
+    } else {
+      // category has not been cached before, fetch docs from firebase and cache appropriately in `productCache` and `queryCache`
+      products = fetchDocs(DOCS_PER_PAGE * currentPage);
+    }
+
+    return products;
+
+    function fetchDocs(docsToFetch, lastDocObj) {
+      let result = await queryFireProducts(
+        category,
+        { category },
+        { docsToFetch, lastDocObj }
+      );
+
+      productIDs = result.map((product) => {
+        // cache each product and return the product id
+        setProductsCache((prev) => ({ ...prev, [product.id]: product }));
+        return product.id;
+      });
+
+      setCategoriesCache((prev) => ({ ...prev, [category]: productIDs }));
+
+      // return last ten doc in the category cache, that way if fetched doc is not up to expected at least some product will show
+      let amtIsSmall = categoriesCache[category].length <= 10;
+      return getDocs(
+        amtIsSmall ? 0 : categoriesCache[category].length - 10,
+        categoriesCache[category].length
+      );
+    }
+    function getDocs(start, end) {
+      let result = categoriesCache[category].slice(start, end);
+
+      return result.map((productId) => productsCache[productId]);
+    }
+  }
+
   return (
     <>
       <TopBar
@@ -146,7 +246,10 @@ export default function App() {
 
       <div id="main-container">
         <Routes>
-          <Route path="/" element={<Home cartHandler={cartHandler} />} />
+          <Route
+            path="/"
+            element={<Home cartHandler={cartHandler} getProduct={getProduct} />}
+          />
           <Route path="products" element={<ProductCategory filter="All" />} />
           <Route
             path="products/category/:category"
@@ -154,13 +257,28 @@ export default function App() {
           />
           <Route
             path="products/:productId"
-            element={<ProductDetails cart={cart} cartHandler={cartHandler} />}
+            element={
+              <ProductDetails
+                cart={cart}
+                cartHandler={cartHandler}
+                getProduct={getProduct}
+              />
+            }
           />
           <Route
             path="cart"
-            element={<Cart cart={cart} cartHandler={cartHandler} />}
+            element={
+              <Cart
+                cart={cart}
+                cartHandler={cartHandler}
+                getProduct={getProduct}
+              />
+            }
           />
-          <Route path="checkout" element={<CheckOut cart={cart} />} />
+          <Route
+            path="checkout"
+            element={<CheckOut cart={cart} getProduct={getProduct} />}
+          />
 
           <Route
             path="user"

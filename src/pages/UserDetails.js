@@ -7,7 +7,7 @@ import { nanoid } from 'nanoid';
 import { getCurrentUser, getUserOrders } from './../helpers';
 import { Spacer, OrderCard } from './../components/components';
 
-export default function ({currentUser,showSignInHnd}) {
+export default function ({ currentUser, showSignInHnd }) {
   let navigate = useNavigate();
   let userInfo = getCurrentUser();
   let [userForm, setUserForm] = useState({
@@ -19,19 +19,18 @@ export default function ({currentUser,showSignInHnd}) {
 
   useEffect(function () {
     window.scrollTo(0, 0);
-    if(!currentUser.uid){
-      showSignInHnd(true)
+    if (!currentUser.uid) {
+      showSignInHnd(true);
       navigate('/');
-    }  
-
+    }
   }, []);
 
-  useEffect(()=>{
-    if(!currentUser.uid){
-      showSignInHnd(true)
+  useEffect(() => {
+    if (!currentUser.uid) {
+      showSignInHnd(true);
       navigate('/');
-    }  
-  })
+    }
+  });
 
   function handleInput(e) {
     let { name, value } = e.target;
@@ -48,8 +47,6 @@ export default function ({currentUser,showSignInHnd}) {
         />{' '}
         <Spacer space="5" />
         Your Account
-
-        
       </h2>
 
       <div>

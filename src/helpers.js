@@ -1,8 +1,13 @@
 import firebase from 'firebase';
 
-import { ProductMaker, CartItemMaker, UserMaker, deliveryBilling, initObj,OrderMaker } from './mockbase';
-
-
+import {
+  ProductMaker,
+  CartItemMaker,
+  UserMaker,
+  deliveryBilling,
+  initObj,
+  OrderMaker,
+} from './mockbase';
 
 export function addNumSeparator(num) {
   const numStr = num + '';
@@ -40,22 +45,22 @@ export function cartCost(cart) {
 
   if (!cart.length) return 0;
   if (cart.length == 1) {
-    var product = getProduct(cart[0].productId)
-    return totalCost(cart[0].quantity,product.price, product.discount)
+    var product = getProduct(cart[0].productId);
+    return totalCost(cart[0].quantity, product.price, product.discount);
   }
   const cost = cart.reduce((a, b, i) => {
     /**
      * @type {ProductMaker}
      */
     var bProduct = getProduct(b.productId);
-    let bCost = totalCost(b.quantity,bProduct.price, bProduct.discount);
+    let bCost = totalCost(b.quantity, bProduct.price, bProduct.discount);
 
     if (i == 1) {
       /**
        * @type {ProductMaker}
        */
       let aProduct = getProduct(a.productId);
-      let aCost = totalCost(a.quantity,aProduct.price, aProduct.discount);
+      let aCost = totalCost(a.quantity, aProduct.price, aProduct.discount);
 
       return aCost + bCost;
     } else {
@@ -74,84 +79,84 @@ export function cartItemCost(cartItem) {
   // discount is considered
   const { price, discount } = getProduct(cartItem.productId);
 
-  return totalCost(cartItem.quantity,price, discount);
+  return totalCost(cartItem.quantity, price, discount);
 }
 
-export function formatAddress(street,city,state,country){
-  return `${street}, ${city}, ${state}, ${country}`
+export function formatAddress(street, city, state, country) {
+  return `${street}, ${city}, ${state}, ${country}`;
 }
 
 export function localCart(cart) {
   /**
    * @param {{cart:[],lastUpdate:number}}
    */
-  let localisedCart;
-  let LOCAL_CART_STORAGE_KEY = "cart"
-  if(cart){
+  let localisedCart = {
+    cart: [],
+    lastUpdate: 0, // defaulted to zero, to make last updated date more than 7 days if localStorage for cart is empty
+  };
+  let LOCAL_CART_STORAGE_KEY = 'cart';
+
+  if (cart) {
     // update localStorage
-    localisedCart = {cart,lastUpdate:Date.now())};
-    return localStorage.setItem(LOCAL_CART_STORAGE_KEY,JSON.stringify(localisedCart))
+    localisedCart = { cart, lastUpdate: Date.now() };
+    return localStorage.setItem(
+      LOCAL_CART_STORAGE_KEY,
+      JSON.stringify(localisedCart)
+    );
   }
-  // return cart from localStorage
-  localisedCart = JSON.parse(localStorage.getItem(LOCAL_CART_STORAGE_KEY))
+
+  // return cart from localStorage, if local storage is empty use defaults to not break app
+  localisedCart =
+    JSON.parse(localStorage.getItem(LOCAL_CART_STORAGE_KEY)) || localisedCart;
 
   // 7 days == 604,800 seconds == 604,800,000 milliseconds
 
-  if((Date.now() - localisedCart.lastUpdate) > 604800000){
+  if (Date.now() - localisedCart.lastUpdate > 604800000) {
     // last day updated is more than 7 days, clear localStorage
     localStorage.removeItem(LOCAL_CART_STORAGE_KEY);
     return [];
-  }else{
-    localisedCart.cart
+  } else {
+    return localisedCart.cart;
   }
 }
 
-export function getDeliveryCity(state,country){
+export function getDeliveryCity(state, country) {
   // can fetch from firebase as well
   return Object.keys(deliveryBilling[country][state]);
 }
 
-export function getDeliveryFee(city,state,country){
+export function getDeliveryFee(city, state, country) {
   // can fetch from firebase as well
   return deliveryBilling[country][state][city];
 }
 
-export function getInitObject(){
+export function getInitObject() {
   // may fetch from firebase in future update, can be gotten locally for now
   return initObj;
 }
 
-// getFireInitDoc
 // getFireOrder
 // getFireProduct
 // getFireUserDoc
 // queryFireProducts
 // updateFireUserDoc
 // fireUserDocExists
-export function getProduct(productId) {
-  // check for product locally, if not found fetch from firebase
-  // should be intelligent enough to only fetch a document once, e.g while fetching a document it should not allow another fetching of that same document until fetched 
-
-  return new ProductMaker();
-}
-
-export function getUserDoc(){
+export function getUserDoc() {
   // get user's doc
-  return new UserMaker()
+  return new UserMaker();
 }
 
-export function getOrder(orderId){
+export function getOrder(orderId) {
   // check for order locally, if not found fetch from firebase
-  // should be intelligent enough to only fetch a document once, e.g while fetching a document it should not allow another fetching of that same document until fetched 
+  // should be intelligent enough to only fetch a document once, e.g while fetching a document it should not allow another fetching of that same document until fetched
 
-
-  return new OrderMaker()
+  return new OrderMaker();
 }
 
-export function getUserOrders(){
+export function getUserOrders() {
   let userInfo = getUserDOc();
 
-  return userInfo.orders
+  return userInfo.orders;
 }
 
 /**
@@ -172,16 +177,20 @@ export function indexOfObject(array, property, searchTerm) {
 /**
  * @param { OrderProductMaker[] } orderProducts
  */
-export function orderCost(orderProducts){
+export function orderCost(orderProducts) {
   if (!orderProducts.length) return 0;
   if (orderProducts.length == 1) {
-    return totalCost(orderProducts[0].quantity,orderProducts[0].price, orderProducts[0].discount)
+    return totalCost(
+      orderProducts[0].quantity,
+      orderProducts[0].price,
+      orderProducts[0].discount
+    );
   }
 
-  const cost = orderProducts.reduce((a,b,i)=>{
-    let bCost = totalCost(b.quantity,b.price, b.discount);
+  const cost = orderProducts.reduce((a, b, i) => {
+    let bCost = totalCost(b.quantity, b.price, b.discount);
     if (i == 1) {
-      let aCost = totalCost(a.quantity,a.price, a.discount);
+      let aCost = totalCost(a.quantity, a.price, a.discount);
 
       return aCost + bCost;
     } else {
@@ -190,19 +199,18 @@ export function orderCost(orderProducts){
   });
 
   return cost;
-
 }
 
 /**
  * @param { OrderProductMaker[] } orderProducts
  */
-export function orderItemAmt(orderProducts){
+export function orderItemAmt(orderProducts) {
   if (!orderProducts.length) return 0;
   if (orderProducts.length == 1) {
-    return orderProducts[0].quantity
+    return orderProducts[0].quantity;
   }
 
-  const amount = orderProducts.reduce((a,b,i)=>{
+  const amount = orderProducts.reduce((a, b, i) => {
     let bAmt = b.quantity;
     if (i == 1) {
       let aAmt = a.quantity;
@@ -211,10 +219,9 @@ export function orderItemAmt(orderProducts){
     } else {
       a + bAmt;
     }
+  });
 
-  })
-
-  return amount
+  return amount;
 }
 
 export function paginateCat(pageNum) {
@@ -232,8 +239,8 @@ export function range(size) {
   return sequence;
 }
 
-export function totalCost(quantity,price,discount){
-  return quantity * calcDiscount(price, discount)
+export function totalCost(quantity, price, discount) {
+  return quantity * calcDiscount(price, discount);
 }
 
 /**
@@ -258,7 +265,4 @@ export function snack(snackMsg, type) {
   }, delay);
 }
 
-
-function cacheEngine(){
-
-}
+function cacheEngine() {}

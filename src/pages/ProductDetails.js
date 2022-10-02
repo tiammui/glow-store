@@ -10,9 +10,9 @@ import {
   SmallProductCard,
   DiscountTag,
 } from './../components/components';
-import { getProduct, indexOfObject, capitalise, range } from './../helpers';
+import { indexOfObject, capitalise, range } from './../helpers';
 
-export default function ({ cart, cartHandler }) {
+export default function ({ cart, cartHandler, getProduct }) {
   let productId = useParams().productId;
   let [activeThumbIndex, setActiveThumbIndex] = useState(0);
 
@@ -80,7 +80,7 @@ export default function ({ cart, cartHandler }) {
       <div className="carousel product-card-small-con">
         <ul>
           {range(10).map(() => (
-            <SmallProductCard key={nanoid()} />
+            <SmallProductCard getProduct={getProduct} key={nanoid()} />
           ))}
         </ul>
       </div>
@@ -89,7 +89,7 @@ export default function ({ cart, cartHandler }) {
       <div className="carousel product-card-small-con">
         <ul>
           {range(10).map(() => (
-            <SmallProductCard key={nanoid()} />
+            <SmallProductCard getProduct={getProduct} key={nanoid()} />
           ))}
         </ul>
       </div>

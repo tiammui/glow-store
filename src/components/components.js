@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import {NumericFormat} from 'react-number-format';
+import { NumericFormat } from 'react-number-format';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faChevronLeft,
@@ -13,7 +13,6 @@ import {
 import { nanoid } from 'nanoid';
 
 import {
-  getProduct,
   calcDiscount,
   range,
   paginateCat,
@@ -37,15 +36,17 @@ export function AddToCartButton({ productId, isHeader, cartHandler }) {
   );
 }
 
-export function CartItem({ cartHandler, cartItem }) {
-  let product = getProduct(cartItem.productId);
+export async function CartItem({ cartHandler, cartItem, getProduct }) {
+  let product = await getProduct(cartItem.productId);
 
   return (
     <div className="cart-item">
       <div className="details">
         <div className="img"></div>
         <div className="info">
-          <Link to={`/products/${cartItem.productId}`} className="name">{product.name}</Link>
+          <Link to={`/products/${cartItem.productId}`} className="name">
+            {product.name}
+          </Link>
           <div className="priceCon">
             <ProductPrice price={product.price} discount={product.discount} />
           </div>
@@ -62,7 +63,11 @@ export function CartItem({ cartHandler, cartItem }) {
       <div className="total">
         Subtotal: <b>₦{cartItemCost(cartItem)}</b>
       </div>
-      <button className="remove" onClick={()=>cartHandler('remove',cartItem.productId)} title="Remove from cart">
+      <button
+        className="remove"
+        onClick={() => cartHandler('remove', cartItem.productId)}
+        title="Remove from cart"
+      >
         <FontAwesomeIcon icon={faTimes} />
       </button>
     </div>
@@ -96,8 +101,9 @@ export function DiscountTag({ discount, offset }) {
   );
 }
 
-export function HeaderItem({ productId, cartHandler }) {
-  let product = getProduct(productId);
+export async function HeaderItem({ productId, cartHandler, getProduct }) {
+  let product = await getProduct(productId);
+  console.log(product);
 
   return (
     <li className="item">
@@ -128,20 +134,27 @@ export function HotSaleTag({ offset }) {
   );
 }
 
-export function OrderCard({orderId}){
+export function OrderCard({ orderId }) {
   let order = getOrder(orderId);
-  return(
+  return (
     <div className="order-card">
       <div className="img"></div>
       <div className="details">
         <div className="title">Order {order.id}</div>
         <div>Placed on {order.timeStamp.toDateString()}</div>
         <div>Total: ₦{orderCost(order.products)}</div>
-        <div><b>{orderItemAmt(order.products)} Items</b></div>
-        <div>Status: <span className={`status ${order.status.toLowerCase()}`}>{capitalise(order.status.toLowerCase())}</span></div>
+        <div>
+          <b>{orderItemAmt(order.products)} Items</b>
+        </div>
+        <div>
+          Status:{' '}
+          <span className={`status ${order.status.toLowerCase()}`}>
+            {capitalise(order.status.toLowerCase())}
+          </span>
+        </div>
       </div>
     </div>
-  )
+  );
 }
 
 export function Pagination({ amtPage, setPage, currentPage }) {
@@ -201,8 +214,8 @@ export function Pagination({ amtPage, setPage, currentPage }) {
   );
 }
 
-export function ProductCard({ productId, cartHandler }) {
-  let product = getProduct(productId);
+export async function ProductCard({ productId, cartHandler, getProduct }) {
+  let product = await getProduct(productId);
 
   return (
     <div className="product-card">
@@ -256,8 +269,8 @@ export function Quantifier({ isForCart, cartItem, cartHandler }) {
   );
 }
 
-export function SmallProductCard({ productId }) {
-  let product = getProduct(productId);
+export async function SmallProductCard({ productId, getProduct }) {
+  let product = await getProduct(productId);
 
   return (
     <div className="product-card-small">

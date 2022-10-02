@@ -488,7 +488,7 @@ h3 {
   border-style: solid;
   border-color: transparent transparent white transparent;
 }
-.auth-menu.signed-in:hover .body,.auth-menu.signed-in:focus .body{
+.auth-menu.signed-in:hover .body,.auth-menu.signed-in:focus-within .body{
   display: inline-block;
 }
 .auth-menu .item {

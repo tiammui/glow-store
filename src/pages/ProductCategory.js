@@ -55,7 +55,7 @@ export default function ({ filter, cartHandler }) {
         <Pagination amtPage={10} currentPage={currentPaginate} setPage={setCurrentPaginate} />
         <p className="pager">{currentPaginate}/10</p>
         {range(1).map(() => (
-          <ProductCard cartHandler={cartHandler} key={nanoid()} />
+          <ProductCard getProduct={getProduct} cartHandler={cartHandler} key={nanoid()} />
         ))}
 
         <div className="clear-fix"></div>
@@ -67,12 +67,12 @@ export default function ({ filter, cartHandler }) {
       <div className="carousel product-card-small-con">
         <ul>
           {range(10).map(() => (
-            <SmallProductCard key={nanoid()} />
+            <SmallProductCard getProduct={getProduct} key={nanoid()} />
           ))}
         </ul>
         <ul>
           {range(10).map(() => (
-            <SmallProductCard key={nanoid()} />
+            <SmallProductCard getProduct={getProduct} key={nanoid()} />
           ))}
         </ul>
       </div>

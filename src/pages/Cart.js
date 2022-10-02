@@ -11,7 +11,7 @@ import { Spacer, SmallProductCard, CartItem } from './../components/components';
 import { CartEmpty } from './../components/bigComponents';
 import { cartCost, cartItemCost, range } from './../helpers';
 
-export default function ({ cart, cartHandler }) {
+export default function ({ cart, cartHandler, getProduct }) {
   let navigate = useNavigate()
   useEffect(function () {
     window.scrollTo(0, 0);
@@ -40,7 +40,7 @@ export default function ({ cart, cartHandler }) {
 
             <div className="cart-item-con">
               {cart.map((item) => (
-                <CartItem cartHandler={cartHandler} cartItem={item} />
+                <CartItem cartHandler={cartHandler} cartItem={item} getProduct={getProduct} />
               ))}
             </div>
 
@@ -62,7 +62,7 @@ export default function ({ cart, cartHandler }) {
       <div className="carousel product-card-small-con">
         <ul>
           {range(10).map(() => (
-            <SmallProductCard key={nanoid()} />
+            <SmallProductCard key={nanoid()} getProduct={getProduct} />
           ))}
         </ul>
       </div>
