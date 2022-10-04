@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { Link } from 'react-router-dom';
 import { NumericFormat } from 'react-number-format';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -36,8 +36,9 @@ export function AddToCartButton({ productId, isHeader, cartHandler }) {
   );
 }
 
-export async function CartItem({ cartHandler, cartItem, getProduct }) {
-  let product = await getProduct(cartItem.productId);
+export function CartItem({ cartHandler, cartItem, getProduct }) {
+  let [product,setProduct] = useState({});
+  getProduct(productId).then(setProduct)
 
   return (
     <div className="cart-item">
@@ -101,9 +102,9 @@ export function DiscountTag({ discount, offset }) {
   );
 }
 
-export async function HeaderItem({ productId, cartHandler, getProduct }) {
-  let product = await getProduct(productId);
-  console.log(product);
+export function HeaderItem({ productId, cartHandler, getProduct }) {
+  let [product,setProduct] = useState({});
+  getProduct(productId).then(setProduct)
 
   return (
     <li className="item">
@@ -214,8 +215,9 @@ export function Pagination({ amtPage, setPage, currentPage }) {
   );
 }
 
-export async function ProductCard({ productId, cartHandler, getProduct }) {
-  let product = await getProduct(productId);
+export function ProductCard({ productId, cartHandler, getProduct }) {
+  let [product,setProduct] = useState({});
+  getProduct(productId).then(setProduct)
 
   return (
     <div className="product-card">
@@ -269,8 +271,9 @@ export function Quantifier({ isForCart, cartItem, cartHandler }) {
   );
 }
 
-export async function SmallProductCard({ productId, getProduct }) {
-  let product = await getProduct(productId);
+export function SmallProductCard({ productId, getProduct }) {
+  let [product,setProduct] = useState({});
+  getProduct(productId).then(setProduct)
 
   return (
     <div className="product-card-small">

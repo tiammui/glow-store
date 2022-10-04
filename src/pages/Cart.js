@@ -62,7 +62,7 @@ export default function ({ cart, cartHandler, getProduct }) {
       <div className="carousel product-card-small-con">
         <ul>
           {range(10).map(() => (
-            <SmallProductCard key={nanoid()} getProduct={getProduct} />
+            <SmallProductCard productId="100001" key={nanoid()} getProduct={getProduct} />
           ))}
         </ul>
       </div>

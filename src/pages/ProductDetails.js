@@ -15,15 +15,17 @@ import { indexOfObject, capitalise, range } from './../helpers';
 export default function ({ cart, cartHandler, getProduct }) {
   let productId = useParams().productId;
   let [activeThumbIndex, setActiveThumbIndex] = useState(0);
-
-  let product = getProduct(productId);
+  let [product,setProduct] = useState({});
+  
   /** index of product cart */
   let cartIndex = indexOfObject(cart, 'productId', productId);
 
   useEffect(
     function () {
       window.scrollTo(0, 0);
+      getProduct(productId).then(setProduct);
       setActiveThumbIndex(0);
+
     },
     [productId]
   );
@@ -37,7 +39,7 @@ export default function ({ cart, cartHandler, getProduct }) {
             ) : null}
           </div>
           <div className="thumbnails">
-            {product.imgsURL.map((URL, i) => (
+            {product?.imgsURL?.map((URL, i) => (
               <div
                 key={nanoid()}
                 className={`thumb ${activeThumbIndex == i ? 'active' : ''}`}
@@ -80,7 +82,11 @@ export default function ({ cart, cartHandler, getProduct }) {
       <div className="carousel product-card-small-con">
         <ul>
           {range(10).map(() => (
-            <SmallProductCard getProduct={getProduct} key={nanoid()} />
+            <SmallProductCard
+              productId="100001"
+              getProduct={getProduct}
+              key={nanoid()}
+            />
           ))}
         </ul>
       </div>
@@ -89,7 +95,11 @@ export default function ({ cart, cartHandler, getProduct }) {
       <div className="carousel product-card-small-con">
         <ul>
           {range(10).map(() => (
-            <SmallProductCard getProduct={getProduct} key={nanoid()} />
+            <SmallProductCard
+              productId="100001"
+              getProduct={getProduct}
+              key={nanoid()}
+            />
           ))}
         </ul>
       </div>

@@ -22,7 +22,7 @@ export const deliveryBilling = {
 
 // CONSTRUCTORS
 export function CartItemMaker(productId, quantity) {
-  this.productId = productId || 333;
+  this.productId = productId || '100001';
   this.quantity = quantity || 5;
 }
 export function ProductMaker(
@@ -37,7 +37,7 @@ export function ProductMaker(
   hotSale,
   inStock
 ) {
-  this.id = id || 333;
+  this.id = id || '100001';
   this.category = category || 'cleanser';
   this.name = name || 'Arvil Cleanser';
   this.desc =
@@ -50,22 +50,15 @@ export function ProductMaker(
   this.inStock = inStock || 5;
 }
 export function OrderProductMaker(productId, price, discount, quantity) {
-  this.productId = productId || 333;
+  this.productId = productId || '100001';
   this.price = price || 12000;
   this.discount = discount || 10;
   this.quantity = quantity || 3;
 }
 export function HeadInfoMaker(productId) {
-  this.productId = productId || 333;
+  this.productId = productId || '100001';
 }
-export function OrderMaker(
-  id,
-  products,
-  address,
-  contact,
-  note,
-  status
-) {
+export function OrderMaker(id, products, address, contact, note, status) {
   address = address || {
     country: 'nigeria',
     state: 'lagos',

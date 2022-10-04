@@ -23,6 +23,7 @@ import OrderDetails from './pages/OrderDetails';
 import Contacts from './pages/Contacts';
 import UserDetails from './pages/UserDetails';
 import NotFound from './pages/NotFound';
+import AdminProductUpload from './pages/AdminProductUpload';
 import TopBar from './components/TopBar';
 import Footer from './components/Footer';
 import Menu from './components/Menu';
@@ -151,7 +152,9 @@ export default function App() {
     let product = {};
     if (!productsCache[productId]) {
       // fetch from firebase
-      product = await getFireProduct(productId);
+      await getFireProduct(productId).then((doc) => {
+        product = doc;
+      });
 
       if (product)
         setProductsCache((prev) => ({ ...prev, [product.id]: product }));
@@ -250,10 +253,10 @@ export default function App() {
             path="/"
             element={<Home cartHandler={cartHandler} getProduct={getProduct} />}
           />
-          <Route path="products" element={<ProductCategory filter="All" />} />
+          <Route path="products" element={<ProductCategory filter="All" getProduct={getProduct} cartHandler={cartHandler} />} />
           <Route
             path="products/category/:category"
-            element={<ProductCategory cartHandler={cartHandler} />}
+            element={<ProductCategory getProduct={getProduct} cartHandler={cartHandler} />}
           />
           <Route
             path="products/:productId"
@@ -293,6 +296,7 @@ export default function App() {
 
           <Route path="contacts" element={<Contacts />} />
           <Route path="contact" element={<Contacts />} />
+          <Route path="admin/product/upload" element={<AdminProductUpload />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
@@ -307,13 +311,4 @@ export default function App() {
       />
     </>
   );
-}
-
-function multiplier(item, quantity) {
-  let items = [];
-  for (let i = 0; i < quantity; i++) {
-    items.push(item);
-  }
-
-  return items;
 }

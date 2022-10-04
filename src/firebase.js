@@ -4,7 +4,7 @@ import * as firebaseui from 'firebaseui';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
 
-import { UserMaker } from './mockbase';
+import { UserMaker,ProductMaker } from './mockbase';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyD_kVL0F6Lv7Dz-JY6M_kOCE5-yttHX5rQ',
@@ -89,19 +89,31 @@ export async function getFireProduct(productId) {
     .doc('products/' + productId)
     .get()
     .then((docSnap) => docSnap.data())
-    .catch(console.log);
-
-  return productDoc;
+    .catch(handleFireError);
+    
+    productDoc = !productDoc && (new ProductMaker());
+    return productDoc;
 }
 export async function getFireUserDoc(userId) {
   let userDoc = await db
     .doc('users/' + userId)
     .get()
     .then((docSnap) => docSnap.data())
-    .catch(console.log);
+    .catch(console.error);
 
   return userDoc;
 }
+
+/**
+ * 
+ * @param {boolean} isQuery false if the error pops due to product doc request
+ */
+function handleFireError(err,isQuery){
+  // check type of error and react accordingly, show snackbar where necessary
+
+  console.error(err)
+}
+
 /**
  * @param {""|'category'|'discount'|'price'} by
  * @param {{category:string,minValue:number,maxValue:number}} valueOption

@@ -47,9 +47,9 @@ export default function ({ cartHandler,getProduct }) {
         }}
       >
         <ul>
-          {getInitObject().headerInfos.map((productId) => (
+          {getInitObject().headerInfos.map((headerInfo) => (
             <HeaderItem
-              productId={productId}
+              productId={headerInfo.productId}
               key={nanoid()}
               cartHandler={cartHandler}
               getProduct={getProduct}
@@ -83,7 +83,7 @@ export default function ({ cartHandler,getProduct }) {
       <h2>Fresh Products</h2>
       <div className="product-card-con">
         {range(2).map(() => (
-          <ProductCard cartHandler={cartHandler} key={nanoid()} getProduct={getProduct} />
+          <ProductCard productId="100001" cartHandler={cartHandler} key={nanoid()} getProduct={getProduct} />
         ))}
 
         <div className="clear-fix"></div>
@@ -93,7 +93,7 @@ export default function ({ cartHandler,getProduct }) {
       <h2>Trending</h2>
       <div className="product-card-con">
         {range(3).map(() => (
-          <ProductCard cartHandler={cartHandler} key={nanoid()} getProduct={getProduct} />
+          <ProductCard productId="100001" cartHandler={cartHandler} key={nanoid()} getProduct={getProduct} />
         ))}
         <div className="clear-fix"></div>
         <Link to="/products/category/trending">See all trending products</Link>

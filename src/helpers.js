@@ -23,6 +23,7 @@ export function calcDiscount(price, discount) {
 }
 
 export function capitalise(text) {
+  if(!text) return "";
   let words = text.split(' ');
   let output = '';
 

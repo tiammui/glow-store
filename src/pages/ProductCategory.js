@@ -9,7 +9,7 @@ import {
   SmallProductCard,
 } from './../components/components';
 
-export default function ({ filter, cartHandler }) {
+export default function ({ getProduct, filter, cartHandler }) {
   let navigate = useNavigate();
   let catFilter = filter || useParams().category;
 
@@ -55,7 +55,7 @@ export default function ({ filter, cartHandler }) {
         <Pagination amtPage={10} currentPage={currentPaginate} setPage={setCurrentPaginate} />
         <p className="pager">{currentPaginate}/10</p>
         {range(1).map(() => (
-          <ProductCard getProduct={getProduct} cartHandler={cartHandler} key={nanoid()} />
+          <ProductCard getProduct={getProduct} productId="100001" cartHandler={cartHandler} key={nanoid()} />
         ))}
 
         <div className="clear-fix"></div>
@@ -67,12 +67,12 @@ export default function ({ filter, cartHandler }) {
       <div className="carousel product-card-small-con">
         <ul>
           {range(10).map(() => (
-            <SmallProductCard getProduct={getProduct} key={nanoid()} />
+            <SmallProductCard productId="100001" getProduct={getProduct} key={nanoid()} />
           ))}
         </ul>
         <ul>
           {range(10).map(() => (
-            <SmallProductCard getProduct={getProduct} key={nanoid()} />
+            <SmallProductCard productId="100001" getProduct={getProduct} key={nanoid()} />
           ))}
         </ul>
       </div>
