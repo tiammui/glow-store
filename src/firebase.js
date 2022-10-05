@@ -91,7 +91,9 @@ export async function getFireProduct(productId) {
     .then((docSnap) => docSnap.data())
     .catch(handleFireError);
     
-    productDoc = !productDoc && (new ProductMaker());
+    if(!productDoc) {
+      productDoc =  new ProductMaker();
+    }
     return productDoc;
 }
 export async function getFireUserDoc(userId) {
