@@ -117,6 +117,7 @@ export function localCart(cart) {
     localStorage.removeItem(LOCAL_CART_STORAGE_KEY);
     return [];
   } else {
+    console.log(localisedCart)
     return localisedCart.cart;
   }
 }
@@ -134,30 +135,6 @@ export function getDeliveryFee(city, state, country) {
 export function getInitObject() {
   // may fetch from firebase in future update, can be gotten locally for now
   return initObj;
-}
-
-// getFireOrder
-// getFireProduct
-// getFireUserDoc
-// queryFireProducts
-// updateFireUserDoc
-// fireUserDocExists
-export function getUserDoc() {
-  // get user's doc
-  return new UserMaker();
-}
-
-export function getOrder(orderId) {
-  // check for order locally, if not found fetch from firebase
-  // should be intelligent enough to only fetch a document once, e.g while fetching a document it should not allow another fetching of that same document until fetched
-
-  return new OrderMaker();
-}
-
-export function getUserOrders() {
-  let userInfo = getUserDOc();
-
-  return userInfo.orders;
 }
 
 /**
@@ -223,11 +200,6 @@ export function orderItemAmt(orderProducts) {
   });
 
   return amount;
-}
-
-export function paginateCat(pageNum) {
-  // Use for pagination
-  console.log(pageNum);
 }
 
 export function range(size) {

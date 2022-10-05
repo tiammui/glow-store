@@ -4,29 +4,27 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { nanoid } from 'nanoid';
 
-import { getCurrentUser, getUserOrders } from './../helpers';
 import { Spacer, OrderCard } from './../components/components';
 
-export default function ({ currentUser, showSignInHnd }) {
+export default function ({ userDoc, isSignedIn, showSignInHnd, getItem }) {
   let navigate = useNavigate();
-  let userInfo = getCurrentUser();
   let [userForm, setUserForm] = useState({
-    ...userInfo.address,
-    ...userInfo.contact,
-    firstname: userInfo.firstname,
-    lastname: userInfo.lastname,
+    ...userDoc.address,
+    ...userDoc.contact,
+    firstname: userDoc.firstname,
+    lastname: userDoc.lastname,
   });
 
   useEffect(function () {
     window.scrollTo(0, 0);
-    if (!currentUser.uid) {
+    if (!isSignedIn) {
       showSignInHnd(true);
       navigate('/');
     }
   }, []);
 
   useEffect(() => {
-    if (!currentUser.uid) {
+    if (!isSignedIn) {
       showSignInHnd(true);
       navigate('/');
     }
@@ -156,8 +154,8 @@ export default function ({ currentUser, showSignInHnd }) {
         <div className="half">
           <h3>Previous Orders</h3>
           <div className="order-card-con">
-            {getUserOrders().map((orderId) => (
-              <OrderCard key={nanoid()} orderId={orderId} />
+            {userDoc.orders.map((orderId) => (
+              <OrderCard getItem={getItem} key={nanoid()} orderId={orderId} />
             ))}
           </div>
         </div>

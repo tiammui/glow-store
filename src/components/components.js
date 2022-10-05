@@ -18,7 +18,6 @@ import {
   paginateCat,
   cartItemCost,
   capitalise,
-  getOrder,
   orderCost,
   orderItemAmt,
 } from './../helpers';
@@ -135,8 +134,9 @@ export function HotSaleTag({ offset }) {
   );
 }
 
-export function OrderCard({ orderId }) {
-  let order = getOrder(orderId);
+export function OrderCard({ orderId, getItem }) {
+  let [order,setorder] = useState({});
+  getItem('order',orderId).then(setorder);
   return (
     <div className="order-card">
       <div className="img"></div>

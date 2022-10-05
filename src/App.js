@@ -7,7 +7,9 @@ import firebase, {
   uiConfig,
   authUI,
   getFireProduct,
+  getFireOrder,
   queryFireProducts,
+  getFireUserDoc,
 } from './firebase';
 import './styles/App.css';
 import './styles/styles.css';
@@ -30,16 +32,18 @@ import Menu from './components/Menu';
 import SignInModal from './components/SignInModal';
 import { SnackBar } from './components/bigComponents';
 import { localCart, indexOfObject, snack } from './helpers';
-import { CartItemMaker, ProductMaker } from './mockbase';
+import { CartItemMaker, ProductMaker, OrderMaker } from './mockbase';
 
 export default function App() {
   const [cart, setCart] = useState(localCart());
   const [cartQuantity, setCartQuantity] = useState(0);
-  const [currentUser, setCurrentUser] = useState({});
-  const [productsCache, setProductsCache] = useState({}); // productCache: {[productId:string]:ProductMaker}
-  const [categoriesCache, setCategoriesCache] = useState({}); // categoryCache: {[category:string]:productId[]}
+  const [isSignedIn, setIsSignedIn] = useState(false);
+  const [userDoc, setUserDoc] = useState({});
   const [showMenu, setShowMenu] = useState(false);
   const [showSignIn, setShowSignIn] = useState(false);
+  const [productsCache, setProductsCache] = useState({}); // productCache: {[productId:string]:ProductMaker}
+  const [ordersCache, setOrdersCache] = useState({}); // productCache: {[productId:string]:ProductMaker}
+  const [categoriesCache, setCategoriesCache] = useState({}); // categoryCache: {[category:string]:productId[]}
 
   useEffect(() => {
     WebFont.load({
@@ -47,16 +51,21 @@ export default function App() {
         families: ['Lato'],
       },
     });
+
     let unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
-        setShowSignIn(false);
-        setCurrentUser(user);
         snack('Signed in as ' + user.email, 'success');
+
+        setShowSignIn(false);
+        setIsSignedIn(true);
+        getFireUserDoc(user.uid).then(setUserDoc);
 
         // TODO - update cart
         setCart();
       } else {
-        setCurrentUser({});
+        setIsSignedIn(false);
+        setUserDoc({});
+
         // reset cart
         setCart(localCart());
       }
@@ -74,7 +83,7 @@ export default function App() {
           )); // reduce return the complete element of an array if it length == 1
 
     setCartQuantity(quantity);
-    if (currentUser.uid) {
+    if (isSignedIn) {
       // TODO - update firestore
     } else {
       localCart(cart);
@@ -92,7 +101,7 @@ export default function App() {
       case 'add':
         if (
           indexOfObject(cart, 'productId', productId) == -1 &&
-          getProduct(productId)
+          getItem(productId)
         ) {
           // if product is not already in cart and it exist
 
@@ -139,36 +148,6 @@ export default function App() {
   }
 
   /**
-   * Intelligently manage the getting of product info (from database and locally)
-   * @params {string} productId
-   * @return {ProductMaker || false} return false if product with the `productId` doesn't exist, or product can't be currently fetched
-   */
-  async function getProduct(productId) {
-    productId = '100001';
-    // check for product in `productCache`, if not found fetch from firebase
-
-    // if an error occur while fetching a document, how should i handle it?
-
-    let product = {};
-    if (!productsCache[productId]) {
-      // fetch from firebase
-      await getFireProduct(productId).then((doc) => {
-        product = doc;
-      });
-
-      if (product)
-        setProductsCache((prev) => ({ ...prev, [product.id]: product }));
-    } else {
-      // fetch from productCache
-      product = productsCache[productId];
-    }
-
-    return product;
-  }
-
-  // async function getBulkProduct(){}
-
-  /**
    * @param {""} category
    * @param {number} currentPage
    * @return {ProductMaker[] || false} return false if products can't be fetched
@@ -204,11 +183,14 @@ export default function App() {
     return products;
 
     function fetchDocs(docsToFetch, lastDocObj) {
-      let result = await queryFireProducts(
+      let result=[];
+      await queryFireProducts(
         category,
         { category },
         { docsToFetch, lastDocObj }
-      );
+      ).then((docs) => {
+        result = docs;
+      });
 
       productIDs = result.map((product) => {
         // cache each product and return the product id
@@ -232,17 +214,58 @@ export default function App() {
     }
   }
 
+  /**
+   * Intelligently manage the getting of product and order info (from database and locally)
+   * @params {'order'|'product'|string} type can also be productId, to pass just one arg
+   * @params {string} id orderId or productId 
+   * @return {ProductMaker || OrderMaker || false} return false if product/order with the `id` doesn't exist, or product/order can't be currently fetched
+   */
+  async function getItem(type,id) {
+    var itemCache,setItem,getFireFunc;
+    if ( arguments.length > 1 && type == "order"){
+      itemCache = ordersCache;
+      setItem = setOrdersCache;
+      getFireFunc = getFireOrder;
+
+      id = '1000001';
+    } else {
+      id = id || type; // when one arg is passed, productId is passed as `type`
+      itemCache = productsCache;
+      setItem = setProductsCache;
+      getFireFunc = getFireProduct;
+
+      id = '100001';
+    }
+    // if an error occur while fetching a document, how should i handle it?
+
+    let item = {};
+    if (!itemCache[id]) {
+      // fetch from firebase
+      await getFireFunc(id).then((doc) => {
+        item = doc;
+      });
+
+      if (item)
+      setItem((prev) => ({ ...prev, [item.id]: item }));
+    } else {
+      // fetch from productCache
+      item = itemCache[id];
+    }
+
+    return item;
+  }
+  
   return (
     <>
       <TopBar
         showSignInHnd={setShowSignIn}
         showMenuHnd={setShowMenu}
         cartQuantity={cartQuantity}
-        isSignedIn={!!currentUser.uid}
+        isSignedIn={isSignedIn}
       />
       <Menu
         showSignInHnd={setShowSignIn}
-        isSignedIn={!!currentUser.uid}
+        isSignedIn={isSignedIn}
         showMenu={showMenu}
         showMenuHnd={setShowMenu}
       />
@@ -251,12 +274,26 @@ export default function App() {
         <Routes>
           <Route
             path="/"
-            element={<Home cartHandler={cartHandler} getProduct={getProduct} />}
+            element={<Home cartHandler={cartHandler} getProduct={getItem} />}
           />
-          <Route path="products" element={<ProductCategory filter="All" getProduct={getProduct} cartHandler={cartHandler} />} />
+          <Route
+            path="products"
+            element={
+              <ProductCategory
+                filter="All"
+                getProduct={getItem}
+                cartHandler={cartHandler}
+              />
+            }
+          />
           <Route
             path="products/category/:category"
-            element={<ProductCategory getProduct={getProduct} cartHandler={cartHandler} />}
+            element={
+              <ProductCategory
+                getProduct={getItem}
+                cartHandler={cartHandler}
+              />
+            }
           />
           <Route
             path="products/:productId"
@@ -264,7 +301,7 @@ export default function App() {
               <ProductDetails
                 cart={cart}
                 cartHandler={cartHandler}
-                getProduct={getProduct}
+                getProduct={getItem}
               />
             }
           />
@@ -274,13 +311,13 @@ export default function App() {
               <Cart
                 cart={cart}
                 cartHandler={cartHandler}
-                getProduct={getProduct}
+                getProduct={getItem}
               />
             }
           />
           <Route
             path="checkout"
-            element={<CheckOut cart={cart} getProduct={getProduct} />}
+            element={<CheckOut cart={cart} getProduct={getItem} />}
           />
 
           <Route
@@ -288,7 +325,9 @@ export default function App() {
             element={
               <UserDetails
                 showSignInHnd={setShowSignIn}
-                currentUser={currentUser}
+                isSignedIn={isSignedIn}
+                userDoc={userDoc}
+                getItem={getItem}
               />
             }
           />
