@@ -61,7 +61,7 @@ export default function App() {
         getFireUserDoc(user.uid).then(setUserDoc);
 
         // TODO - update cart
-        setCart();
+        // setCart();
       } else {
         setIsSignedIn(false);
         setUserDoc({});

@@ -7,9 +7,9 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { nanoid } from 'nanoid';
 
-import { Spacer, SmallProductCard, CartItem } from './../components/components';
+import { Spacer, SmallProductCard, CartItem, CartCost } from './../components/components';
 import { CartEmpty } from './../components/bigComponents';
-import { cartCost, cartItemCost, range } from './../helpers';
+import { range } from './../helpers';
 
 export default function ({ cart, cartHandler, getProduct }) {
   let navigate = useNavigate()
@@ -32,7 +32,7 @@ export default function ({ cart, cartHandler, getProduct }) {
         <div>
           <div className="cart-section half">
             <div className="sub-total">
-              <p>Cart subtotals = ₦{cartCost(cart)}</p>
+              <p>Cart subtotals = <CartCost cart={cart} getProduct={getProduct} /></p>
               <p className="warning">
                 * &nbsp;&nbsp;Delivery fee is not included yet
               </p>
@@ -40,13 +40,13 @@ export default function ({ cart, cartHandler, getProduct }) {
 
             <div className="cart-item-con">
               {cart.map((item) => (
-                <CartItem cartHandler={cartHandler} cartItem={item} getProduct={getProduct} />
+                <CartItem key={nanoid()} cartHandler={cartHandler} cartItem={item} getProduct={getProduct} />
               ))}
             </div>
 
             <div className="checkout-btn-con">
               <button className="serious-btn" title="checkout" onClick={()=>{navigate('/checkout')}}>
-                Checkout (₦{cartCost(cart)}){' '}
+                Checkout (<CartCost cart={cart} getProduct={getProduct} />){' '}
                 <FontAwesomeIcon icon={faArrowRight} />
               </button>
             </div>

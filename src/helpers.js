@@ -23,7 +23,7 @@ export function calcDiscount(price, discount) {
 }
 
 export function capitalise(text) {
-  if(!text) return "";
+  if (!text) return '';
   let words = text.split(' ');
   let output = '';
 
@@ -41,26 +41,30 @@ export function capitalise(text) {
  * @param {CartItemMaker[]} cart
  * @return {number} discounted total cost
  */
-export function cartCost(cart) {
+export function cartCost(cart, getProduct) {
   // discount is considered
 
   if (!cart.length) return 0;
   if (cart.length == 1) {
-    var product = getProduct(cart[0].productId);
+    var product = {};
+    getProduct(cart[0].productId).then((doc) => (product = doc));
     return totalCost(cart[0].quantity, product.price, product.discount);
   }
   const cost = cart.reduce((a, b, i) => {
     /**
      * @type {ProductMaker}
      */
-    var bProduct = getProduct(b.productId);
+    var bProduct = {};
+    getProduct(b.productId).then((doc) => (bProduct = doc));
+
     let bCost = totalCost(b.quantity, bProduct.price, bProduct.discount);
 
     if (i == 1) {
       /**
        * @type {ProductMaker}
        */
-      let aProduct = getProduct(a.productId);
+      let aProduct = {};
+      getProduct(a.productId).then((doc) => (aProduct = doc));
       let aCost = totalCost(a.quantity, aProduct.price, aProduct.discount);
 
       return aCost + bCost;
@@ -73,14 +77,11 @@ export function cartCost(cart) {
 }
 
 /**
- * @param {CartItemMaker} cartItem
  * @return {number} discounted cost
  */
-export function cartItemCost(cartItem) {
+export function cartItemCost(quantity, price, discount) {
   // discount is considered
-  const { price, discount } = getProduct(cartItem.productId);
-
-  return totalCost(cartItem.quantity, price, discount);
+  return totalCost(quantity, price, discount);
 }
 
 export function formatAddress(street, city, state, country) {
@@ -117,7 +118,6 @@ export function localCart(cart) {
     localStorage.removeItem(LOCAL_CART_STORAGE_KEY);
     return [];
   } else {
-    console.log(localisedCart)
     return localisedCart.cart;
   }
 }

@@ -15,7 +15,6 @@ import { nanoid } from 'nanoid';
 import {
   calcDiscount,
   range,
-  paginateCat,
   cartItemCost,
   capitalise,
   orderCost,
@@ -35,9 +34,20 @@ export function AddToCartButton({ productId, isHeader, cartHandler }) {
   );
 }
 
+export function CartCost({cart, getProduct}) {//cartCost
+  let [product,setProduct] = useState({});
+  getProduct(cartItem.productId).then(setProduct)
+
+  
+  return "₦" + cartItemCost(cartItem.quantity, product.price, product.discount)
+}
+
 export function CartItem({ cartHandler, cartItem, getProduct }) {
   let [product,setProduct] = useState({});
-  getProduct(productId).then(setProduct)
+
+  useEffect(()=>{
+    getProduct(cartItem.productId).then(setProduct)
+  },[])
 
   return (
     <div className="cart-item">
@@ -61,7 +71,7 @@ export function CartItem({ cartHandler, cartItem, getProduct }) {
         />
       </div>
       <div className="total">
-        Subtotal: <b>₦{cartItemCost(cartItem)}</b>
+        Subtotal: <b><CartItemCost cartItem={cartItem} getProduct={getProduct} /> </b>
       </div>
       <button
         className="remove"
@@ -72,6 +82,13 @@ export function CartItem({ cartHandler, cartItem, getProduct }) {
       </button>
     </div>
   );
+}
+
+export function CartItemCost({cartItem, getProduct}) {
+  let [product,setProduct] = useState({});
+  getProduct(cartItem.productId).then(setProduct)
+
+  return "₦" + cartItemCost(cartItem.quantity, product.price, product.discount)
 }
 
 export function CatSectionItem({ category }) {
@@ -273,7 +290,11 @@ export function Quantifier({ isForCart, cartItem, cartHandler }) {
 
 export function SmallProductCard({ productId, getProduct }) {
   let [product,setProduct] = useState({});
-  getProduct(productId).then(setProduct)
+
+  useEffect(()=>{
+    getProduct(productId).then(setProduct)
+    
+  },[])
 
   return (
     <div className="product-card-small">
