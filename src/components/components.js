@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { NumericFormat } from 'react-number-format';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -34,20 +34,20 @@ export function AddToCartButton({ productId, isHeader, cartHandler }) {
   );
 }
 
-export function CartCost({cart, getProduct}) {//cartCost
-  let [product,setProduct] = useState({});
-  getProduct(cartItem.productId).then(setProduct)
+export function CartCost({ cart, getProduct }) {
+  //cartCost
+  let [product, setProduct] = useState({});
+  getProduct(cartItem.productId).then(setProduct);
 
-  
-  return "₦" + cartItemCost(cartItem.quantity, product.price, product.discount)
+  return '₦' + cartItemCost(cartItem.quantity, product.price, product.discount);
 }
 
 export function CartItem({ cartHandler, cartItem, getProduct }) {
-  let [product,setProduct] = useState({});
+  let [product, setProduct] = useState({});
 
-  useEffect(()=>{
-    getProduct(cartItem.productId).then(setProduct)
-  },[])
+  useEffect(() => {
+    getProduct(cartItem.productId).then(setProduct);
+  }, []);
 
   return (
     <div className="cart-item">
@@ -71,7 +71,10 @@ export function CartItem({ cartHandler, cartItem, getProduct }) {
         />
       </div>
       <div className="total">
-        Subtotal: <b><CartItemCost cartItem={cartItem} getProduct={getProduct} /> </b>
+        Subtotal:{' '}
+        <b>
+          <CartItemCost cartItem={cartItem} getProduct={getProduct} />{' '}
+        </b>
       </div>
       <button
         className="remove"
@@ -84,11 +87,11 @@ export function CartItem({ cartHandler, cartItem, getProduct }) {
   );
 }
 
-export function CartItemCost({cartItem, getProduct}) {
-  let [product,setProduct] = useState({});
-  getProduct(cartItem.productId).then(setProduct)
+export function CartItemCost({ cartItem, getProduct }) {
+  let [product, setProduct] = useState({});
+  getProduct(cartItem.productId).then(setProduct);
 
-  return "₦" + cartItemCost(cartItem.quantity, product.price, product.discount)
+  return '₦' + cartItemCost(cartItem.quantity, product.price, product.discount);
 }
 
 export function CatSectionItem({ category }) {
@@ -119,11 +122,11 @@ export function DiscountTag({ discount, offset }) {
 }
 
 export function HeaderItem({ productId, cartHandler, getProduct }) {
-  let [product,setProduct] = useState({});
-  getProduct(productId).then(setProduct)
+  let [product, setProduct] = useState({});
+  getProduct(productId).then(setProduct);
 
   return (
-    <li className="item">
+    <li className="item" style={{backgroundImage:`url(${product.mainImgURL})`}}>
       {product.hotSale ? <HotSaleTag /> : null}
       <div className="ad-text">
         <h3>{product.name}</h3>
@@ -152,27 +155,35 @@ export function HotSaleTag({ offset }) {
 }
 
 export function OrderCard({ orderId, getItem }) {
-  let [order,setorder] = useState({});
-  getItem('order',orderId).then(setorder);
-  return (
+  let [order, setorder] = useState();
+
+  useEffect(function () {
+    getItem('order', orderId).then(setorder);
+  }, []);
+  useEffect(function () {
+    console.log('orderly' + order);
+  }, [order]);
+
+
+  return order ? (
     <div className="order-card">
       <div className="img"></div>
       <div className="details">
         <div className="title">Order {order.id}</div>
-        <div>Placed on {order.timeStamp.toDateString()}</div>
+        <div>Placed on {order.timeStamp?.toDateString()}</div>
         <div>Total: ₦{orderCost(order.products)}</div>
         <div>
           <b>{orderItemAmt(order.products)} Items</b>
         </div>
         <div>
           Status:{' '}
-          <span className={`status ${order.status.toLowerCase()}`}>
-            {capitalise(order.status.toLowerCase())}
+          <span className={`status ${order.status?.toLowerCase()}`}>
+            {capitalise(order.status?.toLowerCase())}
           </span>
         </div>
       </div>
     </div>
-  );
+  ): "Loading ...";
 }
 
 export function Pagination({ amtPage, setPage, currentPage }) {
@@ -233,8 +244,8 @@ export function Pagination({ amtPage, setPage, currentPage }) {
 }
 
 export function ProductCard({ productId, cartHandler, getProduct }) {
-  let [product,setProduct] = useState({});
-  getProduct(productId).then(setProduct)
+  let [product, setProduct] = useState({});
+  getProduct(productId).then(setProduct);
 
   return (
     <div className="product-card">
@@ -289,12 +300,11 @@ export function Quantifier({ isForCart, cartItem, cartHandler }) {
 }
 
 export function SmallProductCard({ productId, getProduct }) {
-  let [product,setProduct] = useState({});
+  let [product, setProduct] = useState({});
 
-  useEffect(()=>{
-    getProduct(productId).then(setProduct)
-    
-  },[])
+  useEffect(() => {
+    getProduct(productId).then(setProduct);
+  }, []);
 
   return (
     <div className="product-card-small">

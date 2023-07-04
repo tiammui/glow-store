@@ -256,9 +256,9 @@ h3 {
   max-width: 600px; /* changing this will affect scrolling behaviour, update `headerScrolling` function in Home.js if this property is changed */
   height: 575px;
   background-color: var(--color-secondary-bg);
-  /* background: url(/images/Create\,\ Read\,\ Enjoy.jpg);
   background-position: center;
-  background-size: cover; */
+  background-size: contain;
+  background-repeat: no-repeat;
 }
 #home-header .item:before {
   content: '';

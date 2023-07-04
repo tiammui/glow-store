@@ -4,31 +4,43 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { nanoid } from 'nanoid';
 
+import firebase, { auth, getFireUserDoc } from './../firebase';
+import { snack } from './../helpers';
+
 import { Spacer, OrderCard } from './../components/components';
 
-export default function ({ userDoc, isSignedIn, showSignInHnd, getItem }) {
+export default function ({ showSignInHnd, getItem }) {
   let navigate = useNavigate();
-  let [userForm, setUserForm] = useState({
-    ...userDoc.address,
-    ...userDoc.contact,
-    firstname: userDoc.firstname,
-    lastname: userDoc.lastname,
-  });
+  const [userDoc, setUserDoc] = useState();
+  const [userForm, setUserForm] = useState();
 
   useEffect(function () {
     window.scrollTo(0, 0);
-    if (!isSignedIn) {
-      showSignInHnd(true);
-      navigate('/');
-    }
+
+    let unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        snack('Signed in as ' + user.email, 'success');
+        getFireUserDoc(user.uid).then(setUserDoc);
+      } else {
+        setUserDoc();
+        showSignInHnd(true);
+        navigate('/');
+      }
+
+      console.log('userrry');
+    });
   }, []);
 
   useEffect(() => {
-    if (!isSignedIn) {
-      showSignInHnd(true);
-      navigate('/');
+    if(userDoc){
+      setUserForm({
+        ...userDoc.address,
+        ...userDoc.contact,
+        firstname: userDoc.firstname,
+        lastname: userDoc.lastname,
+      });
     }
-  });
+  }, [userDoc]);
 
   function handleInput(e) {
     let { name, value } = e.target;
@@ -36,7 +48,7 @@ export default function ({ userDoc, isSignedIn, showSignInHnd, getItem }) {
     setUserForm((prev) => ({ ...prev, [name]: value }));
   }
 
-  return (
+  return userForm ? (
     <div id="user-details">
       <h2>
         <FontAwesomeIcon
@@ -163,5 +175,7 @@ export default function ({ userDoc, isSignedIn, showSignInHnd, getItem }) {
         <div className="clear-fix"></div>
       </div>
     </div>
+  ) : (
+    'Loading ...'
   );
 }

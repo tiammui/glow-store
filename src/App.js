@@ -9,7 +9,6 @@ import firebase, {
   getFireProduct,
   getFireOrder,
   queryFireProducts,
-  getFireUserDoc,
 } from './firebase';
 import './styles/App.css';
 import './styles/styles.css';
@@ -38,7 +37,6 @@ export default function App() {
   const [cart, setCart] = useState(localCart());
   const [cartQuantity, setCartQuantity] = useState(0);
   const [isSignedIn, setIsSignedIn] = useState(false);
-  const [userDoc, setUserDoc] = useState({});
   const [showMenu, setShowMenu] = useState(false);
   const [showSignIn, setShowSignIn] = useState(false);
   const [productsCache, setProductsCache] = useState({}); // productCache: {[productId:string]:ProductMaker}
@@ -58,13 +56,11 @@ export default function App() {
 
         setShowSignIn(false);
         setIsSignedIn(true);
-        getFireUserDoc(user.uid).then(setUserDoc);
 
         // TODO - update cart
         // setCart();
       } else {
         setIsSignedIn(false);
-        setUserDoc({});
 
         // reset cart
         setCart(localCart());
@@ -325,8 +321,6 @@ export default function App() {
             element={
               <UserDetails
                 showSignInHnd={setShowSignIn}
-                isSignedIn={isSignedIn}
-                userDoc={userDoc}
                 getItem={getItem}
               />
             }
