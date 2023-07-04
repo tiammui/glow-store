@@ -43,6 +43,7 @@ export default function ({ cart, cartHandler, getProduct }) {
               <div
                 key={nanoid()}
                 className={`thumb ${activeThumbIndex == i ? 'active' : ''}`}
+                style={{backgroundImage:`url(${product.imgsURL[i]})`}}
                 onClick={() => {
                   setActiveThumbIndex(i);
                 }}

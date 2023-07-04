@@ -890,6 +890,10 @@ h3 {
   height: 50px;
   margin: 0 5px;
   background-color: var(--color-secondary-bg);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+
   border: var(--border-item);
   border-radius: 8px;
   cursor: pointer;
