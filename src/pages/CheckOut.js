@@ -5,10 +5,11 @@ import { faMoneyCheck } from '@fortawesome/free-solid-svg-icons';
 import { nanoid } from 'nanoid';
 import { PaystackButton } from 'react-paystack';
 
+import { auth, getFireUserDoc } from './../firebase';
+
 import { Spacer } from './../components/components';
 import {
   capitalise,
-  getCurrentUser,
   formatAddress,
   cartCost,
   cartItemCost,
@@ -19,13 +20,10 @@ import { OrderMaker } from './../mockbase';
 
 export default function ({ cart, getProduct }) {
   let navigate = useNavigate();
-  let userInfo = getCurrentUser();
-  let [orderForm, setOrderForm] = useState({
-    ...userInfo.address,
-    ...userInfo.contact,
-    name: `${userInfo.lastname} ${userInfo.firstname}`,
-  });
-  const componentProps = {
+  const [userDoc, setUserDoc] = useState();
+  let [orderForm, setOrderForm] = useState();
+  let [products, setProducts] = useState([]);
+  const paystackProps = {
     email: 'tiammui@gmail.com',
     amount: 1000,
     metadata: {
@@ -44,11 +42,40 @@ export default function ({ cart, getProduct }) {
 
   useEffect(function () {
     window.scrollTo(0, 0);
+
     if (!cart.length) {
       // if no item in cart to checkout go to Cart page
       navigate('/cart');
     }
+
+    let unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        getFireUserDoc(user.uid).then(setUserDoc);
+      } else {
+        setUserDoc();
+        navigate('/cart');
+      }
+    });
+    return unsubscribe;
   }, []);
+
+  useEffect(() => {
+    if (userDoc) {
+      setOrderForm({
+        ...userDoc.address,
+        ...userDoc.contact,
+        name: `${userDoc.lastname} ${userDoc.firstname}`,
+      });
+
+      let cart = userDoc.cart;
+
+      for (let i = 0; i < cart.length; i++) {
+        getProduct(cart[i].productId).then((product) =>
+          setProducts((prev) => [...prev, product])
+        );
+      }
+    }
+  }, [userDoc]);
 
   function handleInput(e) {
     let { name, value } = e.target;
@@ -60,7 +87,7 @@ export default function ({ cart, getProduct }) {
 
     // initiate payment, verify payment, send order and clear cart
   }
-  return (
+  return orderForm ? (
     <div id="checkout">
       <h2>
         <FontAwesomeIcon
@@ -198,11 +225,11 @@ export default function ({ cart, getProduct }) {
                 <td>Products</td>
                 <td>Cost</td>
               </tr>
-              {cart.map((item) => (
-                <tr key={nanoid()} className="body">
+              {products.length == cart.length && cart.map((item,index) => (
+                <tr key={index} className="body">
                   <td>
                     <span>
-                      {getProduct(item.productId).name} X <b>{item.quantity}</b>{' '}
+                      {products[index].name} X <b>{item.quantity}</b>{' '}
                     </span>
                   </td>
                   <td>₦{cartItemCost(item)}</td>
@@ -210,7 +237,7 @@ export default function ({ cart, getProduct }) {
               ))}
               <tr className="foot">
                 <td>Cart Subtotal</td>
-                <td>₦{cartCost(cart)}</td>
+                <td>₦{cartCost(cart,getProduct)}</td>
               </tr>
               <tr className="foot">
                 <td>Deliver fee**</td>
@@ -227,7 +254,7 @@ export default function ({ cart, getProduct }) {
                 <td>TOTAL</td>
                 <td>
                   ₦
-                  {cartCost(cart) +
+                  {cartCost(cart,getProduct) +
                     getDeliveryFee(
                       orderForm.city,
                       orderForm.state,
@@ -257,7 +284,7 @@ export default function ({ cart, getProduct }) {
 
           <div className="paystack"></div>
 
-          <PaystackButton className="" {...componentProps} />
+          <PaystackButton className="" {...paystackProps} />
 
           <div className="order-btn-con">
             <button className="serious-btn" title="place order">
@@ -269,5 +296,7 @@ export default function ({ cart, getProduct }) {
         <div className="clear-fix"></div>
       </div>
     </div>
+  ) : (
+    'Summarizing order ...'
   );
 }

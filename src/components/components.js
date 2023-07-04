@@ -247,7 +247,7 @@ export function ProductCard({ productId, cartHandler, getProduct }) {
 
   return (
     <div className="product-card">
-      <Link to={`/products/${product.id}`} className="img">
+      <Link to={`/products/${product.id}`} className="img" style={{backgroundImage:`url(${product.mainImgURL})`}}>
         {product.discount ? <DiscountTag discount={product.discount} /> : null}
       </Link>
       <div className="details">
@@ -306,7 +306,7 @@ export function SmallProductCard({ productId, getProduct }) {
 
   return (
     <div className="product-card-small">
-      <Link to={`/products/${product.id}`} className="img">
+      <Link to={`/products/${product.id}`} className="img" style={{backgroundImage:`url(${product.mainImgURL})`}}>
         {product.discount ? <DiscountTag discount={product.discount} /> : null}
       </Link>
       <div className="details">

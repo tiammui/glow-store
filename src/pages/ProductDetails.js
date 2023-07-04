@@ -33,7 +33,7 @@ export default function ({ cart, cartHandler, getProduct }) {
     <>
       <div className="product-con">
         <div className="img-con half">
-          <div className="img">
+          <div className="img" style={{backgroundImage:`url(${product.mainImgURL})`}}>
             {product.discount ? (
               <DiscountTag discount={product.discount} offset={45} />
             ) : null}
