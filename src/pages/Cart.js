@@ -15,6 +15,7 @@ export default function ({ cart, cartHandler, getProduct }) {
   let navigate = useNavigate()
   useEffect(function () {
     window.scrollTo(0, 0);
+    console.log("cart",cart)
   }, []);
 
   return (

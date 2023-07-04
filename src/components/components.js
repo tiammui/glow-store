@@ -15,6 +15,7 @@ import { nanoid } from 'nanoid';
 import {
   calcDiscount,
   range,
+  cartCost,
   cartItemCost,
   capitalise,
   orderCost,
@@ -36,10 +37,7 @@ export function AddToCartButton({ productId, isHeader, cartHandler }) {
 
 export function CartCost({ cart, getProduct }) {
   //cartCost
-  let [product, setProduct] = useState({});
-  getProduct(cartItem.productId).then(setProduct);
-
-  return '₦' + cartItemCost(cartItem.quantity, product.price, product.discount);
+  return '₦' + cartCost(cart, getProduct);
 }
 
 export function CartItem({ cartHandler, cartItem, getProduct }) {
@@ -161,7 +159,7 @@ export function OrderCard({ orderId, getItem }) {
     getItem('order', orderId).then(setorder);
   }, []);
   useEffect(function () {
-    console.log('orderly' + order);
+    console.log('orderly', order);
   }, [order]);
 
 

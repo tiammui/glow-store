@@ -9,6 +9,7 @@ import firebase, {
   getFireProduct,
   getFireOrder,
   queryFireProducts,
+  getFireUserDoc,
 } from './firebase';
 import './styles/App.css';
 import './styles/styles.css';
@@ -58,6 +59,8 @@ export default function App() {
         setIsSignedIn(true);
 
         // TODO - update cart
+        getFireUserDoc(user.uid).then((userDoc) => setCart(userDoc.cart));
+
         // setCart();
       } else {
         setIsSignedIn(false);
@@ -179,7 +182,7 @@ export default function App() {
     return products;
 
     function fetchDocs(docsToFetch, lastDocObj) {
-      let result=[];
+      let result = [];
       await queryFireProducts(
         category,
         { category },
@@ -213,12 +216,12 @@ export default function App() {
   /**
    * Intelligently manage the getting of product and order info (from database and locally)
    * @params {'order'|'product'|string} type can also be productId, to pass just one arg
-   * @params {string} id orderId or productId 
+   * @params {string} id orderId or productId
    * @return {ProductMaker || OrderMaker || false} return false if product/order with the `id` doesn't exist, or product/order can't be currently fetched
    */
-  async function getItem(type,id) {
-    var itemCache,setItem,getFireFunc;
-    if ( arguments.length > 1 && type == "order"){
+  async function getItem(type, id) {
+    var itemCache, setItem, getFireFunc;
+    if (arguments.length > 1 && type == 'order') {
       itemCache = ordersCache;
       setItem = setOrdersCache;
       getFireFunc = getFireOrder;
@@ -241,8 +244,7 @@ export default function App() {
         item = doc;
       });
 
-      if (item)
-      setItem((prev) => ({ ...prev, [item.id]: item }));
+      if (item) setItem((prev) => ({ ...prev, [item.id]: item }));
     } else {
       // fetch from productCache
       item = itemCache[id];
@@ -250,7 +252,7 @@ export default function App() {
 
     return item;
   }
-  
+
   return (
     <>
       <TopBar
@@ -285,10 +287,7 @@ export default function App() {
           <Route
             path="products/category/:category"
             element={
-              <ProductCategory
-                getProduct={getItem}
-                cartHandler={cartHandler}
-              />
+              <ProductCategory getProduct={getItem} cartHandler={cartHandler} />
             }
           />
           <Route
@@ -319,10 +318,7 @@ export default function App() {
           <Route
             path="user"
             element={
-              <UserDetails
-                showSignInHnd={setShowSignIn}
-                getItem={getItem}
-              />
+              <UserDetails showSignInHnd={setShowSignIn} getItem={getItem} />
             }
           />
           <Route path="user/orders/:orderId" element={<OrderDetails />} />

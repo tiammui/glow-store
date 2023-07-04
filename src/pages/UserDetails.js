@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { nanoid } from 'nanoid';
 
-import firebase, { auth, getFireUserDoc } from './../firebase';
+import { auth, getFireUserDoc } from './../firebase';
 import { snack } from './../helpers';
 
 import { Spacer, OrderCard } from './../components/components';
@@ -27,8 +27,8 @@ export default function ({ showSignInHnd, getItem }) {
         navigate('/');
       }
 
-      console.log('userrry');
     });
+    return unsubscribe;
   }, []);
 
   useEffect(() => {

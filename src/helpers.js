@@ -109,7 +109,7 @@ export function localCart(cart) {
 
   // return cart from localStorage, if local storage is empty use defaults to not break app
   localisedCart =
-    JSON.parse(localStorage.getItem(LOCAL_CART_STORAGE_KEY)) || localisedCart;
+    JSON.parse(localStorage.getItem(LOCAL_CART_STORAGE_KEY)) || localisedCart.cart;
 
   // 7 days == 604,800 seconds == 604,800,000 milliseconds
 
